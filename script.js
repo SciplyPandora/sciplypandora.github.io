@@ -77,6 +77,7 @@ $(document).ready(function() {
             else delete config[tile_id];
             $(this).remove();
         });
+        localStorage["config"] = JSON.stringify(config);
     });
 
     $("#clear_colours").click(function() {
