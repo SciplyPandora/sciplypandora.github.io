@@ -29,6 +29,10 @@ button {
     clip-path: polygon(var(--hr1) 0%, var(--hr2) 0%, 100% 50%, var(--hr2) 100%, var(--hr1) 100%, 0% 50%);
 }
 
+.hexagon-border:hover {
+    cursor: pointer;
+}
+
 .hexagon-inner {
     position: relative;
     top: var(--border_width);
@@ -38,6 +42,15 @@ button {
     width: calc(100% - 2 * var(--border_width));
     -webkit-clip-path: polygon(var(--hr1) 0%, var(--hr2) 0%, 100% 50%, var(--hr2) 100%, var(--hr1) 100%, 0% 50%);
     clip-path: polygon(var(--hr1) 0%, var(--hr2) 0%, 100% 50%, var(--hr2) 100%, var(--hr1) 100%, 0% 50%);
+}
+
+.hexagon-border:hover > [class="hexagon-inner"] {
+    background: #2f2f2f;
+    filter: brightness(80%);
+}
+
+.hexagon-border:not(.home):hover > div:not([class="hexagon-inner"]) {
+    filter: brightness(80%);
 }
 
 img {
