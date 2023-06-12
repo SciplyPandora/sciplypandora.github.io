@@ -29,7 +29,7 @@ button {
     clip-path: polygon(var(--hr1) 0%, var(--hr2) 0%, 100% 50%, var(--hr2) 100%, var(--hr1) 100%, 0% 50%);
 }
 
-.hexagon-border:hover {
+.hexagon-border:not(.home):hover {
     cursor: pointer;
 }
 
@@ -46,11 +46,11 @@ button {
 
 .hexagon-border:hover > [class="hexagon-inner"] {
     background: #2f2f2f;
-    filter: brightness(80%);
+    filter: brightness(90%);
 }
 
 .hexagon-border:not(.home):hover > div:not([class="hexagon-inner"]) {
-    filter: brightness(80%);
+    filter: brightness(90%);
 }
 
 img {
