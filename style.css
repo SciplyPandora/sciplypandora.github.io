@@ -1,6 +1,6 @@
 :root {
     --hex_ratio: 0.86602540378;
-    --tile_width: min(calc((100vw - 13em) / 12), calc(100vh / 13));
+    --tile_width: min(calc((100vw - 16em) / 12), calc(100vh / 13));
     --tile_height: calc(var(--tile_width) * var(--hex_ratio));
     --border_width: 4%;
     --hr1: 25%;
@@ -15,6 +15,10 @@
 
 body {
     background-color: black;
+}
+
+button {
+    width: 8em;
 }
 
 .hexagon-border {
