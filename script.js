@@ -1,11 +1,11 @@
 $(document).ready(function() {
     let config = localStorage["config"] ? JSON.parse(localStorage["config"]) : null;
 
-    function load_config(config, overwrite) {
+    function load_config(config_obj, overwrite) {
         if (overwrite) $(".tile").not(".home").children().attr("class", "hexagon-inner").html("");
-        for (let key in config) {
-            colour = config[key]["colour"];
-            image = config[key]["image"];
+        for (let key in config_obj) {
+            colour = config_obj[key]["colour"];
+            image = config_obj[key]["image"];
             if (colour) {
                 $(`.${key}`).children().first().attr("class", `hexagon-inner ${colour}`);
             }
@@ -96,6 +96,7 @@ $(document).ready(function() {
 
     $("#upload").change(function(e) {
         let file = e.target.files[0];
+        $(this).val("");
         let reader = new FileReader();
         reader.readAsText(file);
         reader.onload = function() {
