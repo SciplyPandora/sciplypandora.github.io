@@ -1,8 +1,192 @@
 $(document).ready(function() {
     let config = localStorage["config"] ? JSON.parse(localStorage["config"]) : null;
+    let empty_image_src = "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAA";
+    let home_colour_rots = {
+        "purple": 0,
+        "pink": 1,
+        "green": 2,
+        "blue": 3,
+        "yellow": 4,
+        "red": 5,
+    };
+    let rot_60_transform = {
+        "MRX": "MRX",
+        "EAG": "FAH",
+        "EAF": "FAF",
+        "EAE": "FAE",
+        "EAD": "FAD",
+        "EAC": "FAC",
+        "EAB": "FAB",
+        "EAA": "FAA",
+        "CAG": "DAG",
+        "CAF": "DAF",
+        "CAE": "DAE",
+        "CAD": "DAD",
+        "CAC": "DAC",
+        "CAB": "DAB",
+        "CAA": "DAA",
+        "AAG": "BAG",
+        "AAF": "BAF",
+        "AAE": "BAE",
+        "AAD": "BAD",
+        "AAC": "BAC",
+        "AAB": "BAB",
+        "AAA": "BAA",
+        "DAG": "EAG",
+        "CBF": "DBF",
+        "CBE": "DBE",
+        "CBD": "DBD",
+        "CBC": "DBC",
+        "CBB": "DBB",
+        "CBA": "DBA",
+        "DBF": "EBF",
+        "DAF": "EAF",
+        "DCE": "ECE",
+        "CDD": "DDD",
+        "CDC": "DDC",
+        "CDB": "DDB",
+        "CDA": "DDA",
+        "ECE": "FCE",
+        "DBE": "EBE",
+        "DAE": "EAE",
+        "DCD": "ECD",
+        "DEC": "EEC",
+        "CFB": "DFB",
+        "CFA": "DFA",
+        "ECD": "FCD",
+        "DDD": "EDD",
+        "DBD": "EBD",
+        "DAD": "EAD",
+        "DCC": "ECC",
+        "DEB": "EEB",
+        "DGA": "EGA",
+        "ECC": "FCC",
+        "EEC": "FEC",
+        "DDC": "EDC",
+        "DBC": "EBC",
+        "DAC": "EAC",
+        "DCB": "ECB",
+        "DEA": "EEA",
+        "ECB": "FCB",
+        "EEB": "FEB",
+        "DFB": "EFB",
+        "DDB": "EDB",
+        "DBB": "EBB",
+        "DAB": "EAB",
+        "DCA": "ECA",
+        "ECA": "FCA",
+        "EEA": "FEA",
+        "EGA": "FGA",
+        "DFA": "EFA",
+        "DDA": "EDA",
+        "DBA": "EBA",
+        "DAA": "EAA",
+        "BAG": "CAG",
+        "ABF": "BBF",
+        "ABE": "BBE",
+        "ABD": "BBD",
+        "ABC": "BBC",
+        "ABB": "BBB",
+        "ABA": "BBA",
+        "BBF": "CBF",
+        "BAF": "CAF",
+        "BCE": "CCE",
+        "ADD": "BDD",
+        "ADC": "BDC",
+        "ADB": "BDB",
+        "ADA": "BDA",
+        "CCE": "DCE",
+        "BBE": "CBE",
+        "BAE": "CAE",
+        "BCD": "CCD",
+        "BEC": "CEC",
+        "AFB": "BFB",
+        "AFA": "BFA",
+        "CCD": "DCD",
+        "BDD": "CDD",
+        "BBD": "CBD",
+        "BAD": "CAD",
+        "BCC": "CCC",
+        "BEB": "CEB",
+        "BGA": "CGA",
+        "CCC": "DCC",
+        "CEC": "DEC",
+        "BDC": "CDC",
+        "BBC": "CBC",
+        "BAC": "CAC",
+        "BCB": "CCB",
+        "BEA": "CEA",
+        "CCB": "DCB",
+        "CEB": "DEB",
+        "BFB": "CFB",
+        "BDB": "CDB",
+        "BBB": "CBB",
+        "BAB": "CAB",
+        "BCA": "CCA",
+        "CCA": "DCA",
+        "CEA": "DEA",
+        "CGA": "DGA",
+        "BFA": "CFA",
+        "BDA": "CDA",
+        "BBA": "CBA",
+        "BAA": "CAA",
+        "FAH": "AAG",
+        "EBF": "FBF",
+        "EBE": "FBE",
+        "EBD": "FBD",
+        "EBC": "FBC",
+        "EBB": "FBB",
+        "EBA": "FBA",
+        "FBF": "ABF",
+        "FAF": "AAF",
+        "FCE": "ACE",
+        "EDD": "FDD",
+        "EDC": "FDC",
+        "EDB": "FDB",
+        "EDA": "FDA",
+        "ACE": "BCE",
+        "FBE": "ABE",
+        "FAE": "AAE",
+        "FCD": "ACD",
+        "FEC": "AEC",
+        "EFB": "FFB",
+        "EFA": "FFA",
+        "ACD": "BCD",
+        "FDD": "ADD",
+        "FBD": "ABD",
+        "FAD": "AAD",
+        "FCC": "ACC",
+        "FEB": "AEB",
+        "FGA": "AGA",
+        "ACC": "BCC",
+        "AEC": "BEC",
+        "FDC": "ADC",
+        "FBC": "ABC",
+        "FAC": "AAC",
+        "FCB": "ACB",
+        "FEA": "AEA",
+        "ACB": "BCB",
+        "AEB": "BEB",
+        "FFB": "AFB",
+        "FDB": "ADB",
+        "FBB": "ABB",
+        "FAB": "AAB",
+        "FCA": "ACA",
+        "ACA": "BCA",
+        "AEA": "BEA",
+        "AGA": "BGA",
+        "FFA": "AFA",
+        "FDA": "ADA",
+        "FBA": "ABA",
+        "FAA": "AAA"
+    };
 
-    function load_config(config_obj, overwrite) {
-        if (overwrite) $(".tile").not(".home").children().attr("class", "hexagon-inner").html("");
+    function load_config(config_obj) {
+        let tiles = $(".tile").not(".home").children();
+        tiles.attr("class", "hexagon-inner");
+        tiles.children("img").removeAttr("class").attr("src", "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAA");
+        let rots = (home_colour_rots[config_obj["x7y0z7"]["colour"]] - home_colour_rots[$(".x7y0z7 .hexagon-inner").attr("class").split(" ")[1]] + 6) % 6;
+        
         for (let key in config_obj) {
             colour = config_obj[key]["colour"];
             image = config_obj[key]["image"];
@@ -10,13 +194,20 @@ $(document).ready(function() {
                 $(`.${key}`).children().first().attr("class", `hexagon-inner ${colour}`);
             }
             if (image) {
-                $(`.${key}`).children().first().html(`<img class="${image}" src="images/${image}.webp">`);
+                $(`.${key} img`).attr("class", `${image}`).attr("src", `images/${image}.webp`);
             }
         }
+        
+        $(".tile-id").text(function(ind, val) {
+            for (let i = 0; i < rots; i++) {
+                val = rot_60_transform[val];
+            }
+            return val;
+        });
     }
 
     if (config) {
-        load_config(config, false);
+        load_config(config);
     } else {
         config = {};
         config["x7y0z0"] = {"colour": "red", "image": null};
@@ -27,6 +218,16 @@ $(document).ready(function() {
         config["x0y7z7"] = {"colour": "green", "image": null};
         localStorage["config"] = JSON.stringify(config);
     }
+
+    $("#toggle-ids").click(function() {
+        if ($("#toggle-ids").text() === "Show Tile Names") {
+            $("#toggle-ids").text("Hide Tile Names");
+            $(".tile-id").removeClass("hidden");
+        } else {
+            $("#toggle-ids").text("Show Tile Names");
+            $(".tile-id").addClass("hidden");
+        }
+    });
     
     $("#rotate").click(function() {
         let new_config = {};
@@ -54,33 +255,33 @@ $(document).ready(function() {
         });
     });
 
-    $("#toggle").click(function() {
-        if ($("#toggle").text() === "Banners") $("#toggle").text("Relics");
-        else if ($("#toggle").text() === "Relics") $("#toggle").text("Colours");
-        else $("#toggle").text("Banners");
+    $("#toggle-markers").click(function() {
+        if ($("#toggle-markers").text() === "Banners") $("#toggle-markers").text("Relics");
+        else if ($("#toggle-markers").text() === "Relics") $("#toggle-markers").text("Colours");
+        else $("#toggle-markers").text("Banners");
     });
 
-    $("#clear_banners").click(function() {
+    $("#clear-banners").click(function() {
         $(".banner").each(function() {
             let tile_id = $(this).parent().parent().attr("class").split(" ")[2];
             if (config[tile_id]["colour"]) config[tile_id]["image"] = null;
             else delete config[tile_id];
-            $(this).remove();
+            $(this).removeAttr("class").attr("src", empty_image_src);
         });
         localStorage["config"] = JSON.stringify(config);
     });
 
-    $("#clear_relics").click(function() {
-        $("img").not(".banner").each(function() {
+    $("#clear-relics").click(function() {
+        $("img[class]").not(".banner").each(function() {
             let tile_id = $(this).parent().parent().attr("class").split(" ")[2];
             if (config[tile_id]["colour"]) config[tile_id]["image"] = null;
             else delete config[tile_id];
-            $(this).remove();
+            $(this).removeAttr("class").attr("src", empty_image_src);
         });
         localStorage["config"] = JSON.stringify(config);
     });
 
-    $("#clear_colours").click(function() {
+    $("#clear-colours").click(function() {
         $(".tile").not(".home").children(".purple, .pink, .green, .blue, .yellow, .red").each(function() {
             let tile_id = $(this).parent().attr("class").split(" ")[2];
             if (config[tile_id]["image"]) config[tile_id]["colour"] = null;
@@ -102,7 +303,7 @@ $(document).ready(function() {
         reader.onload = function() {
             try {
                 config = JSON.parse(reader.result);
-                load_config(config, true);
+                load_config(config);
             } catch {}
         };
     });
@@ -122,26 +323,26 @@ $(document).ready(function() {
         let inner = $(this).children().first();
         let home_colour = $(".x7y0z7").children().first().attr("class").split(" ")[1];
         let colour = inner.attr("class").split(" ")[1] ? inner.attr("class").split(" ")[1] : null;
-        let image = inner.children().first().length ? inner.children().first().attr("class") : null;
+        let image = inner.children("img").attr("class");
         
-        if ($("#toggle").text() === "Banners") {
+        if ($("#toggle-markers").text() === "Banners") {
             if (image === "banner") {
                 if (config[tile_id]["colour"]) config[tile_id]["image"] = null;
                 else delete config[tile_id];
-                inner.html("");
-            } else if (image === null) {
+                inner.children("img").removeAttr("class").attr("src", empty_image_src);
+            } else if (image === undefined) {
                 if (config[tile_id]) config[tile_id]["image"] = "banner";
                 else config[tile_id] = {"colour": null, "image": "banner"};
-                inner.html("<img class=\"banner\" src=\"images/banner.webp\">");
+                inner.children("img").attr("class", "banner").attr("src", "images/banner.webp");
             }
-        } else if ($("#toggle").text() === "Relics") {
-            if (image === null) {
+        } else if ($("#toggle-markers").text() === "Relics") {
+            if (image === undefined) {
                 $("#modal").modal();
                 $(".custom-select").attr("id", $(this).attr("class").split(" ")[2]);
             } else if (image !== "banner") {
                 if (config[tile_id]["colour"]) config[tile_id]["image"] = null;
                 else delete config[tile_id];
-                inner.html("");
+                inner.children("img").removeAttr("class").attr("src", empty_image_src);
             }
         } else {
             if (colour === home_colour) {
@@ -157,13 +358,13 @@ $(document).ready(function() {
         localStorage["config"] = JSON.stringify(config);
     });
 
-    $("#save_relics").click(function() {
+    $("#save-relics").click(function() {
         let tile_id = $(".custom-select").attr("id");
         let relic = $(".custom-select :selected").text();
         if (config[tile_id]) config[tile_id]["image"] = relic;
         else config[tile_id] = {"colour": null, "image": relic};
         localStorage["config"] = JSON.stringify(config);
-        $(`.${tile_id}`).children().first().html(`<img class="${relic}" src="images/${relic}.webp">`);
+        $(`.${tile_id} img`).attr("class", relic).attr("src", `images/${relic}.webp`);
         $("#modal").modal("hide");
     });
 });
