@@ -1,6 +1,7 @@
 :root {
     --hex_ratio: 0.86602540378;
-    --tile_width: min(calc((100vw - 19em) / 12), calc(100vh / 13));
+    --side_bar_width: 9.5em;
+    --tile_width: min(calc((100vw - var(--side_bar_width) * 2) / 12), calc(100vh / 13));
     --tile_height: calc(var(--tile_width) * var(--hex_ratio));
     --tile_id_font_size: min(calc((100vw - 16em) / 48), calc(100vh / 52));
     --border_width: 4%;
@@ -19,7 +20,7 @@ body {
 }
 
 button {
-    width: 9.5em;
+    width: var(--side_bar_width);
 }
 
 .hexagon-border {

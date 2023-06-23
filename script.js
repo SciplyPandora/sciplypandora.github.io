@@ -180,6 +180,8 @@ $(document).ready(function() {
         "FBA": "ABA",
         "FAA": "AAA"
     };
+    let ct_24_start_date_milli = 1687903200000;
+    let one_day_milli = 86400000;
 
     function load_config(config_obj) {
         let tiles = $(".tile").not(".home").children();
@@ -309,9 +311,14 @@ $(document).ready(function() {
     });
 
     $("#export").click(function() {
+        let date = new Date();
+        let week = Math.floor((date.getTime() - ct_24_start_date_milli) / one_day_milli / 7);
+        let ct_season = 24 + Math.ceil(week / 2);
+        let ct_day = week % 2 ? 0 : Math.floor((date.getTime() - ct_24_start_date_milli) % (one_day_milli * 7) / one_day_milli + 1);
         let download = $("<a></a>");
+        
         download.attr("href", "data:text/plain;charset=utf-8," + encodeURIComponent(JSON.stringify(config)));
-        download.attr("download", "config.json");
+        download.attr("download", `CT${ct_season}-${ct_day}.json`);
         download.css("display", "none");
         $("body").append(download);
         $("a")[0].click();
