@@ -1,6 +1,5 @@
 $(document).ready(function() {
     let config = localStorage["config"] ? JSON.parse(localStorage["config"]) : null;
-    let empty_image_src = "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAA";
     let home_colour_rots = {
         "purple": 0,
         "pink": 1,
@@ -186,7 +185,7 @@ $(document).ready(function() {
     function load_config(config_obj) {
         let tiles = $(".tile").not(".home").children();
         tiles.attr("class", "hexagon-inner");
-        tiles.children("img").removeAttr("class").attr("src", "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAA");
+        tiles.children("img").removeAttr("class").attr("src", "images/empty.png");
         let rots = (home_colour_rots[config_obj["x7y0z7"]["colour"]] - home_colour_rots[$(".x7y0z7 .hexagon-inner").attr("class").split(" ")[1]] + 6) % 6;
         
         for (let key in config_obj) {
@@ -268,7 +267,7 @@ $(document).ready(function() {
             let tile_id = $(this).parent().parent().attr("class").split(" ")[2];
             if (config[tile_id]["colour"]) config[tile_id]["image"] = null;
             else delete config[tile_id];
-            $(this).removeAttr("class").attr("src", empty_image_src);
+            $(this).removeAttr("class").attr("src", "images/empty.png");
         });
         localStorage["config"] = JSON.stringify(config);
     });
@@ -278,7 +277,7 @@ $(document).ready(function() {
             let tile_id = $(this).parent().parent().attr("class").split(" ")[2];
             if (config[tile_id]["colour"]) config[tile_id]["image"] = null;
             else delete config[tile_id];
-            $(this).removeAttr("class").attr("src", empty_image_src);
+            $(this).removeAttr("class").attr("src", "images/empty.png");
         });
         localStorage["config"] = JSON.stringify(config);
     });
@@ -336,7 +335,7 @@ $(document).ready(function() {
             if (image === "banner") {
                 if (config[tile_id]["colour"]) config[tile_id]["image"] = null;
                 else delete config[tile_id];
-                inner.children("img").removeAttr("class").attr("src", empty_image_src);
+                inner.children("img").removeAttr("class").attr("src", "images/empty.png");
             } else if (image === undefined) {
                 if (config[tile_id]) config[tile_id]["image"] = "banner";
                 else config[tile_id] = {"colour": null, "image": "banner"};
@@ -349,7 +348,7 @@ $(document).ready(function() {
             } else if (image !== "banner") {
                 if (config[tile_id]["colour"]) config[tile_id]["image"] = null;
                 else delete config[tile_id];
-                inner.children("img").removeAttr("class").attr("src", empty_image_src);
+                inner.children("img").removeAttr("class").attr("src", "images/empty.png");
             }
         } else {
             if (colour === home_colour) {
