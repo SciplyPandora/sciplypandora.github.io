@@ -1,7 +1,7 @@
 :root {
     --hex_ratio: 0.86602540378;
     --sidebar_width: 9.5em;
-    --tile_width: min(calc((100vw - var(--sidebar_width) * 2) / 12), calc(100vh / 13));
+    --tile_width: min(calc((100vw - var(--sidebar_width) * 2) / 14), calc(100vh / 15));
     --tile_height: calc(var(--tile_width) * var(--hex_ratio));
     --tile_id_font_size: min(calc((100vw - 16em) / 48), calc(100vh / 52));
     --border_width: 4%;
@@ -904,4 +904,150 @@ img {
 
 .x7y0z7 {
     transform: translate(-50%, -50%) translate(calc(7 * var(--z_dim_x) + 7 * var(--x_dim_x)), calc(7 * var(--z_dim_y) + 7 * var(--x_dim_y)));
+}
+
+
+.x0y0z8 {
+    transform: translate(-50%, -50%) translate(calc(0 * var(--x_dim_x) + 8 * var(--z_dim_x)), calc(0 * var(--x_dim_y) + 8 * var(--z_dim_y)));
+}
+.x0y1z8 {
+    transform: translate(-50%, -50%) translate(calc(1 * var(--y_dim_x) + 8 * var(--z_dim_x)), calc(1 * var(--y_dim_y) + 8 * var(--z_dim_y)));
+}
+.x0y2z8 {
+    transform: translate(-50%, -50%) translate(calc(2 * var(--y_dim_x) + 8 * var(--z_dim_x)), calc(2 * var(--y_dim_y) + 8 * var(--z_dim_y)));
+}
+.x0y3z8 {
+    transform: translate(-50%, -50%) translate(calc(3 * var(--y_dim_x) + 8 * var(--z_dim_x)), calc(3 * var(--y_dim_y) + 8 * var(--z_dim_y)));
+}
+.x0y4z8 {
+    transform: translate(-50%, -50%) translate(calc(4 * var(--y_dim_x) + 8 * var(--z_dim_x)), calc(4 * var(--y_dim_y) + 8 * var(--z_dim_y)));
+}
+.x0y5z8 {
+    transform: translate(-50%, -50%) translate(calc(5 * var(--y_dim_x) + 8 * var(--z_dim_x)), calc(5 * var(--y_dim_y) + 8 * var(--z_dim_y)));
+}
+.x0y6z8 {
+    transform: translate(-50%, -50%) translate(calc(6 * var(--y_dim_x) + 8 * var(--z_dim_x)), calc(6 * var(--y_dim_y) + 8 * var(--z_dim_y)));
+}
+.x0y7z8 {
+    transform: translate(-50%, -50%) translate(calc(7 * var(--y_dim_x) + 8 * var(--z_dim_x)), calc(7 * var(--y_dim_y) + 8 * var(--z_dim_y)));
+}
+.x0y8z0 {
+    transform: translate(-50%, -50%) translate(calc(0 * var(--x_dim_x) + 8 * var(--y_dim_x)), calc(0 * var(--x_dim_y) + 8 * var(--y_dim_y)));
+}
+.x0y8z1 {
+    transform: translate(-50%, -50%) translate(calc(8 * var(--y_dim_x) + 1 * var(--z_dim_x)), calc(8 * var(--y_dim_y) + 1 * var(--z_dim_y)));
+}
+.x0y8z2 {
+    transform: translate(-50%, -50%) translate(calc(8 * var(--y_dim_x) + 2 * var(--z_dim_x)), calc(8 * var(--y_dim_y) + 2 * var(--z_dim_y)));
+}
+.x0y8z3 {
+    transform: translate(-50%, -50%) translate(calc(8 * var(--y_dim_x) + 3 * var(--z_dim_x)), calc(8 * var(--y_dim_y) + 3 * var(--z_dim_y)));
+}
+.x0y8z4 {
+    transform: translate(-50%, -50%) translate(calc(8 * var(--y_dim_x) + 4 * var(--z_dim_x)), calc(8 * var(--y_dim_y) + 4 * var(--z_dim_y)));
+}
+.x0y8z5 {
+    transform: translate(-50%, -50%) translate(calc(8 * var(--y_dim_x) + 5 * var(--z_dim_x)), calc(8 * var(--y_dim_y) + 5 * var(--z_dim_y)));
+}
+.x0y8z6 {
+    transform: translate(-50%, -50%) translate(calc(8 * var(--y_dim_x) + 6 * var(--z_dim_x)), calc(8 * var(--y_dim_y) + 6 * var(--z_dim_y)));
+}
+.x0y8z7 {
+    transform: translate(-50%, -50%) translate(calc(8 * var(--y_dim_x) + 7 * var(--z_dim_x)), calc(8 * var(--y_dim_y) + 7 * var(--z_dim_y)));
+}
+.x0y8z8 {
+    transform: translate(-50%, -50%) translate(calc(8 * var(--y_dim_x) + 8 * var(--z_dim_x)), calc(8 * var(--y_dim_y) + 8 * var(--z_dim_y)));
+}
+.x1y0z8 {
+    transform: translate(-50%, -50%) translate(calc(1 * var(--x_dim_x) + 8 * var(--z_dim_x)), calc(1 * var(--x_dim_y) + 8 * var(--z_dim_y)));
+}
+.x1y8z0 {
+    transform: translate(-50%, -50%) translate(calc(1 * var(--x_dim_x) + 8 * var(--y_dim_x)), calc(1 * var(--x_dim_y) + 8 * var(--y_dim_y)));
+}
+.x2y0z8 {
+    transform: translate(-50%, -50%) translate(calc(2 * var(--x_dim_x) + 8 * var(--z_dim_x)), calc(2 * var(--x_dim_y) + 8 * var(--z_dim_y)));
+}
+.x2y8z0 {
+    transform: translate(-50%, -50%) translate(calc(2 * var(--x_dim_x) + 8 * var(--y_dim_x)), calc(2 * var(--x_dim_y) + 8 * var(--y_dim_y)));
+}
+.x3y0z8 {
+    transform: translate(-50%, -50%) translate(calc(3 * var(--x_dim_x) + 8 * var(--z_dim_x)), calc(3 * var(--x_dim_y) + 8 * var(--z_dim_y)));
+}
+.x3y8z0 {
+    transform: translate(-50%, -50%) translate(calc(3 * var(--x_dim_x) + 8 * var(--y_dim_x)), calc(3 * var(--x_dim_y) + 8 * var(--y_dim_y)));
+}
+.x4y0z8 {
+    transform: translate(-50%, -50%) translate(calc(4 * var(--x_dim_x) + 8 * var(--z_dim_x)), calc(4 * var(--x_dim_y) + 8 * var(--z_dim_y)));
+}
+.x4y8z0 {
+    transform: translate(-50%, -50%) translate(calc(4 * var(--x_dim_x) + 8 * var(--y_dim_x)), calc(4 * var(--x_dim_y) + 8 * var(--y_dim_y)));
+}
+.x5y0z8 {
+    transform: translate(-50%, -50%) translate(calc(5 * var(--x_dim_x) + 8 * var(--z_dim_x)), calc(5 * var(--x_dim_y) + 8 * var(--z_dim_y)));
+}
+.x5y8z0 {
+    transform: translate(-50%, -50%) translate(calc(5 * var(--x_dim_x) + 8 * var(--y_dim_x)), calc(5 * var(--x_dim_y) + 8 * var(--y_dim_y)));
+}
+.x6y0z8 {
+    transform: translate(-50%, -50%) translate(calc(6 * var(--x_dim_x) + 8 * var(--z_dim_x)), calc(6 * var(--x_dim_y) + 8 * var(--z_dim_y)));
+}
+.x6y8z0 {
+    transform: translate(-50%, -50%) translate(calc(6 * var(--x_dim_x) + 8 * var(--y_dim_x)), calc(6 * var(--x_dim_y) + 8 * var(--y_dim_y)));
+}
+.x7y0z8 {
+    transform: translate(-50%, -50%) translate(calc(7 * var(--x_dim_x) + 8 * var(--z_dim_x)), calc(7 * var(--x_dim_y) + 8 * var(--z_dim_y)));
+}
+.x7y8z0 {
+    transform: translate(-50%, -50%) translate(calc(7 * var(--x_dim_x) + 8 * var(--y_dim_x)), calc(7 * var(--x_dim_y) + 8 * var(--y_dim_y)));
+}
+.x8y0z0 {
+    transform: translate(-50%, -50%) translate(calc(8 * var(--x_dim_x) + 0 * var(--y_dim_x)), calc(8 * var(--x_dim_y) + 0 * var(--y_dim_y)));
+}
+.x8y0z1 {
+    transform: translate(-50%, -50%) translate(calc(8 * var(--x_dim_x) + 1 * var(--z_dim_x)), calc(8 * var(--x_dim_y) + 1 * var(--z_dim_y)));
+}
+.x8y0z2 {
+    transform: translate(-50%, -50%) translate(calc(8 * var(--x_dim_x) + 2 * var(--z_dim_x)), calc(8 * var(--x_dim_y) + 2 * var(--z_dim_y)));
+}
+.x8y0z3 {
+    transform: translate(-50%, -50%) translate(calc(8 * var(--x_dim_x) + 3 * var(--z_dim_x)), calc(8 * var(--x_dim_y) + 3 * var(--z_dim_y)));
+}
+.x8y0z4 {
+    transform: translate(-50%, -50%) translate(calc(8 * var(--x_dim_x) + 4 * var(--z_dim_x)), calc(8 * var(--x_dim_y) + 4 * var(--z_dim_y)));
+}
+.x8y0z5 {
+    transform: translate(-50%, -50%) translate(calc(8 * var(--x_dim_x) + 5 * var(--z_dim_x)), calc(8 * var(--x_dim_y) + 5 * var(--z_dim_y)));
+}
+.x8y0z6 {
+    transform: translate(-50%, -50%) translate(calc(8 * var(--x_dim_x) + 6 * var(--z_dim_x)), calc(8 * var(--x_dim_y) + 6 * var(--z_dim_y)));
+}
+.x8y0z7 {
+    transform: translate(-50%, -50%) translate(calc(8 * var(--x_dim_x) + 7 * var(--z_dim_x)), calc(8 * var(--x_dim_y) + 7 * var(--z_dim_y)));
+}
+.x8y0z8 {
+    transform: translate(-50%, -50%) translate(calc(8 * var(--x_dim_x) + 8 * var(--z_dim_x)), calc(8 * var(--x_dim_y) + 8 * var(--z_dim_y)));
+}
+.x8y1z0 {
+    transform: translate(-50%, -50%) translate(calc(8 * var(--x_dim_x) + 1 * var(--y_dim_x)), calc(8 * var(--x_dim_y) + 1 * var(--y_dim_y)));
+}
+.x8y2z0 {
+    transform: translate(-50%, -50%) translate(calc(8 * var(--x_dim_x) + 2 * var(--y_dim_x)), calc(8 * var(--x_dim_y) + 2 * var(--y_dim_y)));
+}
+.x8y3z0 {
+    transform: translate(-50%, -50%) translate(calc(8 * var(--x_dim_x) + 3 * var(--y_dim_x)), calc(8 * var(--x_dim_y) + 3 * var(--y_dim_y)));
+}
+.x8y4z0 {
+    transform: translate(-50%, -50%) translate(calc(8 * var(--x_dim_x) + 4 * var(--y_dim_x)), calc(8 * var(--x_dim_y) + 4 * var(--y_dim_y)));
+}
+.x8y5z0 {
+    transform: translate(-50%, -50%) translate(calc(8 * var(--x_dim_x) + 5 * var(--y_dim_x)), calc(8 * var(--x_dim_y) + 5 * var(--y_dim_y)));
+}
+.x8y6z0 {
+    transform: translate(-50%, -50%) translate(calc(8 * var(--x_dim_x) + 6 * var(--y_dim_x)), calc(8 * var(--x_dim_y) + 6 * var(--y_dim_y)));
+}
+.x8y7z0 {
+    transform: translate(-50%, -50%) translate(calc(8 * var(--x_dim_x) + 7 * var(--y_dim_x)), calc(8 * var(--x_dim_y) + 7 * var(--y_dim_y)));
+}
+.x8y8z0 {
+    transform: translate(-50%, -50%) translate(calc(8 * var(--x_dim_x) + 8 * var(--y_dim_x)), calc(8 * var(--x_dim_y) + 8 * var(--y_dim_y)));
 }
