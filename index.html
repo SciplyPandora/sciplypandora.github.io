@@ -1,63 +1,87 @@
 <html>
-    <head>
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-        <link rel="stylesheet" href="style.css">
-    </head>
-    <body>
-        <div class="col-left">
-            <button id="toggle-ids" class="btn btn-primary d-block m-2">Show Tile Names</button>
-            <button id="rotate" class="btn btn-primary d-block m-2">Rotate</button>
-            <button id="toggle-markers" class="btn btn-primary d-block m-2">Banners</button>
-            <button id="clear-banners" class="btn btn-primary d-block m-2">Clear Banners</button>
-            <button id="clear-relics" class="btn btn-primary d-block m-2">Clear Relics</button>
-            <button id="clear-colours" class="btn btn-primary d-block m-2">Clear Colours</button>
-            <button id="import" class="btn btn-primary d-block m-2">Import</button>
-            <button id="export" class="btn btn-primary d-block m-2">Export</button>
-            <input id="upload" type="file" accept=".json" style="display: none;">
-        </div>
-        <div class="col-right">
-            <select id="select" class="custom-select">
-                <option value="abilitized">abilitized</option>
-                <option value="air_and_sea">air_and_sea</option>
-                <option value="alchemist_touch">alchemist_touch</option>
-                <option value="bigger_bloon_sabotage">bigger_bloon_sabotage</option>
-                <option value="box_of_chocolates">box_of_chocolates</option>
-                <option value="box_of_monkey">box_of_monkey</option>
-                <option value="broken_heart">broken_heart</option>
-                <option value="camo_flogged">camo_flogged</option>
-                <option value="camo_trap">camo_trap</option>
-                <option value="deep_heat">deep_heat</option>
-                <option value="durable_shots">durable_shots</option>
-                <option value="el_dorado">el_dorado</option>
-                <option value="extra_empowered">extra_empowered</option>
-                <option value="flint_tips">flint_tips</option>
-                <option value="fortifried">fortifried</option>
-                <option value="glue_trap">glue_trap</option>
-                <option value="going_the_distance">going_the_distance</option>
-                <option value="hard_baked">hard_baked</option>
-                <option value="heartless">heartless</option>
-                <option value="hero_boost">hero_boost</option>
-                <option value="magic_monkeys">magic_monkeys</option>
-                <option value="mana_bulwark">mana_bulwark</option>
-                <option value="marching_boots">marching_boots</option>
-                <option value="military_monkeys">military_monkeys</option>
-                <option value="moab_clash">moab_clash</option>
-                <option value="moab_mine">moab_mine</option>
-                <option value="monkey_boost">monkey_boost</option>
-                <option value="regeneration">regeneration</option>
-                <option value="relic" selected>relic</option>
-                <option value="restoration">restoration</option>
-                <option value="road_spikes">road_spikes</option>
-                <option value="rounding_up">rounding_up</option>
-                <option value="royal_treatment">royal_treatment</option>
-                <option value="sharpsplosion">sharpsplosion</option>
-                <option value="starting_stash">starting_stash</option>
-                <option value="super_monkey_storm">super_monkey_storm</option>
-                <option value="support_simians">support_simians</option>
-                <option value="tech_bot">tech_bot</option>
-                <option value="thrive">thrive</option>
-            </select>
-            <!-- <div class="column">
+  <head>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <script
+      src="https://unpkg.com/jszip@3.7.1/dist/jszip.js"
+      type="text/javascript"
+    ></script>
+  </head>
+  <body>
+    <div class="col-left">
+      <button id="toggle-ids" class="btn btn-primary d-block m-2">
+        Show Tile Names
+      </button>
+      <button id="rotate" class="btn btn-primary d-block m-2">Rotate</button>
+      <button id="toggle-markers" class="btn btn-primary d-block m-2">
+        Banners
+      </button>
+      <button id="clear-banners" class="btn btn-primary d-block m-2">
+        Clear Banners
+      </button>
+      <button id="clear-relics" class="btn btn-primary d-block m-2">
+        Clear Relics
+      </button>
+      <button id="clear-colours" class="btn btn-primary d-block m-2">
+        Clear Colours
+      </button>
+      <button id="import" class="btn btn-primary d-block m-2">Import</button>
+      <button id="export" class="btn btn-primary d-block m-2">Export</button>
+      <input
+        id="upload"
+        type="file"
+        accept=".json,.zip"
+        style="display: none"
+      />
+    </div>
+    <div class="col-right">
+      <select id="select" class="custom-select">
+        <option value="abilitized">abilitized</option>
+        <option value="air_and_sea">air_and_sea</option>
+        <option value="alchemist_touch">alchemist_touch</option>
+        <option value="bigger_bloon_sabotage">bigger_bloon_sabotage</option>
+        <option value="box_of_chocolates">box_of_chocolates</option>
+        <option value="box_of_monkey">box_of_monkey</option>
+        <option value="broken_heart">broken_heart</option>
+        <option value="camo_flogged">camo_flogged</option>
+        <option value="camo_trap">camo_trap</option>
+        <option value="deep_heat">deep_heat</option>
+        <option value="durable_shots">durable_shots</option>
+        <option value="el_dorado">el_dorado</option>
+        <option value="extra_empowered">extra_empowered</option>
+        <option value="flint_tips">flint_tips</option>
+        <option value="fortifried">fortifried</option>
+        <option value="glue_trap">glue_trap</option>
+        <option value="going_the_distance">going_the_distance</option>
+        <option value="hard_baked">hard_baked</option>
+        <option value="heartless">heartless</option>
+        <option value="hero_boost">hero_boost</option>
+        <option value="magic_monkeys">magic_monkeys</option>
+        <option value="mana_bulwark">mana_bulwark</option>
+        <option value="marching_boots">marching_boots</option>
+        <option value="military_monkeys">military_monkeys</option>
+        <option value="moab_clash">moab_clash</option>
+        <option value="moab_mine">moab_mine</option>
+        <option value="monkey_boost">monkey_boost</option>
+        <option value="regeneration">regeneration</option>
+        <option value="relic" selected>relic</option>
+        <option value="restoration">restoration</option>
+        <option value="road_spikes">road_spikes</option>
+        <option value="rounding_up">rounding_up</option>
+        <option value="royal_treatment">royal_treatment</option>
+        <option value="sharpsplosion">sharpsplosion</option>
+        <option value="starting_stash">starting_stash</option>
+        <option value="super_monkey_storm">super_monkey_storm</option>
+        <option value="support_simians">support_simians</option>
+        <option value="tech_bot">tech_bot</option>
+        <option value="thrive">thrive</option>
+      </select>
+      <!-- <div class="column">
                 <img src="images/abilitized.webp">
                 <img src="images/air_and_sea.webp">
                 <img src="images/alchemist_touch.webp">
@@ -102,1008 +126,1020 @@
                 <img src="images/tech_bot.webp">
                 <img src="images/thrive.webp">
             </div> -->
-        </div>
+    </div>
 
-        <div class="hexagon-border tile x0y0z0">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">MRX</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x0y0z1">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">BAG</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x0y0z2">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">BAF</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x0y0z3">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">BAE</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x0y0z4">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">BAD</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x0y0z5">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">BAC</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x0y0z6">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">BAB</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x0y0z7 home">
-            <div class="hexagon-inner pink"></div>
-        </div>
-        <div class="hexagon-border tile x0y1z0">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">DAG</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x0y1z1">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">CAG</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x0y1z2">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">BBF</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x0y1z3">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">BBE</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x0y1z4">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">BBD</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x0y1z5">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">BBC</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x0y1z6">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">BBB</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x0y1z7">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">BBA</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x0y2z0">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">DAF</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x0y2z1">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">CBF</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x0y2z2">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">CAF</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x0y2z3">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">CCE</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x0y2z4">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">BDD</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x0y2z5">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">BDC</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x0y2z6">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">BDB</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x0y2z7">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">BDA</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x0y3z0">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">DAE</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x0y3z1">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">DCE</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x0y3z2">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">CBE</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x0y3z3">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">CAE</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x0y3z4">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">CCD</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x0y3z5">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">CEC</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x0y3z6">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">BFB</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x0y3z7">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">BFA</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x0y4z0">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">DAD</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x0y4z1">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">DCD</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x0y4z2">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">CDD</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x0y4z3">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">CBD</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x0y4z4">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">CAD</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x0y4z5">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">CCC</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x0y4z6">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">CEB</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x0y4z7">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">CGA</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x0y5z0">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">DAC</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x0y5z1">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">DCC</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x0y5z2">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">DEC</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x0y5z3">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">CDC</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x0y5z4">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">CBC</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x0y5z5">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">CAC</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x0y5z6">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">CCB</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x0y5z7">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">CEA</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x0y6z0">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">DAB</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x0y6z1">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">DCB</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x0y6z2">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">DEB</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x0y6z3">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">CFB</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x0y6z4">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">CDB</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x0y6z5">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">CBB</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x0y6z6">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">CAB</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x0y6z7">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">CCA</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x0y7z0 home">
-            <div class="hexagon-inner blue"></div>
-        </div>
-        <div class="hexagon-border tile x0y7z1">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">DCA</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x0y7z2">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">DEA</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x0y7z3">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">DGA</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x0y7z4">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">CFA</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x0y7z5">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">CDA</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x0y7z6">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">CBA</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x0y7z7 home">
-            <div class="hexagon-inner green"></div>
-        </div>
-        <div class="hexagon-border tile x1y0z0">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">FAH</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x1y0z1">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">AAG</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x1y0z2">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">ABF</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x1y0z3">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">BCE</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x1y0z4">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">BCD</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x1y0z5">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">BCC</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x1y0z6">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">BCB</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x1y0z7">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">BCA</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x1y1z0">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">EAG</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x1y2z0">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">DBF</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x1y3z0">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">DBE</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x1y4z0">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">DBD</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x1y5z0">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">DBC</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x1y6z0">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">DBB</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x1y7z0">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">DBA</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x2y0z0">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">FAF</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x2y0z1">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">FBF</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x2y0z2">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">AAF</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x2y0z3">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">ABE</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x2y0z4">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">ADD</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x2y0z5">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">BEC</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x2y0z6">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">BEB</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x2y0z7">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">BEA</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x2y1z0">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">EBF</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x2y2z0">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">EAF</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x2y3z0">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">ECE</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x2y4z0">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">DDD</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x2y5z0">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">DDC</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x2y6z0">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">DDB</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x2y7z0">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">DDA</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x3y0z0">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">FAE</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x3y0z1">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">FBE</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x3y0z2">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">ACE</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x3y0z3">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">AAE</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x3y0z4">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">ABD</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x3y0z5">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">ADC</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x3y0z6">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">AFB</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x3y0z7">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">BGA</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x3y1z0">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">FCE</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x3y2z0">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">EBE</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x3y3z0">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">EAE</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x3y4z0">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">ECD</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x3y5z0">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">EEC</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x3y6z0">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">DFB</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x3y7z0">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">DFA</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x4y0z0">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">FAD</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x4y0z1">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">FBD</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x4y0z2">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">FDD</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x4y0z3">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">ACD</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x4y0z4">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">AAD</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x4y0z5">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">ABC</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x4y0z6">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">ADB</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x4y0z7">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">AFA</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x4y1z0">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">FCD</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x4y2z0">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">EDD</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x4y3z0">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">EBD</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x4y4z0">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">EAD</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x4y5z0">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">ECC</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x4y6z0">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">EEB</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x4y7z0">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">EGA</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x5y0z0">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">FAC</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x5y0z1">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">FBC</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x5y0z2">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">FDC</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x5y0z3">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">AEC</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x5y0z4">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">ACC</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x5y0z5">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">AAC</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x5y0z6">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">ABB</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x5y0z7">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">ADA</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x5y1z0">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">FCC</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x5y2z0">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">FEC</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x5y3z0">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">EDC</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x5y4z0">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">EBC</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x5y5z0">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">EAC</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x5y6z0">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">ECB</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x5y7z0">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">EEA</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x6y0z0">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">FAB</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x6y0z1">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">FBB</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x6y0z2">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">FDB</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x6y0z3">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">FFB</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x6y0z4">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">AEB</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x6y0z5">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">ACB</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x6y0z6">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">AAB</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x6y0z7">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">ABA</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x6y1z0">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">FCB</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x6y2z0">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">FEB</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x6y3z0">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">EFB</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x6y4z0">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">EDB</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x6y5z0">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">EBB</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x6y6z0">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">EAB</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x6y7z0">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">ECA</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x7y0z0 home">
-            <div class="hexagon-inner red"></div>
-        </div>
-        <div class="hexagon-border tile x7y0z1">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">FBA</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x7y0z2">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">FDA</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x7y0z3">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">FFA</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x7y0z4">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">AGA</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x7y0z5">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">AEA</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x7y0z6">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">ACA</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x7y0z7 home">
-            <div class="hexagon-inner purple"></div>
-        </div>
-        <div class="hexagon-border tile x7y1z0">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">FCA</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x7y2z0">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">FEA</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x7y3z0">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">FGA</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x7y4z0">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">EFA</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x7y5z0">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">EDA</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x7y6z0">
-            <div class="hexagon-inner">
-                <img src="images/empty.png">
-                <div class="tile-id hidden">EBA</div>
-            </div>
-        </div>
-        <div class="hexagon-border tile x7y7z0 home">
-            <div class="hexagon-inner yellow"></div>
-        </div>
+    <div class="hexagon-border tile x0y0z0">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">MRX</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x0y0z1">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">BAG</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x0y0z2">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">BAF</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x0y0z3">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">BAE</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x0y0z4">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">BAD</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x0y0z5">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">BAC</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x0y0z6">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">BAB</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x0y0z7 home">
+      <div class="hexagon-inner pink"></div>
+    </div>
+    <div class="hexagon-border tile x0y1z0">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">DAG</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x0y1z1">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">CAG</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x0y1z2">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">BBF</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x0y1z3">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">BBE</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x0y1z4">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">BBD</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x0y1z5">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">BBC</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x0y1z6">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">BBB</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x0y1z7">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">BBA</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x0y2z0">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">DAF</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x0y2z1">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">CBF</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x0y2z2">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">CAF</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x0y2z3">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">CCE</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x0y2z4">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">BDD</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x0y2z5">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">BDC</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x0y2z6">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">BDB</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x0y2z7">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">BDA</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x0y3z0">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">DAE</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x0y3z1">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">DCE</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x0y3z2">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">CBE</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x0y3z3">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">CAE</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x0y3z4">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">CCD</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x0y3z5">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">CEC</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x0y3z6">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">BFB</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x0y3z7">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">BFA</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x0y4z0">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">DAD</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x0y4z1">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">DCD</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x0y4z2">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">CDD</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x0y4z3">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">CBD</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x0y4z4">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">CAD</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x0y4z5">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">CCC</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x0y4z6">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">CEB</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x0y4z7">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">CGA</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x0y5z0">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">DAC</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x0y5z1">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">DCC</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x0y5z2">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">DEC</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x0y5z3">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">CDC</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x0y5z4">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">CBC</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x0y5z5">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">CAC</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x0y5z6">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">CCB</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x0y5z7">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">CEA</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x0y6z0">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">DAB</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x0y6z1">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">DCB</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x0y6z2">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">DEB</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x0y6z3">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">CFB</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x0y6z4">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">CDB</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x0y6z5">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">CBB</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x0y6z6">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">CAB</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x0y6z7">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">CCA</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x0y7z0 home">
+      <div class="hexagon-inner blue"></div>
+    </div>
+    <div class="hexagon-border tile x0y7z1">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">DCA</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x0y7z2">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">DEA</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x0y7z3">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">DGA</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x0y7z4">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">CFA</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x0y7z5">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">CDA</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x0y7z6">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">CBA</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x0y7z7 home">
+      <div class="hexagon-inner green"></div>
+    </div>
+    <div class="hexagon-border tile x1y0z0">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">FAH</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x1y0z1">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">AAG</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x1y0z2">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">ABF</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x1y0z3">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">BCE</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x1y0z4">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">BCD</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x1y0z5">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">BCC</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x1y0z6">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">BCB</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x1y0z7">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">BCA</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x1y1z0">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">EAG</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x1y2z0">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">DBF</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x1y3z0">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">DBE</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x1y4z0">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">DBD</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x1y5z0">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">DBC</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x1y6z0">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">DBB</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x1y7z0">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">DBA</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x2y0z0">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">FAF</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x2y0z1">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">FBF</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x2y0z2">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">AAF</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x2y0z3">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">ABE</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x2y0z4">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">ADD</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x2y0z5">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">BEC</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x2y0z6">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">BEB</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x2y0z7">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">BEA</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x2y1z0">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">EBF</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x2y2z0">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">EAF</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x2y3z0">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">ECE</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x2y4z0">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">DDD</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x2y5z0">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">DDC</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x2y6z0">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">DDB</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x2y7z0">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">DDA</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x3y0z0">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">FAE</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x3y0z1">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">FBE</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x3y0z2">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">ACE</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x3y0z3">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">AAE</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x3y0z4">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">ABD</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x3y0z5">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">ADC</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x3y0z6">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">AFB</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x3y0z7">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">BGA</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x3y1z0">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">FCE</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x3y2z0">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">EBE</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x3y3z0">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">EAE</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x3y4z0">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">ECD</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x3y5z0">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">EEC</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x3y6z0">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">DFB</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x3y7z0">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">DFA</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x4y0z0">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">FAD</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x4y0z1">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">FBD</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x4y0z2">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">FDD</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x4y0z3">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">ACD</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x4y0z4">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">AAD</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x4y0z5">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">ABC</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x4y0z6">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">ADB</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x4y0z7">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">AFA</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x4y1z0">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">FCD</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x4y2z0">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">EDD</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x4y3z0">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">EBD</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x4y4z0">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">EAD</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x4y5z0">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">ECC</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x4y6z0">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">EEB</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x4y7z0">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">EGA</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x5y0z0">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">FAC</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x5y0z1">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">FBC</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x5y0z2">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">FDC</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x5y0z3">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">AEC</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x5y0z4">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">ACC</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x5y0z5">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">AAC</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x5y0z6">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">ABB</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x5y0z7">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">ADA</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x5y1z0">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">FCC</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x5y2z0">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">FEC</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x5y3z0">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">EDC</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x5y4z0">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">EBC</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x5y5z0">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">EAC</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x5y6z0">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">ECB</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x5y7z0">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">EEA</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x6y0z0">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">FAB</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x6y0z1">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">FBB</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x6y0z2">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">FDB</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x6y0z3">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">FFB</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x6y0z4">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">AEB</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x6y0z5">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">ACB</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x6y0z6">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">AAB</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x6y0z7">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">ABA</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x6y1z0">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">FCB</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x6y2z0">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">FEB</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x6y3z0">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">EFB</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x6y4z0">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">EDB</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x6y5z0">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">EBB</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x6y6z0">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">EAB</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x6y7z0">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">ECA</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x7y0z0 home">
+      <div class="hexagon-inner red"></div>
+    </div>
+    <div class="hexagon-border tile x7y0z1">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">FBA</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x7y0z2">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">FDA</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x7y0z3">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">FFA</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x7y0z4">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">AGA</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x7y0z5">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">AEA</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x7y0z6">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">ACA</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x7y0z7 home">
+      <div class="hexagon-inner purple"></div>
+    </div>
+    <div class="hexagon-border tile x7y1z0">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">FCA</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x7y2z0">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">FEA</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x7y3z0">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">FGA</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x7y4z0">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">EFA</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x7y5z0">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">EDA</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x7y6z0">
+      <div class="hexagon-inner">
+        <img src="images/empty.png" />
+        <div class="tile-id hidden">EBA</div>
+      </div>
+    </div>
+    <div class="hexagon-border tile x7y7z0 home">
+      <div class="hexagon-inner yellow"></div>
+    </div>
 
-        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-        <script src="script.js"></script>
-    </body>
+    <script
+      src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+      integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
+      integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
+      integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+      crossorigin="anonymous"
+    ></script>
+    <script src="script.js"></script>
+  </body>
 </html>
