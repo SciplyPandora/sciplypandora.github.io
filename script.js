@@ -343,8 +343,10 @@ $(document).ready(function() {
             }
         } else if ($("#toggle-markers").text() === "Relics") {
             if (image === undefined) {
-                $("#modal").modal();
-                $(".custom-select").attr("id", $(this).attr("class").split(" ")[2]);
+                let relic = $("#select :selected").text();
+                if (config[tile_id]) config[tile_id]["image"] = relic;
+                else config[tile_id] = {"colour": null, "image": relic};
+                inner.children("img").attr("class", relic).attr("src", `images/${relic}.webp`);
             } else if (image !== "banner") {
                 if (config[tile_id]["colour"]) config[tile_id]["image"] = null;
                 else delete config[tile_id];
@@ -362,15 +364,5 @@ $(document).ready(function() {
             }
         }
         localStorage["config"] = JSON.stringify(config);
-    });
-
-    $("#save-relics").click(function() {
-        let tile_id = $(".custom-select").attr("id");
-        let relic = $(".custom-select :selected").text();
-        if (config[tile_id]) config[tile_id]["image"] = relic;
-        else config[tile_id] = {"colour": null, "image": relic};
-        localStorage["config"] = JSON.stringify(config);
-        $(`.${tile_id} img`).attr("class", relic).attr("src", `images/${relic}.webp`);
-        $("#modal").modal("hide");
     });
 });

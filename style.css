@@ -1,7 +1,7 @@
 :root {
     --hex_ratio: 0.86602540378;
-    --side_bar_width: 9.5em;
-    --tile_width: min(calc((100vw - var(--side_bar_width) * 2) / 12), calc(100vh / 13));
+    --sidebar_width: 9.5em;
+    --tile_width: min(calc((100vw - var(--sidebar_width) * 2) / 12), calc(100vh / 13));
     --tile_height: calc(var(--tile_width) * var(--hex_ratio));
     --tile_id_font_size: min(calc((100vw - 16em) / 48), calc(100vh / 52));
     --border_width: 4%;
@@ -20,7 +20,43 @@ body {
 }
 
 button {
-    width: var(--side_bar_width);
+    width: var(--sidebar_width);
+}
+
+.col-left {
+    float: left;
+}
+
+.col-right {
+    float: right;
+    overflow-y: scroll;
+    height: 100%;
+    width: calc(50vw - 5.75 * var(--tile_width));
+    /* text-align: center; */
+}
+
+::-webkit-scrollbar {
+    display: none;
+}
+
+.column {
+    float: right;
+    width: 33%;
+    position: relative;
+    text-align: center;
+}
+
+.column img {
+    vertical-align: middle;
+    width: 4em;
+}
+
+.custom-select {
+    position: relative;
+    top: 50%;
+    left: 50%;
+    width: 75%;
+    transform: translate(-50%, -50%);
 }
 
 .hexagon-border {
