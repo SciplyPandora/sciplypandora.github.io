@@ -280,7 +280,7 @@ $(document).ready(function () {
     });
   };
 
-  $("#rotate").click(function () {
+  const rotate = () => {
     let new_config = {};
     for (let key in config) {
       val = config[key];
@@ -304,7 +304,9 @@ $(document).ready(function () {
       split_arr[2] = `x${m - y}y${m - z}z${m - x}`;
       return split_arr.join(" ");
     });
-  });
+  };
+
+  $("#rotate").click(rotate);
 
   $("#toggle-markers").click(function () {
     if ($("#toggle-markers").text() === "Banners")
@@ -372,6 +374,14 @@ $(document).ready(function () {
         config["x8y8z0"] = { colour: "yellow", image: null };
         config["x8y0z8"] = { colour: "purple", image: null };
         config["x0y8z8"] = { colour: "green", image: null };
+
+        // To convert the tile code to the class name I need all tiles
+        // to be from purple's POV so I'm rotating the board beforehand.
+        const base_color = $(".x8y0z8 .hexagon-inner")
+          .attr("class")
+          .split(/\s+/)[1];
+        const rots = (6 - home_colour_rots[base_color]) % 6;
+        for (let _ = 0; _ < rots; _++) rotate();
 
         for (const tile_raw of tiles_data) {
           if (tile_raw === null) continue;
