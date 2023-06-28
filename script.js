@@ -181,20 +181,34 @@ $(document).ready(function () {
     FBA: "ABA",
     FAA: "AAA",
   };
-  const relic_name_replace = {
-    Techbot: "TechBot",
-  };
   let ct_24_start_date_milli = 1687903200000;
   let one_day_milli = 86400000;
+
+  const get_class_name_of_tile = (tile_code) => {
+    try {
+      const tile_el = $(`div.tile-id:contains(${tile_code})`);
+      return tile_el.parent().parent().attr("class").split(/\s+/)[2];
+    } catch (e) {
+      return null;
+    }
+  };
+
+  const pascal_to_snake_case = (text) => {
+    const new_text = text.replace(
+      /(?<upperchar>[A-Z])/gm,
+      (match, upperchar) => "_" + upperchar.toLowerCase()
+    );
+    return new_text.substr(1);
+  };
 
   function load_config(config_obj) {
     let tiles = $(".tile").not(".home").children();
     tiles.attr("class", "hexagon-inner");
     tiles.children("img").removeAttr("class").attr("src", "images/empty.png");
     let rots =
-      (home_colour_rots[config_obj["x7y0z7"]["colour"]] -
+      (home_colour_rots[config_obj["x8y0z8"]["colour"]] -
         home_colour_rots[
-          $(".x7y0z7 .hexagon-inner").attr("class").split(" ")[1]
+          $(".x8y0z8 .hexagon-inner").attr("class").split(" ")[1]
         ] +
         6) %
       6;
@@ -227,12 +241,12 @@ $(document).ready(function () {
     load_config(config);
   } else {
     config = {};
-    config["x7y0z0"] = { colour: "red", image: null };
-    config["x0y7z0"] = { colour: "blue", image: null };
-    config["x0y0z7"] = { colour: "pink", image: null };
-    config["x7y7z0"] = { colour: "yellow", image: null };
-    config["x7y0z7"] = { colour: "purple", image: null };
-    config["x0y7z7"] = { colour: "green", image: null };
+    config["x8y0z0"] = { colour: "red", image: null };
+    config["x0y8z0"] = { colour: "blue", image: null };
+    config["x0y0z8"] = { colour: "pink", image: null };
+    config["x8y8z0"] = { colour: "yellow", image: null };
+    config["x8y0z8"] = { colour: "purple", image: null };
+    config["x0y8z8"] = { colour: "green", image: null };
     localStorage["config"] = JSON.stringify(config);
   }
 
@@ -319,23 +333,6 @@ $(document).ready(function () {
     $("#upload").trigger("click");
   });
 
-  const get_class_name_of_tile = (tile_code) => {
-    try {
-      const tile_el = $(`div.tile-id:contains(${tile_code})`);
-      return tile_el.parent().parent().attr("class").split(/\s+/)[2];
-    } catch (e) {
-      return null;
-    }
-  };
-
-  const pascal_to_snake_case = (text) => {
-    const new_text = text.replace(
-      /(?<upperchar>[A-Z])/gm,
-      (match, upperchar) => "_" + upperchar.toLowerCase()
-    );
-    return new_text.substr(1);
-  };
-
   $("#upload").change(function (e) {
     let file = e.target.files[0];
     if (file.type == "application/zip") {
@@ -349,12 +346,12 @@ $(document).ready(function () {
         let tiles_data = await Promise.all(tile_promises);
 
         let config = {};
-        config["x7y0z0"] = { colour: "red", image: null };
-        config["x0y7z0"] = { colour: "blue", image: null };
-        config["x0y0z7"] = { colour: "pink", image: null };
-        config["x7y7z0"] = { colour: "yellow", image: null };
-        config["x7y0z7"] = { colour: "purple", image: null };
-        config["x0y7z7"] = { colour: "green", image: null };
+        config["x8y0z0"] = { colour: "red", image: null };
+        config["x0y8z0"] = { colour: "blue", image: null };
+        config["x0y0z8"] = { colour: "pink", image: null };
+        config["x8y8z0"] = { colour: "yellow", image: null };
+        config["x8y0z8"] = { colour: "purple", image: null };
+        config["x0y8z8"] = { colour: "green", image: null };
 
         for (const tile_raw of tiles_data) {
           if (tile_raw === null) continue;
@@ -368,9 +365,6 @@ $(document).ready(function () {
             case "Relic":
               class_name = get_class_name_of_tile(tile_data.Code);
               let relic_type = tile_data.RelicType;
-              if (Object.keys(relic_name_replace).includes(relic_type)) {
-                relic_type = relic_name_replace[relic_type];
-              }
               config[class_name] = {
                 colour: "null",
                 image: pascal_to_snake_case(relic_type),
@@ -380,6 +374,7 @@ $(document).ready(function () {
         }
 
         load_config(config);
+        localStorage["config"] = JSON.stringify(config);
       });
     } else {
       $(this).val("");
@@ -389,6 +384,7 @@ $(document).ready(function () {
         try {
           config = JSON.parse(reader.result);
           load_config(config);
+          localStorage["config"] = JSON.stringify(config);
         } catch {}
       };
     }
@@ -436,7 +432,6 @@ $(document).ready(function () {
         ? inner.attr("class").split(" ")[1]
         : null;
       let image = inner.children("img").attr("class");
-      console.log(tile_id, inner);
       if ($("#toggle-markers").text() === "Banners") {
         if (image === "banner") {
           if (config[tile_id]["colour"]) config[tile_id]["image"] = null;
