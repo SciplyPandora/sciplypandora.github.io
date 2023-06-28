@@ -215,7 +215,7 @@ $(document).ready(function () {
         config[key] = roots[key];
       }
     }
-    localStorage["config"] = config;
+    localStorage["config"] = JSON.stringify(config);
   };
 
   function load_config(config_obj) {
