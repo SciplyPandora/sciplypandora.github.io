@@ -427,7 +427,7 @@ $(document).ready(function () {
     .click(function () {
       let tile_id = $(this).attr("class").split(" ")[2];
       let inner = $(this).children().first();
-      let home_colour = $(".x7y0z7")
+      let home_colour = $(".x8y0z8")
         .children()
         .first()
         .attr("class")
@@ -436,7 +436,7 @@ $(document).ready(function () {
         ? inner.attr("class").split(" ")[1]
         : null;
       let image = inner.children("img").attr("class");
-
+      console.log(tile_id, inner);
       if ($("#toggle-markers").text() === "Banners") {
         if (image === "banner") {
           if (config[tile_id]["colour"]) config[tile_id]["image"] = null;
