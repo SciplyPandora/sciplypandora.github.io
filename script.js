@@ -201,6 +201,23 @@ $(document).ready(function () {
     return new_text.substr(1);
   };
 
+  const init_roots = (config) => {
+    const roots = {
+      x8y0z0: { colour: "red", image: null },
+      x0y8z0: { colour: "blue", image: null },
+      x0y0z8: { colour: "pink", image: null },
+      x8y8z0: { colour: "yellow", image: null },
+      x8y0z8: { colour: "purple", image: null },
+      x0y8z8: { colour: "green", image: null },
+    };
+    for (const key of Object.keys(roots)) {
+      if (!Object.keys(config).includes(key)) {
+        config[key] = roots[key];
+      }
+    }
+    localStorage["config"] = config;
+  };
+
   function load_config(config_obj) {
     let tiles = $(".tile").not(".home").children();
     tiles.attr("class", "hexagon-inner");
@@ -237,28 +254,31 @@ $(document).ready(function () {
     });
   }
 
-  if (config) {
-    load_config(config);
-  } else {
-    config = {};
-    config["x8y0z0"] = { colour: "red", image: null };
-    config["x0y8z0"] = { colour: "blue", image: null };
-    config["x0y0z8"] = { colour: "pink", image: null };
-    config["x8y8z0"] = { colour: "yellow", image: null };
-    config["x8y0z8"] = { colour: "purple", image: null };
-    config["x0y8z8"] = { colour: "green", image: null };
-    localStorage["config"] = JSON.stringify(config);
-  }
-
-  $("#toggle-ids").click(function () {
-    if ($("#toggle-ids").text() === "Show Tile Names") {
-      $("#toggle-ids").text("Hide Tile Names");
-      $(".tile-id").removeClass("hidden");
+  const init = () => {
+    if (config) {
+      init_roots(config);
+      load_config(config);
     } else {
-      $("#toggle-ids").text("Show Tile Names");
-      $(".tile-id").addClass("hidden");
+      config = {};
+      config["x8y0z0"] = { colour: "red", image: null };
+      config["x0y8z0"] = { colour: "blue", image: null };
+      config["x0y0z8"] = { colour: "pink", image: null };
+      config["x8y8z0"] = { colour: "yellow", image: null };
+      config["x8y0z8"] = { colour: "purple", image: null };
+      config["x0y8z8"] = { colour: "green", image: null };
+      localStorage["config"] = JSON.stringify(config);
     }
-  });
+
+    $("#toggle-ids").click(function () {
+      if ($("#toggle-ids").text() === "Show Tile Names") {
+        $("#toggle-ids").text("Hide Tile Names");
+        $(".tile-id").removeClass("hidden");
+      } else {
+        $("#toggle-ids").text("Show Tile Names");
+        $(".tile-id").addClass("hidden");
+      }
+    });
+  };
 
   $("#rotate").click(function () {
     let new_config = {};
@@ -478,4 +498,6 @@ $(document).ready(function () {
       }
       localStorage["config"] = JSON.stringify(config);
     });
+
+  init();
 });
