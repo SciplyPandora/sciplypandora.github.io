@@ -320,8 +320,12 @@ $(document).ready(function () {
   });
 
   const get_class_name_of_tile = (tile_code) => {
-    const tile_el = $(`div.tile-id:contains(${tile_code})`);
-    return tile_el.parent().parent().attr("class").split(/\s+/)[2];
+    try {
+      const tile_el = $(`div.tile-id:contains(${tile_code})`);
+      return tile_el.parent().parent().attr("class").split(/\s+/)[2];
+    } catch (e) {
+      return null;
+    }
   };
 
   const pascal_to_snake_case = (text) => {
@@ -353,6 +357,7 @@ $(document).ready(function () {
         config["x0y7z7"] = { colour: "green", image: null };
 
         for (const tile_raw of tiles_data) {
+          if (tile_raw === null) continue;
           const tile_data = JSON.parse(tile_raw);
           let class_name;
           switch (tile_data.TileType) {
