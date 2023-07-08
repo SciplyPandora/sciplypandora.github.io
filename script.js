@@ -362,15 +362,11 @@ $(document).ready(function () {
     if (rots === null) {
       init_config();
     } else {
-      console.log(config_obj);
       for (let node of nodes) {
-        // console.log(config_obj['x0y8z0']);
-        // console.log(node, config_obj[node], node in config_obj && !(node in init_nodes && JSON.stringify(config_obj[node]) !== JSON.stringify(init_nodes[node])));
+        
         if (node in config_obj && !(node in init_nodes && JSON.stringify(config_obj[node]) !== JSON.stringify(init_nodes[node]))) {
           let colour = config_obj[node]["colour"];
           let image = config_obj[node]["image"];
-          // console.log(get_rotated_node(node, rots), colour, image, config[node]);
-          // console.log(rots, node, get_rotated_node(node, rots), colour, image);
           if (colour) {
             $(`.${get_rotated_node(node, rots)} .hexagon-inner`).attr("class", `hexagon-inner ${colour}`);
           }
@@ -482,9 +478,7 @@ $(document).ready(function () {
       reader.readAsText(file);
       reader.onload = function () {
         try {
-          console.log(config['x0y8z0']);
           config = JSON.parse(reader.result);
-          console.log(config['x0y8z0']);
           load_config(config);
         } catch {}
       };
