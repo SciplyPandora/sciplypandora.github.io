@@ -1,199 +1,296 @@
 $(document).ready(function () {
-  let config = localStorage["config"]
-    ? JSON.parse(localStorage["config"])
-    : null;
-  let home_colour_rots = {
-    purple: 0,
-    pink: 1,
-    green: 2,
-    blue: 3,
-    yellow: 4,
-    red: 5,
+  const init_nodes = {
+    x8y0z0: {colour: "red", image: null},
+    x0y8z0: {colour: "blue", image: null},
+    x0y0z8: {colour: "pink", image: null},
+    x8y8z0: {colour: "yellow", image: null},
+    x8y0z8: {colour: "purple", image: null},
+    x0y8z8: {colour: "green", image: null}
   };
-  let rot_60_transform = {
-    MRX: "MRX",
-    EAG: "FAH",
-    EAF: "FAF",
-    EAE: "FAE",
-    EAD: "FAD",
-    EAC: "FAC",
-    EAB: "FAB",
-    EAA: "FAA",
-    CAG: "DAG",
-    CAF: "DAF",
-    CAE: "DAE",
-    CAD: "DAD",
-    CAC: "DAC",
-    CAB: "DAB",
-    CAA: "DAA",
-    AAG: "BAG",
-    AAF: "BAF",
-    AAE: "BAE",
-    AAD: "BAD",
-    AAC: "BAC",
-    AAB: "BAB",
-    AAA: "BAA",
-    DAG: "EAG",
-    CBF: "DBF",
-    CBE: "DBE",
-    CBD: "DBD",
-    CBC: "DBC",
-    CBB: "DBB",
-    CBA: "DBA",
-    DBF: "EBF",
-    DAF: "EAF",
-    DCE: "ECE",
-    CDD: "DDD",
-    CDC: "DDC",
-    CDB: "DDB",
-    CDA: "DDA",
-    ECE: "FCE",
-    DBE: "EBE",
-    DAE: "EAE",
-    DCD: "ECD",
-    DEC: "EEC",
-    CFB: "DFB",
-    CFA: "DFA",
-    ECD: "FCD",
-    DDD: "EDD",
-    DBD: "EBD",
-    DAD: "EAD",
-    DCC: "ECC",
-    DEB: "EEB",
-    DGA: "EGA",
-    ECC: "FCC",
-    EEC: "FEC",
-    DDC: "EDC",
-    DBC: "EBC",
-    DAC: "EAC",
-    DCB: "ECB",
-    DEA: "EEA",
-    ECB: "FCB",
-    EEB: "FEB",
-    DFB: "EFB",
-    DDB: "EDB",
-    DBB: "EBB",
-    DAB: "EAB",
-    DCA: "ECA",
-    ECA: "FCA",
-    EEA: "FEA",
-    EGA: "FGA",
-    DFA: "EFA",
-    DDA: "EDA",
-    DBA: "EBA",
-    DAA: "EAA",
-    BAG: "CAG",
-    ABF: "BBF",
-    ABE: "BBE",
-    ABD: "BBD",
-    ABC: "BBC",
-    ABB: "BBB",
-    ABA: "BBA",
-    BBF: "CBF",
-    BAF: "CAF",
-    BCE: "CCE",
-    ADD: "BDD",
-    ADC: "BDC",
-    ADB: "BDB",
-    ADA: "BDA",
-    CCE: "DCE",
-    BBE: "CBE",
-    BAE: "CAE",
-    BCD: "CCD",
-    BEC: "CEC",
-    AFB: "BFB",
-    AFA: "BFA",
-    CCD: "DCD",
-    BDD: "CDD",
-    BBD: "CBD",
-    BAD: "CAD",
-    BCC: "CCC",
-    BEB: "CEB",
-    BGA: "CGA",
-    CCC: "DCC",
-    CEC: "DEC",
-    BDC: "CDC",
-    BBC: "CBC",
-    BAC: "CAC",
-    BCB: "CCB",
-    BEA: "CEA",
-    CCB: "DCB",
-    CEB: "DEB",
-    BFB: "CFB",
-    BDB: "CDB",
-    BBB: "CBB",
-    BAB: "CAB",
-    BCA: "CCA",
-    CCA: "DCA",
-    CEA: "DEA",
-    CGA: "DGA",
-    BFA: "CFA",
-    BDA: "CDA",
-    BBA: "CBA",
-    BAA: "CAA",
-    FAH: "AAG",
-    EBF: "FBF",
-    EBE: "FBE",
-    EBD: "FBD",
-    EBC: "FBC",
-    EBB: "FBB",
-    EBA: "FBA",
-    FBF: "ABF",
-    FAF: "AAF",
-    FCE: "ACE",
-    EDD: "FDD",
-    EDC: "FDC",
-    EDB: "FDB",
-    EDA: "FDA",
-    ACE: "BCE",
-    FBE: "ABE",
-    FAE: "AAE",
-    FCD: "ACD",
-    FEC: "AEC",
-    EFB: "FFB",
-    EFA: "FFA",
-    ACD: "BCD",
-    FDD: "ADD",
-    FBD: "ABD",
-    FAD: "AAD",
-    FCC: "ACC",
-    FEB: "AEB",
-    FGA: "AGA",
-    ACC: "BCC",
-    AEC: "BEC",
-    FDC: "ADC",
-    FBC: "ABC",
-    FAC: "AAC",
-    FCB: "ACB",
-    FEA: "AEA",
-    ACB: "BCB",
-    AEB: "BEB",
-    FFB: "AFB",
-    FDB: "ADB",
-    FBB: "ABB",
-    FAB: "AAB",
-    FCA: "ACA",
-    ACA: "BCA",
-    AEA: "BEA",
-    AGA: "BGA",
-    FFA: "AFA",
-    FDA: "ADA",
-    FBA: "ABA",
-    FAA: "AAA",
-  };
-  let ct_24_start_date_milli = 1687903200000;
-  let one_day_milli = 86400000;
-
-  const get_class_name_of_tile = (tile_code) => {
+  const nodes = [
+    "x0y0z0",
+    "x0y0z1",
+    "x0y0z2",
+    "x0y0z3",
+    "x0y0z4",
+    "x0y0z5",
+    "x0y0z6",
+    "x0y0z7",
+    "x0y0z8",
+    "x0y1z0",
+    "x0y1z1",
+    "x0y1z2",
+    "x0y1z3",
+    "x0y1z4",
+    "x0y1z5",
+    "x0y1z6",
+    "x0y1z7",
+    "x0y1z8",
+    "x0y2z0",
+    "x0y2z1",
+    "x0y2z2",
+    "x0y2z3",
+    "x0y2z4",
+    "x0y2z5",
+    "x0y2z6",
+    "x0y2z7",
+    "x0y2z8",
+    "x0y3z0",
+    "x0y3z1",
+    "x0y3z2",
+    "x0y3z3",
+    "x0y3z4",
+    "x0y3z5",
+    "x0y3z6",
+    "x0y3z7",
+    "x0y3z8",
+    "x0y4z0",
+    "x0y4z1",
+    "x0y4z2",
+    "x0y4z3",
+    "x0y4z4",
+    "x0y4z5",
+    "x0y4z6",
+    "x0y4z7",
+    "x0y4z8",
+    "x0y5z0",
+    "x0y5z1",
+    "x0y5z2",
+    "x0y5z3",
+    "x0y5z4",
+    "x0y5z5",
+    "x0y5z6",
+    "x0y5z7",
+    "x0y5z8",
+    "x0y6z0",
+    "x0y6z1",
+    "x0y6z2",
+    "x0y6z3",
+    "x0y6z4",
+    "x0y6z5",
+    "x0y6z6",
+    "x0y6z7",
+    "x0y6z8",
+    "x0y7z0",
+    "x0y7z1",
+    "x0y7z2",
+    "x0y7z3",
+    "x0y7z4",
+    "x0y7z5",
+    "x0y7z6",
+    "x0y7z7",
+    "x0y7z8",
+    "x0y8z0",
+    "x0y8z1",
+    "x0y8z2",
+    "x0y8z3",
+    "x0y8z4",
+    "x0y8z5",
+    "x0y8z6",
+    "x0y8z7",
+    "x0y8z8",
+    "x1y0z0",
+    "x1y0z1",
+    "x1y0z2",
+    "x1y0z3",
+    "x1y0z4",
+    "x1y0z5",
+    "x1y0z6",
+    "x1y0z7",
+    "x1y0z8",
+    "x1y1z0",
+    "x1y2z0",
+    "x1y3z0",
+    "x1y4z0",
+    "x1y5z0",
+    "x1y6z0",
+    "x1y7z0",
+    "x1y8z0",
+    "x2y0z0",
+    "x2y0z1",
+    "x2y0z2",
+    "x2y0z3",
+    "x2y0z4",
+    "x2y0z5",
+    "x2y0z6",
+    "x2y0z7",
+    "x2y0z8",
+    "x2y1z0",
+    "x2y2z0",
+    "x2y3z0",
+    "x2y4z0",
+    "x2y5z0",
+    "x2y6z0",
+    "x2y7z0",
+    "x2y8z0",
+    "x3y0z0",
+    "x3y0z1",
+    "x3y0z2",
+    "x3y0z3",
+    "x3y0z4",
+    "x3y0z5",
+    "x3y0z6",
+    "x3y0z7",
+    "x3y0z8",
+    "x3y1z0",
+    "x3y2z0",
+    "x3y3z0",
+    "x3y4z0",
+    "x3y5z0",
+    "x3y6z0",
+    "x3y7z0",
+    "x3y8z0",
+    "x4y0z0",
+    "x4y0z1",
+    "x4y0z2",
+    "x4y0z3",
+    "x4y0z4",
+    "x4y0z5",
+    "x4y0z6",
+    "x4y0z7",
+    "x4y0z8",
+    "x4y1z0",
+    "x4y2z0",
+    "x4y3z0",
+    "x4y4z0",
+    "x4y5z0",
+    "x4y6z0",
+    "x4y7z0",
+    "x4y8z0",
+    "x5y0z0",
+    "x5y0z1",
+    "x5y0z2",
+    "x5y0z3",
+    "x5y0z4",
+    "x5y0z5",
+    "x5y0z6",
+    "x5y0z7",
+    "x5y0z8",
+    "x5y1z0",
+    "x5y2z0",
+    "x5y3z0",
+    "x5y4z0",
+    "x5y5z0",
+    "x5y6z0",
+    "x5y7z0",
+    "x5y8z0",
+    "x6y0z0",
+    "x6y0z1",
+    "x6y0z2",
+    "x6y0z3",
+    "x6y0z4",
+    "x6y0z5",
+    "x6y0z6",
+    "x6y0z7",
+    "x6y0z8",
+    "x6y1z0",
+    "x6y2z0",
+    "x6y3z0",
+    "x6y4z0",
+    "x6y5z0",
+    "x6y6z0",
+    "x6y7z0",
+    "x6y8z0",
+    "x7y0z0",
+    "x7y0z1",
+    "x7y0z2",
+    "x7y0z3",
+    "x7y0z4",
+    "x7y0z5",
+    "x7y0z6",
+    "x7y0z7",
+    "x7y0z8",
+    "x7y1z0",
+    "x7y2z0",
+    "x7y3z0",
+    "x7y4z0",
+    "x7y5z0",
+    "x7y6z0",
+    "x7y7z0",
+    "x7y8z0",
+    "x8y0z0",
+    "x8y0z1",
+    "x8y0z2",
+    "x8y0z3",
+    "x8y0z4",
+    "x8y0z5",
+    "x8y0z6",
+    "x8y0z7",
+    "x8y0z8",
+    "x8y1z0",
+    "x8y2z0",
+    "x8y3z0",
+    "x8y4z0",
+    "x8y5z0",
+    "x8y6z0",
+    "x8y7z0",
+    "x8y8z0"
+  ];
+  const colours = [
+    "purple",
+    "pink",
+    "green",
+    "blue",
+    "yellow",
+    "red"
+  ];
+  const images = [
+    "abilitized",
+    "air_and_sea",
+    "alchemist_touch",
+    "banner",
+    "bigger_bloon_sabotage",
+    "box_of_chocolates",
+    "box_of_monkey",
+    "broken_heart",
+    "camo_flogged",
+    "camo_trap",
+    "deep_heat",
+    "durable_shots",
+    "el_dorado",
+    "empty",
+    "extra_empowered",
+    "flint_tips",
+    "fortifried",
+    "glue_trap",
+    "going_the_distance",
+    "hard_baked",
+    "heartless",
+    "hero_boost",
+    "magic_monkeys",
+    "mana_bulwark",
+    "marching_boots",
+    "military_monkeys",
+    "moab_clash",
+    "moab_mine",
+    "monkey_boost",
+    "regeneration",
+    "relic",
+    "restoration",
+    "road_spikes",
+    "rounding_up",
+    "royal_treatment",
+    "sharpsplosion",
+    "starting_stash",
+    "super_monkey_storm",
+    "support_simians",
+    "techbot",
+    "thrive"
+  ];
+  const ct_24_start_date_milli = 1687903200000;
+  const one_day_milli = 86400000;
+  let config = localStorage["config"] ? JSON.parse(localStorage["config"]) : null;
+  
+  function get_node_id (node_name) {
     try {
-      const tile_el = $(`div.tile-id:contains(${tile_code})`);
+      const tile_el = $(`div.tile-code:contains(${node_name})`);
       return tile_el.parent().parent().attr("class").split(/\s+/)[2];
     } catch (e) {
       return null;
     }
   };
 
-  const pascal_to_snake_case = (text) => {
+  function pascal_to_snake_case (text) {
     const new_text = text.replace(
       /(?<upperchar>[A-Z])/gm,
       (match, upperchar) => "_" + upperchar.toLowerCase()
@@ -201,90 +298,113 @@ $(document).ready(function () {
     return new_text.substr(1);
   };
 
-  function load_config(config_obj) {
-    let tiles = $(".tile").not(".home").children();
-    tiles.attr("class", "hexagon-inner");
-    tiles.children("img").removeAttr("class").attr("src", "images/empty.png");
-    let rots =
-      (home_colour_rots[config_obj["x8y0z8"]["colour"]] -
-        home_colour_rots[
-          $(".x8y0z8 .hexagon-inner").attr("class").split(" ")[1]
-        ] +
-        6) %
-      6;
-
-    for (let key in config_obj) {
-      colour = config_obj[key]["colour"];
-      image = config_obj[key]["image"];
-      if (colour) {
-        $(`.${key}`)
-          .children()
-          .first()
-          .attr("class", `hexagon-inner ${colour}`);
-      }
-      if (image) {
-        $(`.${key} img`)
-          .attr("class", `${image}`)
-          .attr("src", `images/${image}.webp`);
-      }
+  function get_rotated_node (node, rots=1) {
+    let x = parseInt(node[1]);
+    let y = parseInt(node[3]);
+    let z = parseInt(node[5]);
+    let m = Math.max(x, y, z);
+    for (let i = 0; i < rots; i++) {
+      [x, y, z] = [m - y, m - z, m - x];
+      m = Math.max(x, y, z);
     }
-
-    $(".tile-id").text(function (ind, val) {
-      for (let i = 0; i < rots; i++) {
-        val = rot_60_transform[val];
-      }
-      return val;
-    });
+    return `x${x}y${y}z${z}`;
   }
 
-  if (config) {
-    load_config(config);
-  } else {
-    config = {};
-    config["x8y0z0"] = { colour: "red", image: null };
-    config["x0y8z0"] = { colour: "blue", image: null };
-    config["x0y0z8"] = { colour: "pink", image: null };
-    config["x8y8z0"] = { colour: "yellow", image: null };
-    config["x8y0z8"] = { colour: "purple", image: null };
-    config["x0y8z8"] = { colour: "green", image: null };
+  function update_colour (node, colour=null) {
+    config[get_rotated_node(node, 6 - config["rots"])]["colour"] = colour;
     localStorage["config"] = JSON.stringify(config);
+    if (colour) {
+      $(`.${node} .hexagon-inner`).attr("class", `hexagon-inner ${colour}`);
+    } else {
+      $(`.${node} .hexagon-inner`).attr("class", "hexagon-inner");
+    }
   }
 
-  $("#toggle-ids").click(function () {
-    if ($("#toggle-ids").text() === "Show Tile Names") {
-      $("#toggle-ids").text("Hide Tile Names");
-      $(".tile-id").removeClass("hidden");
+  function update_image (node, image=null) {
+    config[get_rotated_node(node, 6 - config["rots"])]["image"] = image;
+    localStorage["config"] = JSON.stringify(config);
+    if (image) {
+      $(`.${node} img`).attr("src", `images/${image}.webp`).addClass(image);
     } else {
-      $("#toggle-ids").text("Show Tile Names");
-      $(".tile-id").addClass("hidden");
+      $(`.${node} img`).attr("src", "images/empty.png").removeAttr("class");
     }
-  });
-
-  $("#rotate").click(function () {
-    let new_config = {};
-    for (let key in config) {
-      val = config[key];
-      let x = parseInt(key[1]);
-      let y = parseInt(key[3]);
-      let z = parseInt(key[5]);
-      let m = Math.max(x, y, z);
-      let new_key = `x${m - y}y${m - z}z${m - x}`;
-      new_config[new_key] = val;
-    }
-    config = new_config;
+  }
+  
+  function rotate_grid (rots=1) {
+    config["rots"] = (config["rots"] + rots) % 6;
     localStorage["config"] = JSON.stringify(config);
 
     $(".tile").attr("class", function (ind, val) {
       let split_arr = val.split(" ");
-      let coords = split_arr[2];
-      let x = parseInt(coords[1]);
-      let y = parseInt(coords[3]);
-      let z = parseInt(coords[5]);
-      let m = Math.max(x, y, z);
-      split_arr[2] = `x${m - y}y${m - z}z${m - x}`;
+      split_arr[2] = get_rotated_node(split_arr[2], rots);
       return split_arr.join(" ");
     });
+  }
+
+  function init_config () {
+    config = {rots: 0};
+    for (let node of nodes) {
+      if (node in init_nodes) {
+        config[node] = init_nodes[node];
+      } else {
+        config[node] = {colour: null, image: null};
+      }
+    }
+    localStorage["config"] = JSON.stringify(config);
+  }
+
+  function load_config (config_obj) {
+    let tiles = $(".tile").not(".home").children();
+    tiles.attr("class", "hexagon-inner");
+    tiles.children("img").removeAttr("class").attr("src", "images/empty.png");
+    let rots = config_obj["rots"];
+
+    if (rots === null) {
+      init_config();
+    } else {
+      console.log(config_obj);
+      for (let node of nodes) {
+        // console.log(config_obj['x0y8z0']);
+        // console.log(node, config_obj[node], node in config_obj && !(node in init_nodes && JSON.stringify(config_obj[node]) !== JSON.stringify(init_nodes[node])));
+        if (node in config_obj && !(node in init_nodes && JSON.stringify(config_obj[node]) !== JSON.stringify(init_nodes[node]))) {
+          let colour = config_obj[node]["colour"];
+          let image = config_obj[node]["image"];
+          // console.log(get_rotated_node(node, rots), colour, image, config[node]);
+          // console.log(rots, node, get_rotated_node(node, rots), colour, image);
+          if (colour) {
+            $(`.${get_rotated_node(node, rots)} .hexagon-inner`).attr("class", `hexagon-inner ${colour}`);
+          }
+          if (image) {
+            $(`.${get_rotated_node(node, rots)} img`).attr("src", `images/${image}.webp`).addClass(image);
+          }
+        } else {
+          init_config();
+          break;
+        }
+      }
+    }
+
+    localStorage["config"] = JSON.stringify(config);
+  }
+  
+  if (config) {
+    load_config(config);
+  } else {
+    init_config();
+  }
+  
+
+  $("#toggle-ids").click(function () {
+    if ($("#toggle-ids").text() === "Show Tile Names") {
+      $("#toggle-ids").text("Hide Tile Names");
+      $(".tile-code").removeClass("hidden");
+    } else {
+      $("#toggle-ids").text("Show Tile Names");
+      $(".tile-code").addClass("hidden");
+    }
   });
+
+  $("#rotate").click(() => rotate_grid());
 
   $("#toggle-markers").click(function () {
     if ($("#toggle-markers").text() === "Banners")
@@ -296,37 +416,28 @@ $(document).ready(function () {
 
   $("#clear-banners").click(function () {
     $(".banner").each(function () {
-      let tile_id = $(this).parent().parent().attr("class").split(" ")[2];
-      if (config[tile_id]["colour"]) config[tile_id]["image"] = null;
-      else delete config[tile_id];
-      $(this).removeAttr("class").attr("src", "images/empty.png");
+      let node = $(this).parent().parent().attr("class").split(" ")[2];
+      update_image(node);
     });
-    localStorage["config"] = JSON.stringify(config);
   });
 
   $("#clear-relics").click(function () {
     $("img[class]")
       .not(".banner")
       .each(function () {
-        let tile_id = $(this).parent().parent().attr("class").split(" ")[2];
-        if (config[tile_id]["colour"]) config[tile_id]["image"] = null;
-        else delete config[tile_id];
-        $(this).removeAttr("class").attr("src", "images/empty.png");
+        let node = $(this).parent().parent().attr("class").split(" ")[2];
+        update_image(node);
       });
-    localStorage["config"] = JSON.stringify(config);
   });
 
   $("#clear-colours").click(function () {
     $(".tile")
       .not(".home")
-      .children(".purple, .pink, .green, .blue, .yellow, .red")
+      .children()
       .each(function () {
-        let tile_id = $(this).parent().attr("class").split(" ")[2];
-        if (config[tile_id]["image"]) config[tile_id]["colour"] = null;
-        else delete config[tile_id];
-        $(this).attr("class", "hexagon-inner");
+        let node = $(this).parent().attr("class").split(" ")[2];
+        update_colour(node);
       });
-    localStorage["config"] = JSON.stringify(config);
   });
 
   $("#import").click(function () {
@@ -335,6 +446,7 @@ $(document).ready(function () {
 
   $("#upload").change(function (e) {
     let file = e.target.files[0];
+    $(this).val("");
     if (file.type == "application/zip") {
       JSZip.loadAsync(file).then(async (content) => {
         let tile_promises = [];
@@ -345,46 +457,35 @@ $(document).ready(function () {
         }
         let tiles_data = await Promise.all(tile_promises);
 
-        let config = {};
-        config["x8y0z0"] = { colour: "red", image: null };
-        config["x0y8z0"] = { colour: "blue", image: null };
-        config["x0y0z8"] = { colour: "pink", image: null };
-        config["x8y8z0"] = { colour: "yellow", image: null };
-        config["x8y0z8"] = { colour: "purple", image: null };
-        config["x0y8z8"] = { colour: "green", image: null };
+        rotate_grid(6 - config["rots"]);
+        init_config();
 
         for (const tile_raw of tiles_data) {
           if (tile_raw === null) continue;
           const tile_data = JSON.parse(tile_raw);
-          let class_name;
+          let class_name = get_node_id(tile_data.Code);
           switch (tile_data.TileType) {
             case "Banner":
-              class_name = get_class_name_of_tile(tile_data.Code);
-              config[class_name] = { colour: "null", image: "banner" };
+              config[class_name]["image"] = "banner";
               break;
             case "Relic":
-              class_name = get_class_name_of_tile(tile_data.Code);
               let relic_type = tile_data.RelicType;
-              config[class_name] = {
-                colour: "null",
-                image: pascal_to_snake_case(relic_type),
-              };
+              config[class_name]["image"] = pascal_to_snake_case(relic_type);
               break;
           }
         }
 
         load_config(config);
-        localStorage["config"] = JSON.stringify(config);
       });
     } else {
-      $(this).val("");
       let reader = new FileReader();
       reader.readAsText(file);
       reader.onload = function () {
         try {
+          console.log(config['x0y8z0']);
           config = JSON.parse(reader.result);
+          console.log(config['x0y8z0']);
           load_config(config);
-          localStorage["config"] = JSON.stringify(config);
         } catch {}
       };
     }
@@ -392,24 +493,16 @@ $(document).ready(function () {
 
   $("#export").click(function () {
     let date = new Date();
-    let week = Math.floor(
-      (date.getTime() - ct_24_start_date_milli) / one_day_milli / 7
-    );
+    let week = Math.floor((date.getTime() - ct_24_start_date_milli) / one_day_milli / 7);
     let ct_season = 24 + Math.ceil(week / 2);
-    let ct_day =
-      week % 2
-        ? 0
-        : Math.floor(
-            ((date.getTime() - ct_24_start_date_milli) % (one_day_milli * 7)) /
-              one_day_milli +
-              1
-          );
+    let ct_day = week % 2 ? 0 : Math.floor(
+      ((date.getTime() - ct_24_start_date_milli) % (one_day_milli * 7)) / one_day_milli + 1
+    );
     let download = $("<a></a>");
 
     download.attr(
       "href",
-      "data:text/plain;charset=utf-8," +
-        encodeURIComponent(JSON.stringify(config))
+      "data:text/plain;charset=utf-8," + encodeURIComponent(JSON.stringify(config))
     );
     download.attr("download", `CT${ct_season}-${ct_day}.json`);
     download.css("display", "none");
@@ -418,64 +511,34 @@ $(document).ready(function () {
     $("a").remove();
   });
 
-  $(".tile")
-    .not(".home")
-    .click(function () {
-      let tile_id = $(this).attr("class").split(" ")[2];
+  $(".tile").not(".home").click(function () {
+      let node = $(this).attr("class").split(" ")[2];
       let inner = $(this).children().first();
-      let home_colour = $(".x8y0z8")
-        .children()
-        .first()
-        .attr("class")
-        .split(" ")[1];
+      let home_colour = colours[config["rots"]];
       let colour = inner.attr("class").split(" ")[1]
         ? inner.attr("class").split(" ")[1]
         : null;
       let image = inner.children("img").attr("class");
+      let relic = $("#select :selected").text();
+
       if ($("#toggle-markers").text() === "Banners") {
         if (image === "banner") {
-          if (config[tile_id]["colour"]) config[tile_id]["image"] = null;
-          else delete config[tile_id];
-          inner
-            .children("img")
-            .removeAttr("class")
-            .attr("src", "images/empty.png");
+          update_image(node);
         } else if (image === undefined) {
-          if (config[tile_id]) config[tile_id]["image"] = "banner";
-          else config[tile_id] = { colour: null, image: "banner" };
-          inner
-            .children("img")
-            .attr("class", "banner")
-            .attr("src", "images/banner.webp");
+          update_image(node, "banner");
         }
       } else if ($("#toggle-markers").text() === "Relics") {
         if (image === undefined) {
-          let relic = $("#select :selected").text();
-          if (config[tile_id]) config[tile_id]["image"] = relic;
-          else config[tile_id] = { colour: null, image: relic };
-          inner
-            .children("img")
-            .attr("class", relic)
-            .attr("src", `images/${relic}.webp`);
+          update_image(node, relic);
         } else if (image !== "banner") {
-          if (config[tile_id]["colour"]) config[tile_id]["image"] = null;
-          else delete config[tile_id];
-          inner
-            .children("img")
-            .removeAttr("class")
-            .attr("src", "images/empty.png");
+          update_image(node);
         }
       } else {
         if (colour === home_colour) {
-          if (config[tile_id]["image"]) config[tile_id]["colour"] = null;
-          else delete config[tile_id];
-          inner.removeClass(home_colour);
+          update_colour(node);
         } else {
-          if (config[tile_id]) config[tile_id]["colour"] = home_colour;
-          else config[tile_id] = { colour: home_colour, image: null };
-          inner.attr("class", `hexagon-inner ${home_colour}`);
+          update_colour(node, home_colour);
         }
       }
-      localStorage["config"] = JSON.stringify(config);
     });
 });

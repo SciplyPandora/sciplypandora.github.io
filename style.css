@@ -91,7 +91,7 @@ button {
     filter: brightness(90%);
 }
 
-.tile-id {
+.tile-code {
     position: absolute;
     top: 50%;
     width: 100%;
