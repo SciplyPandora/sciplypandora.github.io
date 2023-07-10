@@ -14,12 +14,12 @@
   </head>
   <body>
     <div class="col-left">
-      <button id="toggle-ids" class="btn btn-primary d-block m-2">Show Tile Names</button>
+      <button id="toggle-names" class="btn btn-primary d-block m-2">Show Tile Names</button>
       <button id="rotate" class="btn btn-primary d-block m-2">Rotate</button>
       <button id="toggle-markers" class="btn btn-primary d-block m-2">Banners</button>
-      <button id="clear-banners" class="btn btn-primary d-block m-2">Clear Banners</button>
-      <button id="clear-relics" class="btn btn-primary d-block m-2">Clear Relics</button>
-      <button id="clear-colours" class="btn btn-primary d-block m-2">Clear Colours</button>
+      <button onclick="$('#banner-modal').modal();" class="btn btn-primary d-block m-2">Clear Banners</button>
+      <button onclick="$('#relic-modal').modal();" class="btn btn-primary d-block m-2">Clear Relics</button>
+      <button onclick="$('#colour-modal').modal();" class="btn btn-primary d-block m-2">Clear Colours</button>
       <button id="import" class="btn btn-primary d-block m-2">Import</button>
       <button id="export" class="btn btn-primary d-block m-2">Export</button>
       <input
@@ -71,6 +71,46 @@
         <option value="techbot">techbot</option>
         <option value="thrive">thrive</option>
       </select>
+    </div>
+
+    <div id="banner-modal" class="modal" tabindex="-1" role="dialog">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Are you sure you want to clear the banners?</h5>
+          </div>
+          <div class="modal-footer">
+            <button type="button" id="clear-banners" class="btn btn-primary">Clear</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="relic-modal" class="modal" tabindex="-1" role="dialog">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Are you sure you want to clear the relics?</h5>
+          </div>
+          <div class="modal-footer">
+            <button type="button" id="clear-relics" class="btn btn-primary">Clear</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="colour-modal" class="modal" tabindex="-1" role="dialog">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Are you sure you want to clear the colours?</h5>
+          </div>
+          <div class="modal-footer">
+            <button type="button" id="clear-colours" class="btn btn-primary">Clear</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
     </div>
 
     <script

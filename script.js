@@ -430,12 +430,12 @@ $(document).ready(function () {
   }
 
 
-  $("#toggle-ids").click(function () {
-    if ($("#toggle-ids").text() === "Show Tile Names") {
-      $("#toggle-ids").text("Hide Tile Names");
+  $("#toggle-names").click(function () {
+    if ($("#toggle-names").text() === "Show Tile Names") {
+      $("#toggle-names").text("Hide Tile Names");
       $(".tile-code").removeClass("hidden");
     } else {
-      $("#toggle-ids").text("Show Tile Names");
+      $("#toggle-names").text("Show Tile Names");
       $(".tile-code").addClass("hidden");
     }
   });
@@ -455,25 +455,23 @@ $(document).ready(function () {
       let node = $(this).parent().parent().attr("class").split(" ")[2];
       update_image(node);
     });
+    $("#banner-modal").modal("hide");
   });
 
   $("#clear-relics").click(function () {
-    $("img[class]")
-      .not(".banner")
-      .each(function () {
-        let node = $(this).parent().parent().attr("class").split(" ")[2];
-        update_image(node);
-      });
+    $("img[class]").not(".banner").each(function () {
+      let node = $(this).parent().parent().attr("class").split(" ")[2];
+      update_image(node);
+    });
+    $("#relic-modal").modal("hide");
   });
 
   $("#clear-colours").click(function () {
-    $(".tile")
-      .not(".immutable")
-      .children()
-      .each(function () {
-        let node = $(this).parent().attr("class").split(" ")[2];
-        update_colour(node);
-      });
+    $(".tile").not(".immutable").children().each(function () {
+      let node = $(this).parent().attr("class").split(" ")[2];
+      update_colour(node);
+    });
+    $("#colour-modal").modal("hide");
   });
 
   $("#import").click(function () {
@@ -575,4 +573,21 @@ $(document).ready(function () {
       }
     }
   });
+  
+  $(document).keypress(function (e) {
+    switch (e.key) {
+      case "e":
+        $("#toggle-names").trigger("click");
+        break;
+      case "r":
+        rotate_grid();
+        break;
+      case "R":
+        rotate_grid(5);
+        break;
+      case "t":
+        $("#toggle-markers").trigger("click");
+        break;
+    }
+  })
 });
