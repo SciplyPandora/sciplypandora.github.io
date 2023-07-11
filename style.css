@@ -1,7 +1,7 @@
 :root {
     --hex_ratio: 0.86602540378;
     --sidebar_width: 9.5em;
-    --tile_width: min(calc((100vw - var(--sidebar_width) * 2) / 14), calc(100vh / 15));
+    --tile_width: min(calc((100vw - var(--sidebar_width) * 2) / 12), calc(100vh / 13));
     --tile_height: calc(var(--tile_width) * var(--hex_ratio));
     --tile_name_font_size: min(calc((100vw - var(--sidebar_width) * 2) / 48), calc(100vh / 52));
     --border_width: 4%;

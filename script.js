@@ -8,7 +8,6 @@ $(document).ready(function () {
     x0y0z5: "BAC",
     x0y0z6: "BAB",
     x0y0z7: "BAA",
-    x0y0z8: "BAZ",
     x0y1z0: "DAG",
     x0y1z1: "CAG",
     x0y1z2: "BBF",
@@ -17,7 +16,6 @@ $(document).ready(function () {
     x0y1z5: "BBC",
     x0y1z6: "BBB",
     x0y1z7: "BBA",
-    x0y1z8: "BBZ",
     x0y2z0: "DAF",
     x0y2z1: "CBF",
     x0y2z2: "CAF",
@@ -26,7 +24,6 @@ $(document).ready(function () {
     x0y2z5: "BDC",
     x0y2z6: "BDB",
     x0y2z7: "BDA",
-    x0y2z8: "BDZ",
     x0y3z0: "DAE",
     x0y3z1: "DCE",
     x0y3z2: "CBE",
@@ -35,7 +32,6 @@ $(document).ready(function () {
     x0y3z5: "CEC",
     x0y3z6: "BFB",
     x0y3z7: "BFA",
-    x0y3z8: "BFZ",
     x0y4z0: "DAD",
     x0y4z1: "DCD",
     x0y4z2: "CDD",
@@ -44,7 +40,6 @@ $(document).ready(function () {
     x0y4z5: "CCC",
     x0y4z6: "CEB",
     x0y4z7: "CGA",
-    x0y4z8: "CHZ",
     x0y5z0: "DAC",
     x0y5z1: "DCC",
     x0y5z2: "DEC",
@@ -53,7 +48,6 @@ $(document).ready(function () {
     x0y5z5: "CAC",
     x0y5z6: "CCB",
     x0y5z7: "CEA",
-    x0y5z8: "CGZ",
     x0y6z0: "DAB",
     x0y6z1: "DCB",
     x0y6z2: "DEB",
@@ -62,7 +56,6 @@ $(document).ready(function () {
     x0y6z5: "CBB",
     x0y6z6: "CAB",
     x0y6z7: "CCA",
-    x0y6z8: "CEZ",
     x0y7z0: "DAA",
     x0y7z1: "DCA",
     x0y7z2: "DEA",
@@ -71,16 +64,6 @@ $(document).ready(function () {
     x0y7z5: "CDA",
     x0y7z6: "CBA",
     x0y7z7: "CAA",
-    x0y7z8: "CCZ",
-    x0y8z0: "DAZ",
-    x0y8z1: "DCZ",
-    x0y8z2: "DEZ",
-    x0y8z3: "DGZ",
-    x0y8z4: "DHZ",
-    x0y8z5: "CFZ",
-    x0y8z6: "CDZ",
-    x0y8z7: "CBZ",
-    x0y8z8: "CAZ",
     x1y0z0: "FAH",
     x1y0z1: "AAG",
     x1y0z2: "ABF",
@@ -89,7 +72,6 @@ $(document).ready(function () {
     x1y0z5: "BCC",
     x1y0z6: "BCB",
     x1y0z7: "BCA",
-    x1y0z8: "BCZ",
     x1y1z0: "EAG",
     x1y2z0: "DBF",
     x1y3z0: "DBE",
@@ -97,7 +79,6 @@ $(document).ready(function () {
     x1y5z0: "DBC",
     x1y6z0: "DBB",
     x1y7z0: "DBA",
-    x1y8z0: "DBZ",
     x2y0z0: "FAF",
     x2y0z1: "FBF",
     x2y0z2: "AAF",
@@ -106,7 +87,6 @@ $(document).ready(function () {
     x2y0z5: "BEC",
     x2y0z6: "BEB",
     x2y0z7: "BEA",
-    x2y0z8: "BEZ",
     x2y1z0: "EBF",
     x2y2z0: "EAF",
     x2y3z0: "ECE",
@@ -114,7 +94,6 @@ $(document).ready(function () {
     x2y5z0: "DDC",
     x2y6z0: "DDB",
     x2y7z0: "DDA",
-    x2y8z0: "DDZ",
     x3y0z0: "FAE",
     x3y0z1: "FBE",
     x3y0z2: "ACE",
@@ -123,7 +102,6 @@ $(document).ready(function () {
     x3y0z5: "ADC",
     x3y0z6: "AFB",
     x3y0z7: "BGA",
-    x3y0z8: "BGZ",
     x3y1z0: "FCE",
     x3y2z0: "EBE",
     x3y3z0: "EAE",
@@ -131,7 +109,6 @@ $(document).ready(function () {
     x3y5z0: "EEC",
     x3y6z0: "DFB",
     x3y7z0: "DFA",
-    x3y8z0: "DFZ",
     x4y0z0: "FAD",
     x4y0z1: "FBD",
     x4y0z2: "FDD",
@@ -140,7 +117,6 @@ $(document).ready(function () {
     x4y0z5: "ABC",
     x4y0z6: "ADB",
     x4y0z7: "AFA",
-    x4y0z8: "BHZ",
     x4y1z0: "FCD",
     x4y2z0: "EDD",
     x4y3z0: "EBD",
@@ -148,7 +124,6 @@ $(document).ready(function () {
     x4y5z0: "ECC",
     x4y6z0: "EEB",
     x4y7z0: "EGA",
-    x4y8z0: "EHZ",
     x5y0z0: "FAC",
     x5y0z1: "FBC",
     x5y0z2: "FDC",
@@ -157,7 +132,6 @@ $(document).ready(function () {
     x5y0z5: "AAC",
     x5y0z6: "ABB",
     x5y0z7: "ADA",
-    x5y0z8: "AFZ",
     x5y1z0: "FCC",
     x5y2z0: "FEC",
     x5y3z0: "EDC",
@@ -165,7 +139,6 @@ $(document).ready(function () {
     x5y5z0: "EAC",
     x5y6z0: "ECB",
     x5y7z0: "EEA",
-    x5y8z0: "EGZ",
     x6y0z0: "FAB",
     x6y0z1: "FBB",
     x6y0z2: "FDB",
@@ -174,7 +147,6 @@ $(document).ready(function () {
     x6y0z5: "ACB",
     x6y0z6: "AAB",
     x6y0z7: "ABA",
-    x6y0z8: "ADZ",
     x6y1z0: "FCB",
     x6y2z0: "FEB",
     x6y3z0: "EFB",
@@ -182,7 +154,6 @@ $(document).ready(function () {
     x6y5z0: "EBB",
     x6y6z0: "EAB",
     x6y7z0: "ECA",
-    x6y8z0: "EEZ",
     x7y0z0: "FAA",
     x7y0z1: "FBA",
     x7y0z2: "FDA",
@@ -191,7 +162,6 @@ $(document).ready(function () {
     x7y0z5: "AEA",
     x7y0z6: "ACA",
     x7y0z7: "AAA",
-    x7y0z8: "ABZ",
     x7y1z0: "FCA",
     x7y2z0: "FEA",
     x7y3z0: "FGA",
@@ -199,40 +169,22 @@ $(document).ready(function () {
     x7y5z0: "EDA",
     x7y6z0: "EBA",
     x7y7z0: "EAA",
-    x7y8z0: "ECZ",
-    x8y0z0: "FAZ",
-    x8y0z1: "FBZ",
-    x8y0z2: "FDZ",
-    x8y0z3: "FFZ",
-    x8y0z4: "AHZ",
-    x8y0z5: "AGZ",
-    x8y0z6: "AEZ",
-    x8y0z7: "ACZ",
-    x8y0z8: "AAZ",
-    x8y1z0: "FCZ",
-    x8y2z0: "FEZ",
-    x8y3z0: "FGZ",
-    x8y4z0: "FHZ",
-    x8y5z0: "EFZ",
-    x8y6z0: "EDZ",
-    x8y7z0: "EBZ",
-    x8y8z0: "EAZ"
   };
   const init_nodes = {
-    x8y0z0: {colour: "red", image: null},
-    x0y8z0: {colour: "blue", image: null},
-    x0y0z8: {colour: "pink", image: null},
-    x8y8z0: {colour: "yellow", image: null},
-    x8y0z8: {colour: "purple", image: null},
-    x0y8z8: {colour: "green", image: null}
+    x7y0z0: {colour: "red", image: null},
+    x0y7z0: {colour: "blue", image: null},
+    x0y0z7: {colour: "pink", image: null},
+    x7y7z0: {colour: "yellow", image: null},
+    x7y0z7: {colour: "purple", image: null},
+    x0y7z7: {colour: "green", image: null}
   };
   const immutable_nodes = [
-    "x8y0z0",
-    "x0y8z0",
-    "x0y0z8",
-    "x8y8z0",
-    "x8y0z8",
-    "x0y8z8"
+    "x7y0z0",
+    "x0y7z0",
+    "x0y0z7",
+    "x7y7z0",
+    "x7y0z7",
+    "x0y7z7"
   ];
   const colours = [
     "purple",
@@ -290,6 +242,14 @@ $(document).ready(function () {
   let config = localStorage["config"] ? JSON.parse(localStorage["config"]) : null;
   
 
+  function pascal_to_snake_case (text) {
+    const new_text = text.replace(
+      /(?<upperchar>[A-Z])/gm,
+      (match, upperchar) => "_" + upperchar.toLowerCase()
+    );
+    return new_text.substr(1);
+  }
+
   function get_rotated_node (node, rots=1) {
     let x = parseInt(node[1]);
     let y = parseInt(node[3]);
@@ -310,12 +270,33 @@ $(document).ready(function () {
     }
   }
 
-  function pascal_to_snake_case (text) {
-    const new_text = text.replace(
-      /(?<upperchar>[A-Z])/gm,
-      (match, upperchar) => "_" + upperchar.toLowerCase()
-    );
-    return new_text.substr(1);
+  function get_node_neighbours (node) {
+    let coords = [parseInt(node[1]), parseInt(node[3]), parseInt(node[5])];
+    let res = [];
+    
+    for (let vec of [[1, 0, 0], [0, 1, 0], [0, 0, 1], [1, 1, 0], [1, 0, 1], [0, 1, 1]]) {
+      let tmp = coords.map((val, ind) => val + vec[ind]);
+      tmp = tmp.map((val) => val - Math.min(...tmp));
+      tmp = `x${tmp[0]}y${tmp[1]}z${tmp[2]}`;
+      if (tmp in nodes) {
+        res.push(tmp);
+      }
+    }
+    return res;
+  }
+
+  function get_weight (node, gen_weights=false) {
+    if (gen_weights) {
+      return 0;
+    } else {
+      if ($(`.${node}`).hasClass("immutable")) {
+        return Infinity;
+      }
+      if ($(`.${node} img`).attr("class") && $(`.${node} img`).attr("class") !== "banner") {
+        return 1e9;
+      }
+      return 1;
+    }
   }
 
   function update_colour (node, colour=null) {
@@ -573,7 +554,7 @@ $(document).ready(function () {
       }
     }
   });
-  
+
   $(document).keypress(function (e) {
     switch (e.key) {
       case "e":
