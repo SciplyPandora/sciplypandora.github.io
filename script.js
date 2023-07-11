@@ -302,16 +302,20 @@ $(document).ready(function () {
   function update_colour (node, colour=null) {
     config[get_rotated_node(node, 6 - config["rots"])]["colour"] = colour;
     localStorage["config"] = JSON.stringify(config);
+
     if (colour) {
       $(`.${node} .hexagon-inner`).attr("class", `hexagon-inner ${colour}`);
     } else {
       $(`.${node} .hexagon-inner`).attr("class", "hexagon-inner");
     }
+
+    $("#ticket-count").text($(`.${colours[config["rots"]]}`).length - 1);
   }
 
   function update_image (node, image=null) {
     config[get_rotated_node(node, 6 - config["rots"])]["image"] = image;
     localStorage["config"] = JSON.stringify(config);
+
     if (image) {
       $(`.${node} img`).attr("src", `images/${image}.webp`).addClass(image);
     } else {
@@ -328,6 +332,8 @@ $(document).ready(function () {
       split_arr[2] = get_rotated_node(split_arr[2], rots);
       return split_arr.join(" ");
     });
+
+    $("#ticket-count").text($(`.${colours[config["rots"]]}`).length - 1);
   }
 
   function init_grid () {
@@ -399,6 +405,7 @@ $(document).ready(function () {
       }
     }
 
+    $("#ticket-count").text($(`.${colours[config["rots"]]}`).length - 1);
     localStorage["config"] = JSON.stringify(config);
   }
   

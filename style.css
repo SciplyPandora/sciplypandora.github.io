@@ -23,6 +23,16 @@ button {
     width: var(--sidebar_width);
 }
 
+#ticket-count:hover {
+    cursor: default;
+    background-color: #027cff;
+    border-color: #027cff;
+}
+
+#ticket-count:focus {
+    box-shadow: none;
+}
+
 .col-left {
     float: left;
 }
