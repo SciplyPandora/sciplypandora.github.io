@@ -237,6 +237,23 @@ $(document).ready(function () {
     "techbot",
     "thrive"
   ];
+  const game_modes = [
+    "",
+    "",
+    "Race",
+    "",
+    "Boss",
+    "",
+    "",
+    "",
+    "Least Cash",
+    "Least Tiers"
+  ];
+  const bosses = [
+    "Bloonarius",
+    "Lych",
+    "Vortex"
+  ];
   const ct_24_start_date_milli = 1687903200000;
   const one_day_milli = 86400000;
   let config = localStorage["config"] ? JSON.parse(localStorage["config"]) : null;
@@ -484,8 +501,70 @@ $(document).ready(function () {
 
         for (const tile_raw of tiles_data) {
           if (tile_raw === null) continue;
+          let title = "";
           const tile_data = JSON.parse(tile_raw);
           let class_name = get_node_id(tile_data.Code);
+          let game_data = tile_data.GameData;
+          let tile_type = tile_data.TileType;
+          let game_type = game_modes[game_data.subGameType];
+          let map = game_data.selectedMap;
+          let difficulty = game_data.selectedDifficulty;
+          let game_mode = game_data.selectedMode;
+          let max_towers = game_data.dcModel.maxTowers;
+          let start_rules = game_data.dcModel.startRules;
+          let start_cash = start_rules.cash;
+          let start_round = start_rules.round;
+          let end_round = start_rules.endRound;
+          let tiers;
+          let heroes = [];
+          let towers = [];
+
+          if (tile_type === "TeamFirstCapture") tile_type = "Regular";
+          if (game_type === "Boss") {
+            let boss = bosses[game_data.bossData.bossBloon];
+            tiers = game_data.bossData.TierCount;
+            title += `${tiers} Tier ${boss}\n`;
+          } else {
+            title += `${game_type}\n`;
+          }
+          title += `${map} - ${difficulty} ${game_mode}\n`;
+          title += `$${start_cash} - ${start_round}/${end_round !== -1 ? end_round : `${tiers * 20 + 20}+`}\n`;
+          if (max_towers !== -1) title += `Max Towers: ${max_towers}\n`;
+
+          for (let item of game_data.dcModel.towers._items) {
+            if (item && item.max) {
+              if (item.isHero) {
+                heroes.push(item.tower);
+              } else {
+                if (item.max === -1) {
+                  towers.push(item.tower);
+                } else {
+                  towers.push(`${item.max}x ${item.tower}`);
+                }
+              }
+            }
+          }
+
+          title += "\n";
+
+          if (heroes.length) {
+            title += "Heroes:\n"
+            for (let i = 0; i < heroes.length; i++) {
+              title += heroes[i];
+              if (i < heroes.length - 1) title += " - ";
+            }
+            title += "\n\n";
+          }
+          if (towers.length) {
+            title += "Towers:\n"
+            for (let i = 0; i < towers.length; i++) {
+              title += towers[i];
+              if (i < towers.length - 1) title += " - ";
+            }
+          }
+
+          $(`.${class_name} .hexagon-inner`).attr("title", title);
+
           switch (tile_data.TileType) {
             case "Banner":
               config[class_name]["image"] = "banner";
