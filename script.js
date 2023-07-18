@@ -551,7 +551,6 @@ $(document).ready(function () {
         for (const tile_raw of tiles_data) {
           if (tile_raw === null) continue;
           const tile_data = JSON.parse(tile_raw);
-          let title = "";
           let inner = "";
           let class_name = get_node_id(tile_data.Code);
           let game_data = tile_data.GameData;
@@ -573,20 +572,13 @@ $(document).ready(function () {
           if (game_type === "Boss") {
             let boss = bosses[game_data.bossData.bossBloon];
             tiers = game_data.bossData.TierCount;
-            title += `${tiers} Tier ${boss}\n`;
             inner += `${tiers} Tier ${boss}<br>`;
           } else {
-            title += `${game_type}\n`;
             inner += `${game_type}<br>`;
           }
-          title += `${map} - ${difficulty} ${game_mode}\n`;
-          title += `$${start_cash} - ${start_round}/${end_round !== -1 ? end_round : `${tiers * 20 + 20}+`}\n`;
           inner += `${map} - ${difficulty} ${game_mode}<br>`;
           inner += `$${start_cash} - ${start_round}/${end_round !== -1 ? end_round : `${tiers * 20 + 20}+`}<br>`;
-          if (max_towers !== -1) {
-            title += `Max Towers: ${max_towers}\n`;
-            inner += `Max Towers: ${max_towers}<br>`;
-          }
+          if (max_towers !== -1) inner += `Max Towers: ${max_towers}<br>`;
 
           for (let item of game_data.dcModel.towers._items) {
             if (item && item.max) {
@@ -602,37 +594,24 @@ $(document).ready(function () {
             }
           }
 
-          title += "\n";
           inner += "<br>";
 
           if (heroes.length) {
-            title += "Heroes:\n";
             inner += "Heroes:<br>";
             for (let i = 0; i < heroes.length; i++) {
-              title += heroes[i];
               inner += heroes[i];
-              if (i < heroes.length - 1) {
-                title += " - ";
-                inner += " - ";
-              }
+              if (i < heroes.length - 1) inner += " - ";
             }
-            title += "\n\n";
             inner += "<br><br>";
           }
           if (towers.length) {
-            title += "Towers:\n";
             inner += "Towers:<br>";
             for (let i = 0; i < towers.length; i++) {
-              title += towers[i];
               inner += towers[i];
-              if (i < towers.length - 1) {
-                title += " - ";
-                inner += " - ";
-              }
+              if (i < towers.length - 1) inner += " - ";
             }
           }
 
-          $(`.${class_name} .hexagon-inner`).attr("title", title);
           $(`#${class_name}-modal .modal-body`).html(inner);
 
           switch (tile_data.TileType) {
