@@ -19,7 +19,7 @@ body {
     background-color: black;
 }
 
-button {
+button:not(.close) {
     width: var(--sidebar_width);
 }
 

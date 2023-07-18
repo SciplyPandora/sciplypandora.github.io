@@ -254,6 +254,45 @@ $(document).ready(function () {
     "Lych",
     "Vortex"
   ];
+  const abbreviations = {
+    DartMonkey: "Dart",
+    BoomerangMonkey: "Boomer",
+    BombShooter: "Bomb",
+    TackShooter: "Tack",
+    IceMonkey: "Ice",
+    GlueGunner: "Glue",
+    SniperMonkey: "Sniper",
+    MonkeySub: "Sub",
+    MonkeyBuccaneer: "Bucc",
+    MonkeyAce: "Ace",
+    HeliPilot: "Heli",
+    MortarMonkey: "Mortar",
+    DartlingGunner: "Dartling",
+    WizardMonkey: "Wiz",
+    SuperMonkey: "Super",
+    NinjaMonkey: "Ninja",
+    Alchemist: "Alch",
+    Druid: "Druid",
+    BananaFarm: "Farm",
+    SpikeFactory: "Spac",
+    MonkeyVillage: "Village",
+    EngineerMonkey: "Engi",
+    BeastHandler: "Handler",
+    Quincy: "Quincy",
+    Gwendolin: "Gwen",
+    StrikerJones: "Jones",
+    ObynGreenfoot: "Obyn",
+    Geraldo: "Geraldo",
+    CaptainChurchill: "Churchill",
+    Benjamin: "Ben",
+    Ezili: "Ezili",
+    PatFusty: "Pat",
+    Adora: "Adora",
+    AdmiralBrickell: "Brickell",
+    Etienne: "Eti",
+    Sauda: "Sauda",
+    Psi: "Psi",
+  }
   const ct_24_start_date_milli = 1687903200000;
   const one_day_milli = 86400000;
   let config = localStorage["config"] ? JSON.parse(localStorage["config"]) : null;
@@ -353,6 +392,14 @@ $(document).ready(function () {
     $("#ticket-count").text($(`.${colours[config["rots"]]}`).length - 1);
   }
 
+  function create_modal (node, title) {
+    $("#colour-modal").after(`<div id="${node}-modal" class="modal" tabindex="-1" role="dialog"></div>`);
+    $(`#${node}-modal`).append(`<div class="modal-dialog" role="document"><div class="modal-content"></div></div></div>`);
+    let header = $(`<div class="modal-header"><h5 class="modal-title">${title}</h5><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>`);
+    let body = $(`<div class="modal-body"></div>`);
+    $(`#${node}-modal .modal-content`).append(header).append(body);
+  }
+
   function init_grid () {
     for (let node in nodes) {
       let node_name = nodes[node];
@@ -374,6 +421,8 @@ $(document).ready(function () {
         inner.append(`<img src="images/empty.png">`);
       }
       inner.append(`<div class="tile-code hidden">${node_name}</div>`);
+
+      create_modal(node, nodes[node]);
     }
   }
 
@@ -501,8 +550,9 @@ $(document).ready(function () {
 
         for (const tile_raw of tiles_data) {
           if (tile_raw === null) continue;
-          let title = "";
           const tile_data = JSON.parse(tile_raw);
+          let title = "";
+          let inner = "";
           let class_name = get_node_id(tile_data.Code);
           let game_data = tile_data.GameData;
           let tile_type = tile_data.TileType;
@@ -524,46 +574,66 @@ $(document).ready(function () {
             let boss = bosses[game_data.bossData.bossBloon];
             tiers = game_data.bossData.TierCount;
             title += `${tiers} Tier ${boss}\n`;
+            inner += `${tiers} Tier ${boss}<br>`;
           } else {
             title += `${game_type}\n`;
+            inner += `${game_type}<br>`;
           }
           title += `${map} - ${difficulty} ${game_mode}\n`;
           title += `$${start_cash} - ${start_round}/${end_round !== -1 ? end_round : `${tiers * 20 + 20}+`}\n`;
-          if (max_towers !== -1) title += `Max Towers: ${max_towers}\n`;
+          inner += `${map} - ${difficulty} ${game_mode}<br>`;
+          inner += `$${start_cash} - ${start_round}/${end_round !== -1 ? end_round : `${tiers * 20 + 20}+`}<br>`;
+          if (max_towers !== -1) {
+            title += `Max Towers: ${max_towers}\n`;
+            inner += `Max Towers: ${max_towers}<br>`;
+          }
 
           for (let item of game_data.dcModel.towers._items) {
             if (item && item.max) {
               if (item.isHero) {
-                heroes.push(item.tower);
+                heroes.push(abbreviations[item.tower]);
               } else {
                 if (item.max === -1) {
-                  towers.push(item.tower);
+                  towers.push(abbreviations[item.tower]);
                 } else {
-                  towers.push(`${item.max}x ${item.tower}`);
+                  towers.push(`${item.max}x ${abbreviations[item.tower]}`);
                 }
               }
             }
           }
 
           title += "\n";
+          inner += "<br>";
 
           if (heroes.length) {
-            title += "Heroes:\n"
+            title += "Heroes:\n";
+            inner += "Heroes:<br>";
             for (let i = 0; i < heroes.length; i++) {
               title += heroes[i];
-              if (i < heroes.length - 1) title += " - ";
+              inner += heroes[i];
+              if (i < heroes.length - 1) {
+                title += " - ";
+                inner += " - ";
+              }
             }
             title += "\n\n";
+            inner += "<br><br>";
           }
           if (towers.length) {
-            title += "Towers:\n"
+            title += "Towers:\n";
+            inner += "Towers:<br>";
             for (let i = 0; i < towers.length; i++) {
               title += towers[i];
-              if (i < towers.length - 1) title += " - ";
+              inner += towers[i];
+              if (i < towers.length - 1) {
+                title += " - ";
+                inner += " - ";
+              }
             }
           }
 
           $(`.${class_name} .hexagon-inner`).attr("title", title);
+          $(`#${class_name}-modal .modal-body`).html(inner);
 
           switch (tile_data.TileType) {
             case "Banner":
@@ -610,7 +680,7 @@ $(document).ready(function () {
     $("a").remove();
   });
 
-  $(".tile").not(".immutable").click(function () {
+  $(".tile").not(".immutable").click(function (e) {
     let node = $(this).attr("class").split(" ")[2];
     let inner = $(this).children().first();
     let home_colour = colours[config["rots"]];
@@ -619,24 +689,27 @@ $(document).ready(function () {
       : null;
     let image = inner.children("img").attr("class");
     let relic = $("#select :selected").text();
-
-    if ($("#toggle-markers").text() === "Banners") {
-      if (image === "banner") {
-        update_image(node);
-      } else if (image === undefined) {
-        update_image(node, "banner");
-      }
-    } else if ($("#toggle-markers").text() === "Relics") {
-      if (image === undefined) {
-        update_image(node, relic);
-      } else if (image !== "banner") {
-        update_image(node);
-      }
+    if (e.shiftKey && $(`#${node}-modal .modal-body`).html()) {
+      $(`#${node}-modal`).modal();
     } else {
-      if (colour === home_colour) {
-        update_colour(node);
+      if ($("#toggle-markers").text() === "Banners") {
+        if (image === "banner") {
+          update_image(node);
+        } else if (image === undefined) {
+          update_image(node, "banner");
+        }
+      } else if ($("#toggle-markers").text() === "Relics") {
+        if (image === undefined) {
+          update_image(node, relic);
+        } else if (image !== "banner") {
+          update_image(node);
+        }
       } else {
-        update_colour(node, home_colour);
+        if (colour === home_colour) {
+          update_colour(node);
+        } else {
+          update_colour(node, home_colour);
+        }
       }
     }
   });
