@@ -358,14 +358,20 @@ $(document).ready(function () {
   function update_colour (node, colour=null) {
     config[get_rotated_node(node, 6 - config["rots"])]["colour"] = colour;
     localStorage["config"] = JSON.stringify(config);
+    let ticket_count = $(".x7y0z7 .ticket-count");
 
     if (colour) {
       $(`.${node} .hexagon-inner`).attr("class", `hexagon-inner ${colour}`);
     } else {
       $(`.${node} .hexagon-inner`).attr("class", "hexagon-inner");
     }
-
-    $("#ticket-count").text($(`.${colours[config["rots"]]}`).length - 1);
+    
+    ticket_count.text($(`.${colours[config["rots"]]}`).length - 1);
+    if (ticket_count.text() === "0") {
+      ticket_count.attr("class", "ticket-count hidden");
+    } else {
+      ticket_count.attr("class", "ticket-count");
+    }
   }
 
   function update_image (node, image=null) {
@@ -382,6 +388,8 @@ $(document).ready(function () {
   function rotate_grid (rots=1) {
     config["rots"] = (config["rots"] + rots) % 6;
     localStorage["config"] = JSON.stringify(config);
+    let ticket_count = $(".x7y0z7 .ticket-count");
+    ticket_count.attr("class", "ticket-count hidden");
 
     $(".tile").attr("class", function (ind, val) {
       let split_arr = val.split(" ");
@@ -389,7 +397,13 @@ $(document).ready(function () {
       return split_arr.join(" ");
     });
 
-    $("#ticket-count").text($(`.${colours[config["rots"]]}`).length - 1);
+    ticket_count = $(".x7y0z7 .ticket-count");
+    ticket_count.text($(`.${colours[config["rots"]]}`).length - 1);
+    if (ticket_count.text() === "0") {
+      ticket_count.attr("class", "ticket-count hidden");
+    } else {
+      ticket_count.attr("class", "ticket-count");
+    }
   }
 
   function create_modal (node, title) {
@@ -420,7 +434,11 @@ $(document).ready(function () {
       } else {
         inner.append(`<img src="images/empty.png">`);
       }
-      inner.append(`<div class="tile-code hidden">${node_name}</div>`);
+      if (immutable_nodes.includes(node)) {
+        inner.append(`<div class="ticket-count hidden">0</div>`);
+      } else {
+        inner.append(`<div class="tile-code hidden">${node_name}</div>`);
+      }
 
       create_modal(node, nodes[node]);
     }
@@ -471,7 +489,13 @@ $(document).ready(function () {
       }
     }
 
-    $("#ticket-count").text($(`.${colours[config["rots"]]}`).length - 1);
+    let ticket_count = $(".x7y0z7 .ticket-count");
+    ticket_count.text($(`.${colours[config["rots"]]}`).length - 1);
+    if (ticket_count.text() === "0") {
+      ticket_count.attr("class", "ticket-count hidden");
+    } else {
+      ticket_count.attr("class", "ticket-count");
+    }
     localStorage["config"] = JSON.stringify(config);
   }
   
