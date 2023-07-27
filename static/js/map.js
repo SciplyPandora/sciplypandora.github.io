@@ -379,9 +379,9 @@ $(document).ready(function () {
     localStorage["config"] = JSON.stringify(config);
 
     if (image) {
-      $(`.${node} img`).attr("src", `images/${image}.webp`).addClass(image);
+      $(`.${node} img`).attr("src", `/static/images/${image}.webp`).addClass(image);
     } else {
-      $(`.${node} img`).attr("src", "images/empty.png").removeAttr("class");
+      $(`.${node} img`).attr("src", "/static/images/empty.png").removeAttr("class");
     }
   }
   
@@ -430,9 +430,9 @@ $(document).ready(function () {
         inner.addClass(colour);
       }
       if (image) {
-        inner.append(`<img src="images/${image}.png">`);
+        inner.append(`<img src="/static/images/${image}.png">`);
       } else {
-        inner.append(`<img src="images/empty.png">`);
+        inner.append(`<img src="/static/images/empty.png">`);
       }
       if (immutable_nodes.includes(node)) {
         inner.append(`<div class="ticket-count hidden">0</div>`);
@@ -459,7 +459,7 @@ $(document).ready(function () {
   function load_config (config_obj) {
     let tiles = $(".tile").not(".immutable").children();
     tiles.attr("class", "hexagon-inner");
-    tiles.children("img").removeAttr("class").attr("src", "images/empty.png");
+    tiles.children("img").removeAttr("class").attr("src", "/static/images/empty.png");
     let rots = config_obj["rots"];
 
     for (let key in config_obj) {
@@ -480,7 +480,7 @@ $(document).ready(function () {
             $(`.${get_rotated_node(node, rots)} .hexagon-inner`).attr("class", `hexagon-inner ${colour}`);
           }
           if (image) {
-            $(`.${get_rotated_node(node, rots)} img`).attr("src", `images/${image}.webp`).addClass(image);
+            $(`.${get_rotated_node(node, rots)} img`).attr("src", `/static/images/${image}.webp`).addClass(image);
           }
         } else {
           init_config();

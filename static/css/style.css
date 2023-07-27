@@ -105,7 +105,7 @@ button:not(.close) {
     width: 100%;
     font-size: var(--ticket_count_font_size);
     text-align: center;
-    color: white;
+    color: black;
 }
 
 .hidden {
