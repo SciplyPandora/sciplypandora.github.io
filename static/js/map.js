@@ -171,21 +171,38 @@ $(document).ready(function () {
     x7y7z0: "EAA",
   };
   const init_nodes = {
-    x7y0z0: {colour: "red", image: null},
-    x0y7z0: {colour: "blue", image: null},
-    x0y0z7: {colour: "pink", image: null},
-    x7y7z0: {colour: "yellow", image: null},
-    x7y0z7: {colour: "purple", image: null},
-    x0y7z7: {colour: "green", image: null}
+    AAA: {colour: "purple"},
+    BAA: {colour: "pink"},
+    CAA: {colour: "green"},
+    DAA: {colour: "blue"},
+    EAA: {colour: "yellow"},
+    FAA: {colour: "red"}
   };
   const immutable_nodes = [
-    "x7y0z0",
-    "x0y7z0",
-    "x0y0z7",
-    "x7y7z0",
-    "x7y0z7",
-    "x0y7z7"
+    "AAA",
+    "BAA",
+    "CAA",
+    "DAA",
+    "EAA",
+    "FAA"
   ];
+  const config_attributes = [
+    "colour",
+    "tile_type",
+    "relic",
+    "game_type",
+    "boss",
+    "tiers",
+    "game_mode",
+    "map",
+    "difficulty",
+    "cash",
+    "start_round",
+    "end_round",
+    "max_towers",
+    "heroes",
+    "towers"
+  ]
   const colours = [
     "purple",
     "pink",
@@ -237,7 +254,7 @@ $(document).ready(function () {
     "techbot",
     "thrive"
   ];
-  const game_modes = [
+  const game_types = [
     "",
     "",
     "Race",
@@ -292,10 +309,12 @@ $(document).ready(function () {
     Etienne: "Eti",
     Sauda: "Sauda",
     Psi: "Psi",
-  }
-  const ct_24_start_date_milli = 1687903200000;
+  };
+  const ct_start_season = 26;
+  const ct_26_start_date_milli = 1690927200000;
   const one_day_milli = 86400000;
-  let config = localStorage["config"] ? JSON.parse(localStorage["config"]) : null;
+  let config = localStorage["map"] ? JSON.parse(localStorage["map"]) : null;
+  let rots = 0;
   
 
   function pascal_to_snake_case (text) {
@@ -319,11 +338,11 @@ $(document).ready(function () {
   }
 
   function get_node_id (node_name) {
-    try {
-      return get_rotated_node(Object.keys(nodes).find(key => nodes[key] === node_name), config["rots"]);
-    } catch (e) {
-      return null;
-    }
+    return get_rotated_node(Object.keys(nodes).find(key => nodes[key] === node_name), rots);
+  }
+
+  function get_node_name (node_id) {
+    return nodes[get_rotated_node(node_id, 6 - rots)];
   }
 
   function get_node_neighbours (node) {
@@ -356,9 +375,11 @@ $(document).ready(function () {
   }
 
   function update_colour (node, colour=null) {
-    config[get_rotated_node(node, 6 - config["rots"])]["colour"] = colour;
-    localStorage["config"] = JSON.stringify(config);
+    let node_name = get_node_name(node);
+    console.log(node_name);
     let ticket_count = $(".x7y0z7 .ticket-count");
+    config[node_name]["colour"] = colour;
+    localStorage["map"] = JSON.stringify(config);
 
     if (colour) {
       $(`.${node} .hexagon-inner`).attr("class", `hexagon-inner ${colour}`);
@@ -366,7 +387,7 @@ $(document).ready(function () {
       $(`.${node} .hexagon-inner`).attr("class", "hexagon-inner");
     }
     
-    ticket_count.text($(`.${colours[config["rots"]]}`).length - 1);
+    ticket_count.text($(`.${colours[rots]}`).length - 1);
     if (ticket_count.text() === "0") {
       ticket_count.attr("class", "ticket-count hidden");
     } else {
@@ -375,30 +396,38 @@ $(document).ready(function () {
   }
 
   function update_image (node, image=null) {
-    config[get_rotated_node(node, 6 - config["rots"])]["image"] = image;
-    localStorage["config"] = JSON.stringify(config);
+    let node_name = get_node_name(node);
+    console.log(node_name);
+    if (image === null) {
+      config[node_name]["tile_type"] = "regular";
+    } else if (image === "banner") {
+      config[node_name]["tile_type"] = "banner";
+    } else {
+      config[node_name]["tile_type"] = "relic";
+      config[node_name]["relic"] = image;
+    }
+    localStorage["map"] = JSON.stringify(config);
 
     if (image) {
-      $(`.${node} img`).attr("src", `/static/images/${image}.webp`).addClass(image);
+      $(`.${node} img`).attr("src", `/static/images/tiles/${image}.webp`).addClass(image);
     } else {
-      $(`.${node} img`).attr("src", "/static/images/empty.png").removeAttr("class");
+      $(`.${node} img`).attr("src", "/static/images/tiles/empty.png").removeAttr("class");
     }
   }
   
-  function rotate_grid (rots=1) {
-    config["rots"] = (config["rots"] + rots) % 6;
-    localStorage["config"] = JSON.stringify(config);
+  function rotate_grid (rotations=1) {
+    rots = (rots + rotations) % 6;
     let ticket_count = $(".x7y0z7 .ticket-count");
     ticket_count.attr("class", "ticket-count hidden");
 
     $(".tile").attr("class", function (ind, val) {
       let split_arr = val.split(" ");
-      split_arr[2] = get_rotated_node(split_arr[2], rots);
+      split_arr[2] = get_rotated_node(split_arr[2], rotations);
       return split_arr.join(" ");
     });
 
     ticket_count = $(".x7y0z7 .ticket-count");
-    ticket_count.text($(`.${colours[config["rots"]]}`).length - 1);
+    ticket_count.text($(`.${colours[rots]}`).length - 1);
     if (ticket_count.text() === "0") {
       ticket_count.attr("class", "ticket-count hidden");
     } else {
@@ -416,93 +445,99 @@ $(document).ready(function () {
 
   function init_grid () {
     for (let node in nodes) {
-      let node_name = nodes[node];
-      let colour = node in init_nodes ? init_nodes[node]["colour"] : null;
-      let image = node in init_nodes ? init_nodes[node]["image"] : null;
+      let node_name = get_node_name(node);
+      let colour = node_name in init_nodes ? init_nodes[node_name]["colour"] : null;
       $(".col-right").after(`<div class="hexagon-border tile ${node}"></div>`);
       $(`.${node}`).append(`<div class="hexagon-inner"></div>`);
       let inner = $(`.${node} div`);
       
-      if (immutable_nodes.includes(node)) {
+      if (immutable_nodes.includes(node_name)) {
         $(`.${node}`).addClass("immutable");
       }
       if (colour) {
         inner.addClass(colour);
       }
-      if (image) {
-        inner.append(`<img src="/static/images/${image}.png">`);
-      } else {
-        inner.append(`<img src="/static/images/empty.png">`);
-      }
-      if (immutable_nodes.includes(node)) {
+      inner.append(`<img src="/static/images/tiles/empty.png">`);
+      if (immutable_nodes.includes(node_name)) {
         inner.append(`<div class="ticket-count hidden">0</div>`);
       } else {
         inner.append(`<div class="tile-code hidden">${node_name}</div>`);
       }
 
-      create_modal(node, nodes[node]);
+      create_modal(node, node_name);
     }
+  }
+
+  function check_config (config_obj) {
+    for (let node of Object.values(nodes)) {
+      if (!(node in config_obj)) {
+        return false;
+      }
+    }
+    for (let node in init_nodes) {
+      if (config_obj[node]["colour"] !== init_nodes[node]["colour"]) {
+        return false;
+      }
+    }
+    return true;
   }
 
   function init_config () {
-    config = {rots: 0};
-    for (let node in nodes) {
+    config = {};
+    for (let node of Object.values(nodes)) {
+      config[node] = {};
+      for (let attribute of config_attributes) {
+        config[node][attribute] = null;
+      }
+      config[node]["tile_type"] = "regular";
+
       if (node in init_nodes) {
-        config[node] = init_nodes[node];
-      } else {
-        config[node] = {colour: null, image: null};
+        for (let attribute in init_nodes[node]) {
+          config[node][attribute] = init_nodes[node][attribute];
+        }
       }
     }
-    localStorage["config"] = JSON.stringify(config);
+    localStorage["map"] = JSON.stringify(config);
   }
 
-  function load_config (config_obj) {
+  function load_config_json (config_obj) {
     let tiles = $(".tile").not(".immutable").children();
     tiles.attr("class", "hexagon-inner");
-    tiles.children("img").removeAttr("class").attr("src", "/static/images/empty.png");
-    let rots = config_obj["rots"];
+    tiles.children("img").removeAttr("class").attr("src", "/static/images/tiles/empty.png");
 
-    for (let key in config_obj) {
-      if (key !== "rots" && !(key in nodes)) {
-        init_config();
-        break;
-      }
+    if (!(check_config(config_obj))) {
+      init_config();
     }
 
-    if (rots === null) {
-      init_config();
-    } else {
-      for (let node in nodes) {
-        if (node in config_obj && !(node in init_nodes && JSON.stringify(config_obj[node]) !== JSON.stringify(init_nodes[node]))) {
-          let colour = config_obj[node]["colour"];
-          let image = config_obj[node]["image"];
-          if (colour) {
-            $(`.${get_rotated_node(node, rots)} .hexagon-inner`).attr("class", `hexagon-inner ${colour}`);
-          }
-          if (image) {
-            $(`.${get_rotated_node(node, rots)} img`).attr("src", `/static/images/${image}.webp`).addClass(image);
-          }
+    for (let node of Object.values(nodes)) {
+      let colour = config_obj[node]["colour"];
+      let tile_type = config_obj[node]["tile_type"];
+      let relic = config_obj[node]["relic"];
+      if (colour) {
+        $(`.${get_node_id(node)} .hexagon-inner`).attr("class", `hexagon-inner ${colour}`);
+      }
+      if (tile_type !== "regular") {
+        if (tile_type === "banner") {
+          $(`.${get_node_id(node)} img`).attr("src", "/static/images/tiles/banner.webp").addClass("banner");
         } else {
-          init_config();
-          break;
+          $(`.${get_node_id(node)} img`).attr("src", `/static/images/tiles/${relic}.webp`).addClass(relic);
         }
       }
     }
 
     let ticket_count = $(".x7y0z7 .ticket-count");
-    ticket_count.text($(`.${colours[config["rots"]]}`).length - 1);
+    ticket_count.text($(`.${colours[rots]}`).length - 1);
     if (ticket_count.text() === "0") {
       ticket_count.attr("class", "ticket-count hidden");
     } else {
       ticket_count.attr("class", "ticket-count");
     }
-    localStorage["config"] = JSON.stringify(config);
   }
   
 
   init_grid();
   if (config) {
-    load_config(config);
+    load_config_json(config);
   } else {
     init_config();
   }
@@ -559,60 +594,63 @@ $(document).ready(function () {
   $("#upload").change(function (e) {
     let file = e.target.files[0];
     $(this).val("");
+    rotate_grid(6 - rots);
     if (file.type == "application/zip") {
       JSZip.loadAsync(file).then(async (content) => {
         let tile_promises = [];
-        for (const tile_path of Object.keys(content.files)) {
+        for (let tile_path in content.files) {
           if (!content.files[tile_path].dir) {
             tile_promises.push(content.files[tile_path].async("text"));
           }
         }
-        let tiles_data = await Promise.all(tile_promises);
+        let tile_data = await Promise.all(tile_promises);
 
-        rotate_grid(6 - config["rots"]);
         init_config();
 
-        for (const tile_raw of tiles_data) {
+        for (let tile_raw of tile_data) {
           if (tile_raw === null) continue;
-          const tile_data = JSON.parse(tile_raw);
+          let data = JSON.parse(tile_raw);
           let inner = "";
-          let class_name = get_node_id(tile_data.Code);
-          let game_data = tile_data.GameData;
-          let tile_type = tile_data.TileType;
-          let game_type = game_modes[game_data.subGameType];
-          let map = game_data.selectedMap;
-          let difficulty = game_data.selectedDifficulty;
-          let game_mode = game_data.selectedMode;
-          let max_towers = game_data.dcModel.maxTowers;
-          let start_rules = game_data.dcModel.startRules;
-          let start_cash = start_rules.cash;
-          let start_round = start_rules.round;
-          let end_round = start_rules.endRound;
-          let tiers;
+          let class_name = get_node_id(data["Code"]);
+          let game_data = data["GameData"];
+          let tile_type = data["TileType"] === "TeamFirstCapture" ? "Regular" : data["TileType"];
+          let relic = data["RelicType"];
+          let dc_model = game_data["dcModel"];
+          let start_rules = dc_model["startRules"];
+          let game_type = game_types[game_data["subGameType"]];
+          let game_mode = dc_model["mode"];
+          let map = dc_model["map"];
+          let difficulty = dc_model["difficulty"];
+          let cash = start_rules["cash"];
+          let start_round = start_rules["round"];
+          let end_round = start_rules["endRound"];
+          let max_towers = dc_model["maxTowers"];
           let heroes = [];
+          let excluded_heroes = ["Quincy", "Gwen", "Jones", "Obyn", "Geraldo", "Churchill", "Ben", "Ezili", "Pat", "Adora", "Brickell", "Eti", "Sauda", "Psi"];
           let towers = [];
 
-          if (tile_type === "TeamFirstCapture") tile_type = "Regular";
           if (game_type === "Boss") {
-            let boss = bosses[game_data.bossData.bossBloon];
-            tiers = game_data.bossData.TierCount;
+            let boss = bosses[game_data["bossData"]["bossBloon"]];
+            let tiers = game_data["bossData"]["TierCount"];
             inner += `${tiers} Tier ${boss}<br>`;
           } else {
             inner += `${game_type}<br>`;
           }
           inner += `${map} - ${difficulty} ${game_mode}<br>`;
-          inner += `$${start_cash} - ${start_round}/${end_round !== -1 ? end_round : `${tiers * 20 + 20}+`}<br>`;
+          inner += `$${cash} - ${start_round}/${end_round !== -1 ? end_round : `${tiers * 20 + 20}+`}<br>`;
           if (max_towers !== -1) inner += `Max Towers: ${max_towers}<br>`;
 
-          for (let item of game_data.dcModel.towers._items) {
-            if (item && item.max) {
-              if (item.isHero) {
-                heroes.push(abbreviations[item.tower]);
+          for (let item of dc_model["towers"]["_items"]) {
+            let tower = item["tower"];
+            let max = item["max"];
+            if (item && max) {
+              if (item["isHero"]) {
+                heroes.push(abbreviations[tower]);
               } else {
-                if (item.max === -1) {
-                  towers.push(abbreviations[item.tower]);
+                if (max === -1) {
+                  towers.push(abbreviations[tower]);
                 } else {
-                  towers.push(`${item.max}x ${abbreviations[item.tower]}`);
+                  towers.push(`${max}x ${abbreviations[tower]}`);
                 }
               }
             }
@@ -638,18 +676,17 @@ $(document).ready(function () {
 
           $(`#${class_name}-modal .modal-body`).html(inner);
 
-          switch (tile_data.TileType) {
+          switch (tile_type) {
             case "Banner":
               config[class_name]["image"] = "banner";
               break;
             case "Relic":
-              let relic_type = tile_data.RelicType;
-              config[class_name]["image"] = pascal_to_snake_case(relic_type);
+              config[class_name]["image"] = pascal_to_snake_case(relic);
               break;
           }
         }
 
-        load_config(config);
+        load_config_zip(config);
       });
     } else {
       let reader = new FileReader();
@@ -657,7 +694,7 @@ $(document).ready(function () {
       reader.onload = function () {
         try {
           config = JSON.parse(reader.result);
-          load_config(config);
+          load_config_json(config);
         } catch {}
       };
     }
@@ -665,8 +702,8 @@ $(document).ready(function () {
 
   $("#export").click(function () {
     let date = new Date();
-    let week = Math.floor((date.getTime() - ct_24_start_date_milli) / one_day_milli / 7);
-    let ct_season = 24 + Math.ceil(week / 2);
+    let week = Math.floor((date.getTime() - ct_26_start_date_milli) / one_day_milli / 7);
+    let ct_season = ct_start_season + Math.ceil(week / 2);
     let ct_day = week % 2 ? 0 : Math.floor(
       ((date.getTime() - ct_24_start_date_milli) % (one_day_milli * 7)) / one_day_milli + 1
     );
@@ -686,7 +723,7 @@ $(document).ready(function () {
   $(".tile").not(".immutable").click(function (e) {
     let node = $(this).attr("class").split(" ")[2];
     let inner = $(this).children().first();
-    let home_colour = colours[config["rots"]];
+    let home_colour = colours[rots];
     let colour = inner.attr("class").split(" ")[1]
       ? inner.attr("class").split(" ")[1]
       : null;
