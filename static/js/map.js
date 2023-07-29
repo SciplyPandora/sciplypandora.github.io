@@ -200,6 +200,7 @@ $(document).ready(function () {
     "start_round",
     "end_round",
     "max_towers",
+    "selling",
     "heroes",
     "towers"
   ]
@@ -376,7 +377,6 @@ $(document).ready(function () {
 
   function update_colour (node, colour=null) {
     let node_name = get_node_name(node);
-    console.log(node_name);
     let ticket_count = $(".x7y0z7 .ticket-count");
     config[node_name]["colour"] = colour;
     localStorage["map"] = JSON.stringify(config);
@@ -397,7 +397,6 @@ $(document).ready(function () {
 
   function update_image (node, image=null) {
     let node_name = get_node_name(node);
-    console.log(node_name);
     if (image === null) {
       config[node_name]["tile_type"] = "regular";
     } else if (image === "banner") {
