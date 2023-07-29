@@ -499,7 +499,7 @@ $(document).ready(function () {
     localStorage["map"] = JSON.stringify(config);
   }
 
-  function load_config_json (config_obj) {
+  function load_config (config_obj) {
     let tiles = $(".tile").not(".immutable").children();
     tiles.attr("class", "hexagon-inner");
     tiles.children("img").removeAttr("class").attr("src", "/static/images/tiles/empty.png");
@@ -536,7 +536,7 @@ $(document).ready(function () {
 
   init_grid();
   if (config) {
-    load_config_json(config);
+    load_config(config);
   } else {
     init_config();
   }
@@ -610,7 +610,8 @@ $(document).ready(function () {
           if (tile_raw === null) continue;
           let data = JSON.parse(tile_raw);
           let inner = "";
-          let class_name = get_node_id(data["Code"]);
+          let node = data["Code"];
+          let node_id = get_node_id(node);
           let game_data = data["GameData"];
           let tile_type = data["TileType"] === "TeamFirstCapture" ? "Regular" : data["TileType"];
           let relic = data["RelicType"];
@@ -625,24 +626,24 @@ $(document).ready(function () {
           let end_round = start_rules["endRound"];
           let max_towers = dc_model["maxTowers"];
           let heroes = [];
-          let excluded_heroes = ["Quincy", "Gwen", "Jones", "Obyn", "Geraldo", "Churchill", "Ben", "Ezili", "Pat", "Adora", "Brickell", "Eti", "Sauda", "Psi"];
           let towers = [];
 
           if (game_type === "Boss") {
             let boss = bosses[game_data["bossData"]["bossBloon"]];
             let tiers = game_data["bossData"]["TierCount"];
             inner += `${tiers} Tier ${boss}<br>`;
+            end_round = `${tiers * 20 + 20}+`;
           } else {
             inner += `${game_type}<br>`;
           }
           inner += `${map} - ${difficulty} ${game_mode}<br>`;
-          inner += `$${cash} - ${start_round}/${end_round !== -1 ? end_round : `${tiers * 20 + 20}+`}<br>`;
+          inner += `$${cash} - ${start_round}/${end_round}<br>`;
           if (max_towers !== -1) inner += `Max Towers: ${max_towers}<br>`;
 
           for (let item of dc_model["towers"]["_items"]) {
-            let tower = item["tower"];
-            let max = item["max"];
-            if (item && max) {
+            if (item && item["max"]) {
+              let tower = item["tower"];
+              let max = item["max"];
               if (item["isHero"]) {
                 heroes.push(abbreviations[tower]);
               } else {
@@ -673,19 +674,20 @@ $(document).ready(function () {
             }
           }
 
-          $(`#${class_name}-modal .modal-body`).html(inner);
+          $(`#${node_id}-modal .modal-body`).html(inner);
 
           switch (tile_type) {
             case "Banner":
-              config[class_name]["image"] = "banner";
+              config[node]["tile_type"] = "banner";
               break;
             case "Relic":
-              config[class_name]["image"] = pascal_to_snake_case(relic);
+              config[node]["tile_type"] = "relic";
+              config[node]["relic"] = pascal_to_snake_case(relic);
               break;
           }
         }
 
-        load_config_zip(config);
+        load_config(config);
       });
     } else {
       let reader = new FileReader();
@@ -693,7 +695,7 @@ $(document).ready(function () {
       reader.onload = function () {
         try {
           config = JSON.parse(reader.result);
-          load_config_json(config);
+          load_config(config);
         } catch {}
       };
     }
