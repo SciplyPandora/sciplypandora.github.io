@@ -459,7 +459,6 @@ $(document).ready(function () {
   }
 
   function populate_modals () {
-    console.log(config);
     for (let node in config) {
       if (!(node in init_nodes)) {
         let inner = "<div>";
@@ -478,7 +477,6 @@ $(document).ready(function () {
   
         let heroes = config[node]["heroes"];
         let towers = config[node]["towers"];
-        console.log(heroes, towers);
         if (heroes.length) {
           inner += "Heroes:<br>";
           for (let i = 0; i < heroes.length; i++) {
@@ -565,7 +563,6 @@ $(document).ready(function () {
   }
 
   function load_config () {
-    console.log(config);
     let tiles = $(".tile").not(".immutable").children();
     tiles.attr("class", "hexagon-inner");
     tiles.children("img").removeAttr("class").attr("src", "/static/images/tiles/empty.png");
@@ -762,7 +759,7 @@ $(document).ready(function () {
       : null;
     let image = inner.children("img").attr("class");
     let relic = $("#select :selected").text();
-    if (true || e.shiftKey && $(`#${node}-modal .modal-body`).html()) {
+    if (e.shiftKey && $(`#${node}-modal .modal-body`).html()) {
       $(`#${node}-modal`).modal();
     } else {
       if ($("#toggle-markers").text() === "Banners") {
