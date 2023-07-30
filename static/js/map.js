@@ -258,19 +258,35 @@ $(document).ready(function () {
   const game_types = [
     "",
     "",
-    "Race",
+    "race",
     "",
-    "Boss",
+    "boss",
     "",
     "",
     "",
-    "Least Cash",
-    "Least Tiers"
+    "least_cash",
+    "least_tiers"
   ];
   const bosses = [
     "Bloonarius",
     "Lych",
     "Vortex"
+  ];
+  const all_heroes = [
+    "quincy",
+    "gwendolin",
+    "striker_jones",
+    "obyn_greenfoot",
+    "geraldo",
+    "churchill",
+    "benjamin",
+    "ezili",
+    "pat_fusty",
+    "adora",
+    "admiral_brickell",
+    "etienne",
+    "sauda",
+    "psi"
   ];
   const abbreviations = {
     DartMonkey: "Dart",
@@ -442,6 +458,53 @@ $(document).ready(function () {
     $(`#${node}-modal .modal-content`).append(header).append(body);
   }
 
+  function populate_modals () {
+    console.log(config);
+    for (let node in config) {
+      if (!(node in init_nodes)) {
+        let inner = "<div>";
+        let node_id = get_node_id(node);
+        let end_round = config[node]["end_round"]
+        if (config[node]["game_type"] === "boss") {
+          inner += `${config[node]["tiers"]} Tier ${config[node]["boss"]}<br>`;
+          end_round = `${config[node]["tiers"] * 20 + 20}+`;
+        } else {
+          inner += `${config[node]["game_type"]}<br>`;
+        }
+        inner += `${config[node]["map"]} - ${config[node]["difficulty"]} ${config[node]["game_mode"]}<br>`;
+        inner += `$${config[node]["cash"]} - ${config[node]["start_round"]}/${end_round}<br>`;
+        if (config[node]["max_towers"] !== -1) inner += `Max Towers: ${config[node]["max_towers"]}<br>`;
+        inner += "<br>";
+  
+        let heroes = config[node]["heroes"];
+        let towers = config[node]["towers"];
+        console.log(heroes, towers);
+        if (heroes.length) {
+          inner += "Heroes:<br>";
+          for (let i = 0; i < heroes.length; i++) {
+            inner += heroes[i];
+            if (i < heroes.length - 1) inner += " - ";
+          }
+          inner += "<br><br>";
+        }
+        if (towers.length) {
+          inner += "Towers:<br>";
+          for (let i = 0; i < towers.length; i++) {
+            if (towers[i]["max"] === -1) {
+              inner += towers[i]["tower"];
+            } else {
+              inner += `${towers[i]["max"]}x ${towers[i]["tower"]}`;
+            }
+            if (i < towers.length - 1) inner += " - ";
+          }
+        }
+
+        inner += "</div>";
+        $(`#${node_id}-modal .modal-body`).html(inner);
+      }
+    }
+  }
+
   function init_grid () {
     for (let node in nodes) {
       let node_name = get_node_name(node);
@@ -489,6 +552,8 @@ $(document).ready(function () {
         config[node][attribute] = null;
       }
       config[node]["tile_type"] = "regular";
+      config[node]["heroes"] = [];
+      config[node]["towers"] = [];
 
       if (node in init_nodes) {
         for (let attribute in init_nodes[node]) {
@@ -499,30 +564,36 @@ $(document).ready(function () {
     localStorage["map"] = JSON.stringify(config);
   }
 
-  function load_config (config_obj) {
+  function load_config () {
+    console.log(config);
     let tiles = $(".tile").not(".immutable").children();
     tiles.attr("class", "hexagon-inner");
     tiles.children("img").removeAttr("class").attr("src", "/static/images/tiles/empty.png");
 
-    if (!(check_config(config_obj))) {
+    if (!(check_config(config))) {
       init_config();
     }
 
+    localStorage["map"] = JSON.stringify(config);
+
     for (let node of Object.values(nodes)) {
-      let colour = config_obj[node]["colour"];
-      let tile_type = config_obj[node]["tile_type"];
-      let relic = config_obj[node]["relic"];
+      let node_id = get_node_id(node);
+      let colour = config[node]["colour"];
+      let tile_type = config[node]["tile_type"];
+      let relic = config[node]["relic"];
       if (colour) {
-        $(`.${get_node_id(node)} .hexagon-inner`).attr("class", `hexagon-inner ${colour}`);
+        $(`.${node_id} .hexagon-inner`).attr("class", `hexagon-inner ${colour}`);
       }
       if (tile_type !== "regular") {
         if (tile_type === "banner") {
-          $(`.${get_node_id(node)} img`).attr("src", "/static/images/tiles/banner.webp").addClass("banner");
+          $(`.${node_id} img`).attr("src", "/static/images/tiles/banner.webp").addClass("banner");
         } else {
-          $(`.${get_node_id(node)} img`).attr("src", `/static/images/tiles/${relic}.webp`).addClass(relic);
+          $(`.${node_id} img`).attr("src", `/static/images/tiles/${relic}.webp`).addClass(relic);
         }
       }
     }
+
+    populate_modals();
 
     let ticket_count = $(".x7y0z7 .ticket-count");
     ticket_count.text($(`.${colours[rots]}`).length - 1);
@@ -536,7 +607,7 @@ $(document).ready(function () {
 
   init_grid();
   if (config) {
-    load_config(config);
+    load_config();
   } else {
     init_config();
   }
@@ -605,89 +676,50 @@ $(document).ready(function () {
         let tile_data = await Promise.all(tile_promises);
 
         init_config();
-
+  
         for (let tile_raw of tile_data) {
           if (tile_raw === null) continue;
           let data = JSON.parse(tile_raw);
-          let inner = "";
           let node = data["Code"];
-          let node_id = get_node_id(node);
           let game_data = data["GameData"];
-          let tile_type = data["TileType"] === "TeamFirstCapture" ? "Regular" : data["TileType"];
-          let relic = data["RelicType"];
           let dc_model = game_data["dcModel"];
           let start_rules = dc_model["startRules"];
-          let game_type = game_types[game_data["subGameType"]];
-          let game_mode = dc_model["mode"];
-          let map = dc_model["map"];
-          let difficulty = dc_model["difficulty"];
-          let cash = start_rules["cash"];
-          let start_round = start_rules["round"];
-          let end_round = start_rules["endRound"];
-          let max_towers = dc_model["maxTowers"];
-          let heroes = [];
-          let towers = [];
-
-          if (game_type === "Boss") {
-            let boss = bosses[game_data["bossData"]["bossBloon"]];
-            let tiers = game_data["bossData"]["TierCount"];
-            inner += `${tiers} Tier ${boss}<br>`;
-            end_round = `${tiers * 20 + 20}+`;
-          } else {
-            inner += `${game_type}<br>`;
-          }
-          inner += `${map} - ${difficulty} ${game_mode}<br>`;
-          inner += `$${cash} - ${start_round}/${end_round}<br>`;
-          if (max_towers !== -1) inner += `Max Towers: ${max_towers}<br>`;
-
+    
+          config[node]["tile_type"] = data["TileType"] === "TeamFirstCapture" ? "regular" : pascal_to_snake_case(data["TileType"]);
+          config[node]["relic"] =  data["RelicType"] !== "None" ? pascal_to_snake_case(data["RelicType"]) : null;
+          config[node]["game_type"] = game_types[game_data["subGameType"]];
+          config[node]["boss"] = "bossData" in game_data ? bosses[game_data["bossData"]["bossBloon"]] : null;
+          config[node]["tiers"] = "bossData" in game_data ? game_data["bossData"]["TierCount"] : null;
+          config[node]["game_mode"] = dc_model["mode"];
+          config[node]["map"] = pascal_to_snake_case(dc_model["map"]);
+          config[node]["difficulty"] = dc_model["difficulty"];
+          config[node]["cash"] = start_rules["cash"];
+          config[node]["start_round"] = start_rules["round"];
+          config[node]["end_round"] = start_rules["endRound"];
+          config[node]["max_towers"] = dc_model["maxTowers"];
+          config[node]["selling"] = !dc_model["disableSelling"];
+    
           for (let item of dc_model["towers"]["_items"]) {
             if (item && item["max"]) {
               let tower = item["tower"];
               let max = item["max"];
               if (item["isHero"]) {
-                heroes.push(abbreviations[tower]);
+                if (tower === "ChosenPrimaryHero") {
+                  config[node]["heroes"] = all_heroes;
+                } else if (config[node]["heroes"] !== all_heroes) {
+                  config[node]["heroes"].push(pascal_to_snake_case(tower));
+                }
               } else {
                 if (max === -1) {
-                  towers.push(abbreviations[tower]);
+                  config[node]["towers"].push({"tower": pascal_to_snake_case(tower), "max": -1});
                 } else {
-                  towers.push(`${max}x ${abbreviations[tower]}`);
+                  config[node]["towers"].push({"tower": pascal_to_snake_case(tower), "max": max});
                 }
               }
             }
           }
-
-          inner += "<br>";
-
-          if (heroes.length) {
-            inner += "Heroes:<br>";
-            for (let i = 0; i < heroes.length; i++) {
-              inner += heroes[i];
-              if (i < heroes.length - 1) inner += " - ";
-            }
-            inner += "<br><br>";
-          }
-          if (towers.length) {
-            inner += "Towers:<br>";
-            for (let i = 0; i < towers.length; i++) {
-              inner += towers[i];
-              if (i < towers.length - 1) inner += " - ";
-            }
-          }
-
-          $(`#${node_id}-modal .modal-body`).html(inner);
-
-          switch (tile_type) {
-            case "Banner":
-              config[node]["tile_type"] = "banner";
-              break;
-            case "Relic":
-              config[node]["tile_type"] = "relic";
-              config[node]["relic"] = pascal_to_snake_case(relic);
-              break;
-          }
         }
-
-        load_config(config);
+        load_config();
       });
     } else {
       let reader = new FileReader();
@@ -695,7 +727,7 @@ $(document).ready(function () {
       reader.onload = function () {
         try {
           config = JSON.parse(reader.result);
-          load_config(config);
+          load_config();
         } catch {}
       };
     }
@@ -730,7 +762,7 @@ $(document).ready(function () {
       : null;
     let image = inner.children("img").attr("class");
     let relic = $("#select :selected").text();
-    if (e.shiftKey && $(`#${node}-modal .modal-body`).html()) {
+    if (true || e.shiftKey && $(`#${node}-modal .modal-body`).html()) {
       $(`#${node}-modal`).modal();
     } else {
       if ($("#toggle-markers").text() === "Banners") {
