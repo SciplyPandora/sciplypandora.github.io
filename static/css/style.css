@@ -1,25 +1,24 @@
 :root {
     --hex_ratio: 0.86602540378;
     --sidebar_width: 9.5em;
-    --tile_width: min(calc((100vw - var(--sidebar_width) * 2) / 14), calc(100vh / 15));
+    --tile_width: min(calc((100vw - var(--sidebar_width) * 2) / 12), calc(100vh / 13));
     --tile_height: calc(var(--tile_width) * var(--hex_ratio));
-    --tile_id_font_size: min(calc((100vw - 16em) / 48), calc(100vh / 52));
+    --tile_name_font_size: min(calc((100vw - var(--sidebar_width) * 2) / 48), calc(100vh / 52));
+    --ticket_count_font_size: min(calc((100vw - var(--sidebar_width) * 2) / 36), calc(100vh / 39));
     --border_width: 4%;
-    --hr1: 25%;
-    --hr2: 75%;
-    --x_dim_x: calc(var(--border_width) - var(--hr2));
-    --x_dim_y: calc(50% - var(--border_width));
+    --x_dim_x: calc(3 / 2 * var(--border_width) - var(--hex_ratio) * var(--border_width) - 75%);
+    --x_dim_y: calc(50% - var(--border_width) / 2);
     --y_dim_x: 0%;
     --y_dim_y: calc(var(--border_width) - 100%);
-    --z_dim_x: calc(var(--hr2) - var(--border_width));
-    --z_dim_y: calc(50% - var(--border_width));
+    --z_dim_x: calc(var(--hex_ratio) * var(--border_width) - 3 / 2 * var(--border_width) + 75%);
+    --z_dim_y: calc(50% - var(--border_width) / 2);
 }
 
 body {
     background-color: black;
 }
 
-button {
+button:not(.close) {
     width: var(--sidebar_width);
 }
 
@@ -32,7 +31,6 @@ button {
     overflow-y: scroll;
     height: 100%;
     width: calc(50vw - 5.75 * var(--tile_width));
-    /* text-align: center; */
 }
 
 ::-webkit-scrollbar {
@@ -63,11 +61,11 @@ button {
     width: var(--tile_width);
     height: var(--tile_height);
     background: white;
-    -webkit-clip-path: polygon(var(--hr1) 0%, var(--hr2) 0%, 100% 50%, var(--hr2) 100%, var(--hr1) 100%, 0% 50%);
-    clip-path: polygon(var(--hr1) 0%, var(--hr2) 0%, 100% 50%, var(--hr2) 100%, var(--hr1) 100%, 0% 50%);
+    -webkit-clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
+    clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
 }
 
-.hexagon-border:not(.home):hover {
+.hexagon-border:not(.immutable):hover {
     cursor: pointer;
 }
 
@@ -78,8 +76,8 @@ button {
     background: black;
     height: calc(100% - 2 * var(--border_width));
     width: calc(100% - 2 * var(--border_width));
-    -webkit-clip-path: polygon(var(--hr1) 0%, var(--hr2) 0%, 100% 50%, var(--hr2) 100%, var(--hr1) 100%, 0% 50%);
-    clip-path: polygon(var(--hr1) 0%, var(--hr2) 0%, 100% 50%, var(--hr2) 100%, var(--hr1) 100%, 0% 50%);
+    -webkit-clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
+    clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
 }
 
 .hexagon-border:hover > [class="hexagon-inner"] {
@@ -87,17 +85,27 @@ button {
     filter: brightness(90%);
 }
 
-.hexagon-border:not(.home):hover > div:not([class="hexagon-inner"]) {
+.hexagon-border:not(.immutable):hover > div:not([class="hexagon-inner"]) {
     filter: brightness(90%);
 }
 
-.tile-id {
+.tile-code {
     position: absolute;
     top: 50%;
     width: 100%;
-    font-size: var(--tile_id_font_size);
+    font-size: var(--tile_name_font_size);
     text-align: center;
     color: white;
+}
+
+.ticket-count {
+    position: absolute;
+    top: 50%;
+    transform: translate(0, -50%);
+    width: 100%;
+    font-size: var(--ticket_count_font_size);
+    text-align: center;
+    color: black;
 }
 
 .hidden {
