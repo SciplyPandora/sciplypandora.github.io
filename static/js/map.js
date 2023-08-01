@@ -603,10 +603,12 @@ $(document).ready(function () {
   
 
   init_grid();
-  if (config) {
-    load_config();
-  } else {
-    init_config();
+  function onstart_config(){
+    if (config) {
+      load_config();
+    } else {
+      init_config();
+    }
   }
 
 
@@ -662,7 +664,7 @@ $(document).ready(function () {
     let file = e.target.files[0];
     $(this).val("");
     rotate_grid(6 - rots);
-    if (file.type == "application/zip") {
+    if (["application/zip", "application/x-zip-compressed", "multipart/x-zip", "application/zip-compressed", "application/x-zip"].includes(file.type)) {
       JSZip.loadAsync(file).then(async (content) => {
         let tile_promises = [];
         for (let tile_path in content.files) {
@@ -800,4 +802,6 @@ $(document).ready(function () {
         break;
     }
   })
+
+  onstart_config();
 });
