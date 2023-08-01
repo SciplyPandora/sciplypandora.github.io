@@ -762,7 +762,7 @@ $(document).ready(function () {
     let image = inner.children("img").attr("class");
     let relic = $("#select :selected").text();
     if (e.shiftKey && $(`#${node}-modal .modal-body`).html()) {
-      $(`#${node}-modal`).modal();
+      $(`#${get_rotated_node(node, 6-rots)}-modal`).modal();
     } else {
       if ($("#toggle-markers").text() === "Banners") {
         if (image === "banner") {
