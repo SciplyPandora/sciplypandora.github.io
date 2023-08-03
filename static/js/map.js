@@ -299,12 +299,6 @@ $(document).ready(function () {
     return new_text.substr(1);
   }
 
-  function load_template (template, variables) {
-    return template.replace(/{{(.*?)}}/g, (match, key) => {
-      return key in variables ? variables[key] : match;
-    });
-  }
-
   function get_rotated_node (node, rots=1) {
     let x = parseInt(node[1]);
     let y = parseInt(node[3]);
@@ -413,6 +407,14 @@ $(document).ready(function () {
     }
   }
 
+  function create_modal (node, title) {
+    $("#colour-modal").after(`<div id="${node}-modal" class="modal" tabindex="-1" role="dialog"></div>`);
+    $(`#${node}-modal`).append(`<div class="modal-dialog" role="document"><div class="modal-content"></div></div></div>`);
+    let header = $(`<div class="modal-header"><h5 class="modal-title">${title}</h5><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>`);
+    let body = $(`<div class="modal-body"></div>`);
+    $(`#${node}-modal .modal-content`).append(header).append(body);
+  }
+
   function populate_modals () {
     for (let node in config) {
       if (!(node in init_nodes)) {
@@ -453,28 +455,7 @@ $(document).ready(function () {
         }
 
         inner += "</div>";
-        $.get("/static/templates/modal_body.html", (data) => {
-          let images = "";
-          if (config[node]["game_mode"] !== "standard") {
-            images += `<img src="/static/images/game_modes/${config[node]["game_mode"]}.webp">`;
-          }
-          if (config[node]["tile_type"] !== "regular") {
-            images += `<img src="/static/images/modifiers/monkey_knowledge_disabled.webp">`;
-          }
-          if (!(config[node]["selling"])) {
-            images += `<img src="/static/images/modifiers/selling_disabled.webp">`;
-          }
-          $(`#${node.toLowerCase()}-modal .modal-body`).html(load_template(data, {
-            map: config[node]["map"],
-            game_type: config[node]["game_type"] === "boss" ? config[node]["boss"] : config[node]["game_type"],
-            difficulty: config[node]["difficulty"],
-            images: images,
-            cash: config[node]["cash"],
-            start_round: config[node]["start_round"],
-            end_round: config[node]["game_type"] === "boss" ? `${config[node]["tiers"] * 20 + 20}+` : config[node]["end_round"],
-            max_towers: config[node]["max_towers"] > -1 ? `Max Towers: ${config[node]["max_towers"]}<br>` : "",
-          }));
-        });
+        $(`#${node_id}-modal .modal-body`).html(inner);
       }
     }
   }
@@ -500,9 +481,7 @@ $(document).ready(function () {
         inner.append(`<div class="tile-code hidden">${node_name}</div>`);
       }
 
-      $.get("/static/templates/modal.html", function (data) {
-        $("#colour-modal").after(load_template(data, {"id": node_name.toLowerCase(), "title": node_name}));
-      });
+      create_modal(node_name.toLowerCase(), node_name);
     }
   }
 
@@ -578,14 +557,17 @@ $(document).ready(function () {
       ticket_count.attr("class", "ticket-count");
     }
   }
+
+  function onstart_config() {
+    if (config) {
+      load_config();
+    } else {
+      init_config();
+    }
+  }
   
 
   init_grid();
-  if (config) {
-    load_config();
-  } else {
-    init_config();
-  }
 
 
   $("#toggle-names").click(function () {
