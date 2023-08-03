@@ -212,49 +212,6 @@ $(document).ready(function () {
     "yellow",
     "red"
   ];
-  const images = [
-    "abilitized",
-    "air_and_sea",
-    "alchemist_touch",
-    "banner",
-    "bigger_bloon_sabotage",
-    "box_of_chocolates",
-    "box_of_monkey",
-    "broken_heart",
-    "camo_flogged",
-    "camo_trap",
-    "deep_heat",
-    "durable_shots",
-    "el_dorado",
-    "empty",
-    "extra_empowered",
-    "flint_tips",
-    "fortifried",
-    "glue_trap",
-    "going_the_distance",
-    "hard_baked",
-    "heartless",
-    "hero_boost",
-    "magic_monkeys",
-    "mana_bulwark",
-    "marching_boots",
-    "military_monkeys",
-    "moab_clash",
-    "moab_mine",
-    "monkey_boost",
-    "regeneration",
-    "relic",
-    "restoration",
-    "road_spikes",
-    "rounding_up",
-    "royal_treatment",
-    "sharpsplosion",
-    "starting_stash",
-    "super_monkey_storm",
-    "support_simians",
-    "techbot",
-    "thrive"
-  ];
   const game_types = [
     "",
     "",
@@ -340,6 +297,12 @@ $(document).ready(function () {
       (match, upperchar) => "_" + upperchar.toLowerCase()
     );
     return new_text.substr(1);
+  }
+
+  function load_template (template, variables) {
+    return template.replace(/{{(.*?)}}/g, (match, key) => {
+      return key in variables ? variables[key] : match;
+    });
   }
 
   function get_rotated_node (node, rots=1) {
@@ -450,14 +413,6 @@ $(document).ready(function () {
     }
   }
 
-  function create_modal (node, title) {
-    $("#colour-modal").after(`<div id="${node}-modal" class="modal" tabindex="-1" role="dialog"></div>`);
-    $(`#${node}-modal`).append(`<div class="modal-dialog" role="document"><div class="modal-content"></div></div></div>`);
-    let header = $(`<div class="modal-header"><h5 class="modal-title">${title}</h5><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>`);
-    let body = $(`<div class="modal-body"></div>`);
-    $(`#${node}-modal .modal-content`).append(header).append(body);
-  }
-
   function populate_modals () {
     for (let node in config) {
       if (!(node in init_nodes)) {
@@ -498,7 +453,28 @@ $(document).ready(function () {
         }
 
         inner += "</div>";
-        $(`#${node_id}-modal .modal-body`).html(inner);
+        $.get("/static/templates/modal_body.html", (data) => {
+          let images = "";
+          if (config[node]["game_mode"] !== "standard") {
+            images += `<img src="/static/images/game_modes/${config[node]["game_mode"]}.webp">`;
+          }
+          if (config[node]["tile_type"] !== "regular") {
+            images += `<img src="/static/images/modifiers/monkey_knowledge_disabled.webp">`;
+          }
+          if (!(config[node]["selling"])) {
+            images += `<img src="/static/images/modifiers/selling_disabled.webp">`;
+          }
+          $(`#${node.toLowerCase()}-modal .modal-body`).html(load_template(data, {
+            map: config[node]["map"],
+            game_type: config[node]["game_type"] === "boss" ? config[node]["boss"] : config[node]["game_type"],
+            difficulty: config[node]["difficulty"],
+            images: images,
+            cash: config[node]["cash"],
+            start_round: config[node]["start_round"],
+            end_round: config[node]["game_type"] === "boss" ? `${config[node]["tiers"] * 20 + 20}+` : config[node]["end_round"],
+            max_towers: config[node]["max_towers"] > -1 ? `Max Towers: ${config[node]["max_towers"]}<br>` : "",
+          }));
+        });
       }
     }
   }
@@ -517,14 +493,16 @@ $(document).ready(function () {
       if (colour) {
         inner.addClass(colour);
       }
-      inner.append(`<img src="/static/images/tiles/empty.png">`);
+      inner.append(`<img class="tile-image" src="/static/images/tiles/empty.png">`);
       if (immutable_nodes.includes(node_name)) {
         inner.append(`<div class="ticket-count hidden">0</div>`);
       } else {
         inner.append(`<div class="tile-code hidden">${node_name}</div>`);
       }
 
-      create_modal(node, node_name);
+      $.get("/static/templates/modal.html", function (data) {
+        $("#colour-modal").after(load_template(data, {"id": node_name.toLowerCase(), "title": node_name}));
+      });
     }
   }
 
@@ -565,7 +543,7 @@ $(document).ready(function () {
   function load_config () {
     let tiles = $(".tile").not(".immutable").children();
     tiles.attr("class", "hexagon-inner");
-    tiles.children("img").removeAttr("class").attr("src", "/static/images/tiles/empty.png");
+    tiles.children("img").removeAttr("class").attr("src", "/static/images/tiles/empty.png").addClass("tile-image");
 
     if (!(check_config(config))) {
       init_config();
@@ -603,12 +581,10 @@ $(document).ready(function () {
   
 
   init_grid();
-  function onstart_config(){
-    if (config) {
-      load_config();
-    } else {
-      init_config();
-    }
+  if (config) {
+    load_config();
+  } else {
+    init_config();
   }
 
 
@@ -689,9 +665,9 @@ $(document).ready(function () {
           config[node]["game_type"] = game_types[game_data["subGameType"]];
           config[node]["boss"] = "bossData" in game_data ? bosses[game_data["bossData"]["bossBloon"]] : null;
           config[node]["tiers"] = "bossData" in game_data ? game_data["bossData"]["TierCount"] : null;
-          config[node]["game_mode"] = dc_model["mode"];
+          config[node]["game_mode"] = pascal_to_snake_case(dc_model["mode"]);
           config[node]["map"] = pascal_to_snake_case(dc_model["map"]);
-          config[node]["difficulty"] = dc_model["difficulty"];
+          config[node]["difficulty"] = pascal_to_snake_case(dc_model["difficulty"]);
           config[node]["cash"] = start_rules["cash"];
           config[node]["start_round"] = start_rules["round"];
           config[node]["end_round"] = start_rules["endRound"];
@@ -754,6 +730,7 @@ $(document).ready(function () {
 
   $(".tile").not(".immutable").click(function (e) {
     let node = $(this).attr("class").split(" ")[2];
+    let node_name = get_node_name(node).toLowerCase();
     let inner = $(this).children().first();
     let home_colour = colours[rots];
     let colour = inner.attr("class").split(" ")[1]
@@ -761,8 +738,8 @@ $(document).ready(function () {
       : null;
     let image = inner.children("img").attr("class");
     let relic = $("#select :selected").text();
-    if (e.shiftKey && $(`#${node}-modal .modal-body`).html()) {
-      $(`#${get_rotated_node(node, 6-rots)}-modal`).modal();
+    if (e.shiftKey && $(`#${node_name}-modal .modal-body`).html()) {
+      $(`#${node_name}-modal`).modal();
     } else {
       if ($("#toggle-markers").text() === "Banners") {
         if (image === "banner") {
