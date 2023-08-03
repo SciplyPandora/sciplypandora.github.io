@@ -455,7 +455,7 @@ $(document).ready(function () {
         }
 
         inner += "</div>";
-        $(`#${node_id}-modal .modal-body`).html(inner);
+        $(`#${node.toLowerCase()}-modal .modal-body`).html(inner);
       }
     }
   }
@@ -474,7 +474,7 @@ $(document).ready(function () {
       if (colour) {
         inner.addClass(colour);
       }
-      inner.append(`<img class="tile-image" src="/static/images/tiles/empty.png">`);
+      inner.append(`<img src="/static/images/tiles/empty.png">`);
       if (immutable_nodes.includes(node_name)) {
         inner.append(`<div class="ticket-count hidden">0</div>`);
       } else {
@@ -522,7 +522,7 @@ $(document).ready(function () {
   function load_config () {
     let tiles = $(".tile").not(".immutable").children();
     tiles.attr("class", "hexagon-inner");
-    tiles.children("img").removeAttr("class").attr("src", "/static/images/tiles/empty.png").addClass("tile-image");
+    tiles.children("img").removeAttr("class").attr("src", "/static/images/tiles/empty.png");
 
     if (!(check_config(config))) {
       init_config();
@@ -695,7 +695,7 @@ $(document).ready(function () {
     let week = Math.floor((date.getTime() - ct_26_start_date_milli) / one_day_milli / 7);
     let ct_season = ct_start_season + Math.ceil(week / 2);
     let ct_day = week % 2 ? 0 : Math.floor(
-      ((date.getTime() - ct_24_start_date_milli) % (one_day_milli * 7)) / one_day_milli + 1
+      ((date.getTime() - ct_26_start_date_milli) % (one_day_milli * 7)) / one_day_milli + 1
     );
     let download = $("<a></a>");
 
