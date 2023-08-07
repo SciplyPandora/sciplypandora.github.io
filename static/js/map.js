@@ -558,7 +558,85 @@ $(document).ready(function () {
     }
   }
 
+
+
+  function decode_config(encoded) {
+    init_config();
+    console.log(encoded);
+    encoded = BigInt(encoded);
+
+    let relics = [];
+    $("#select option").each(function () {
+      relics.push($(this).val());
+    });
+
+    const tile_coords = Object.keys(nodes);
+    for (let i = tile_coords.length - 1; i >= 0; i--) {
+      const tile = nodes[tile_coords[i]];
+      let colour = encoded % 8n;
+      encoded /= 8n;
+      if (colour === 7n) {
+        config[tile].colour = null;
+        config[tile].tile_type = "regular";
+      } else {
+        const col_idx = Number(colour) - 1;
+        config[tile].colour = col_idx >= 0 ? colours[col_idx] : null;
+
+        const image = encoded % 64n;
+        encoded /= 64n;
+        const relic_idx = Number(image) - 2;
+        if (relic_idx === -2) config[tile].tile_type = "regular";
+        else if (relic_idx === -1) config[tile].tile_type = "banner";
+        else {
+          config[tile].tile_type = "relic";
+          config[tile].relic = relics[relic_idx];
+        }
+      }
+    }
+  }
+
+  function encode_config(cfg) {
+    let relics = [];
+    $("#select option").each(function () {
+      relics.push($(this).val());
+    });
+
+    let encoded = 0n;
+    for (const tile of Object.keys(nodes)) {
+      const tile_data = cfg[nodes[tile]];
+      if (
+        tile_data === null ||
+        (tile_data.tile_type === "regular" && tile_data.colour === null)
+      ) {
+        encoded = encoded * 8n + 7n;
+      } else {
+        encoded *= 512n;
+
+        if (tile_data.tile_type === "banner") encoded += 8n;
+        else if (tile_data.tile_type === "relic") {
+          encoded +=
+            BigInt(relics.findIndex((c) => c === tile_data.relic) + 2) * 8n;
+        }
+
+        if (tile_data.colour !== null) {
+          encoded += BigInt(
+            colours.findIndex((c) => c === tile_data.colour) + 1
+          );
+        }
+      }
+    }
+    return encoded.toString();
+  }
+
   function onstart_config() {
+    const url_params = new URLSearchParams(window.location.search);
+    const param_config = url_params.get("config");
+
+    if(param_config) {
+      const rots = Number(url_params.get("rots") || "0");
+      decode_config(param_config);
+    }
+    
     if (config) {
       load_config();
     } else {
@@ -708,6 +786,16 @@ $(document).ready(function () {
     $("body").append(download);
     $("a")[0].click();
     $("a").remove();
+  });
+
+  $("#export-url").click(function () {
+    const data_encoded = encode_config(config);
+    const { protocol, hostname, pathname } = window.location;
+    const url = `${protocol}//${hostname}${pathname}?config=${data_encoded}&rots=${0}`;
+
+    const copy_text = $("#copy-to-clipboard");
+    copy_text.val(url).select();
+    document.execCommand("copy");
   });
 
   $(".tile").not(".immutable").click(function (e) {
