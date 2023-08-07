@@ -289,7 +289,31 @@ $(document).ready(function () {
   const one_day_milli = 86400000;
   let config = localStorage["map"] ? JSON.parse(localStorage["map"]) : null;
   let rots = 0;
+  const config_encode_alphabet = "0123456789qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM_";
   
+  
+
+  function bigint_to_base(num, alphabet) {
+    let encoded = "";
+    const alphalen = BigInt(alphabet.length);
+    while(num > 0n) {
+      const digit = num % alphalen;
+      encoded = alphabet.charAt(Number(digit)) + encoded;
+      num /= alphalen;
+    }
+    return encoded
+  }
+
+  function base_to_bigint(num, alphabet) {
+    let decoded = 0n;
+    const alphalen = BigInt(alphabet.length);
+    for(let i = num.length-1; i >= 0; i--) {
+      const digit = num.charAt(i);
+      const digit_value = BigInt(alphabet.indexOf(digit));
+      decoded += digit_value * alphalen ** BigInt(num.length-1-i);
+    }
+    return decoded;
+  }
 
   function pascal_to_snake_case (text) {
     const new_text = text.replace(
@@ -558,12 +582,9 @@ $(document).ready(function () {
     }
   }
 
-
-
   function decode_config(encoded) {
     init_config();
-    console.log(encoded);
-    encoded = BigInt(encoded);
+    encoded = base_to_bigint(encoded, config_encode_alphabet);
 
     let relics = [];
     $("#select option").each(function () {
@@ -593,6 +614,7 @@ $(document).ready(function () {
         }
       }
     }
+
   }
 
   function encode_config(cfg) {
@@ -625,7 +647,7 @@ $(document).ready(function () {
         }
       }
     }
-    return encoded.toString();
+    return bigint_to_base(encoded, config_encode_alphabet);
   }
 
   function onstart_config() {
@@ -633,7 +655,6 @@ $(document).ready(function () {
     const param_config = url_params.get("config");
 
     if(param_config) {
-      const rots = Number(url_params.get("rots") || "0");
       decode_config(param_config);
     }
     
@@ -791,11 +812,15 @@ $(document).ready(function () {
   $("#export-url").click(function () {
     const data_encoded = encode_config(config);
     const { protocol, hostname, pathname } = window.location;
-    const url = `${protocol}//${hostname}${pathname}?config=${data_encoded}&rots=${0}`;
+    const url = `${protocol}//${hostname}${pathname}?config=${data_encoded}`;
 
     const copy_text = $("#copy-to-clipboard");
     copy_text.val(url).select();
     document.execCommand("copy");
+
+    const button = $("#export-url");
+    $("#export-url").text("Copied!");
+    setTimeout(() => button.text("Copy to URL"), 2500);
   });
 
   $(".tile").not(".immutable").click(function (e) {
