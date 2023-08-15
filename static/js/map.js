@@ -405,7 +405,7 @@ $(document).ready(function () {
     localStorage["map"] = JSON.stringify(config);
 
     if (image) {
-      $(`.${node} img`).attr("src", `/static/images/tiles/${image}.webp`).addClass(image);
+      $(`.${node} img`).attr("src", `/static/images/tiles/${image}.webp`).addClass(image).addClass("tile-image");
     } else {
       $(`.${node} img`).attr("src", "/static/images/tiles/empty.png").removeAttr("class");
     }
@@ -497,7 +497,7 @@ $(document).ready(function () {
       if (colour) {
         inner.addClass(colour);
       }
-      inner.append(`<img class="tile-image" src="/static/images/tiles/empty.png">`);
+      inner.append(`<img src="/static/images/tiles/empty.png">`);
       if (immutable_nodes.includes(node_name)) {
         inner.append(`<div class="ticket-count hidden">0</div>`);
       } else {
@@ -545,7 +545,7 @@ $(document).ready(function () {
   function load_config () {
     let tiles = $(".tile").not(".immutable").children();
     tiles.attr("class", "hexagon-inner");
-    tiles.children("img").removeAttr("class").attr("src", "/static/images/tiles/empty.png").addClass("tile-image");
+    tiles.children("img").removeAttr("class").attr("src", "/static/images/tiles/empty.png");
 
     if (!(check_config(config))) {
       init_config();
@@ -563,9 +563,9 @@ $(document).ready(function () {
       }
       if (tile_type !== "regular") {
         if (tile_type === "banner") {
-          $(`.${node_id} img`).attr("src", "/static/images/tiles/banner.webp").addClass("banner");
+          $(`.${node_id} img`).attr("src", "/static/images/tiles/banner.webp").addClass("banner").addClass("tile-image");
         } else {
-          $(`.${node_id} img`).attr("src", `/static/images/tiles/${relic}.webp`).addClass(relic);
+          $(`.${node_id} img`).attr("src", `/static/images/tiles/${relic}.webp`).addClass(relic).addClass("tile-image");
         }
       }
     }
@@ -830,7 +830,9 @@ $(document).ready(function () {
     let colour = inner.attr("class").split(" ")[1]
       ? inner.attr("class").split(" ")[1]
       : null;
-    let image = inner.children("img").attr("class");
+    let image = inner.children("img").attr("class")
+      ? inner.children("img").attr("class").split(" ")[0]
+      : null;
     let relic = $("#select :selected").text();
     if (e.shiftKey && $(`#${node_name}-modal .modal-body`).html()) {
       $(`#${node_name}-modal`).modal();
@@ -838,11 +840,11 @@ $(document).ready(function () {
       if ($("#toggle-markers").text() === "Banners") {
         if (image === "banner") {
           update_image(node);
-        } else if (image === undefined) {
+        } else if (image === null) {
           update_image(node, "banner");
         }
       } else if ($("#toggle-markers").text() === "Relics") {
-        if (image === undefined) {
+        if (image === null) {
           update_image(node, relic);
         } else if (image !== "banner") {
           update_image(node);
