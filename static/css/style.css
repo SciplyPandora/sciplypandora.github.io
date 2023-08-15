@@ -112,7 +112,7 @@ button:not(.close) {
     display: none;
 }
 
-img {
+.tile-image {
     position: absolute;
     top: 50%;
     left: 50%;

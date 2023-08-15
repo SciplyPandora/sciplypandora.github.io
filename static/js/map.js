@@ -284,19 +284,19 @@ $(document).ready(function () {
     Sauda: "Sauda",
     Psi: "Psi",
   };
+  const config_encode_alphabet = "0123456789qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM_";
   const ct_start_season = 26;
   const ct_26_start_date_milli = 1690927200000;
   const one_day_milli = 86400000;
   let config = localStorage["map"] ? JSON.parse(localStorage["map"]) : null;
   let rots = 0;
-  const config_encode_alphabet = "0123456789qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM_";
   
   
 
-  function bigint_to_base(num, alphabet) {
+  function bigint_to_base (num, alphabet) {
     let encoded = "";
     const alphalen = BigInt(alphabet.length);
-    while(num > 0n) {
+    while (num > 0n) {
       const digit = num % alphalen;
       encoded = alphabet.charAt(Number(digit)) + encoded;
       num /= alphalen;
@@ -304,10 +304,10 @@ $(document).ready(function () {
     return encoded
   }
 
-  function base_to_bigint(num, alphabet) {
+  function base_to_bigint (num, alphabet) {
     let decoded = 0n;
     const alphalen = BigInt(alphabet.length);
-    for(let i = num.length-1; i >= 0; i--) {
+    for (let i = num.length-1; i >= 0; i--) {
       const digit = num.charAt(i);
       const digit_value = BigInt(alphabet.indexOf(digit));
       decoded += digit_value * alphalen ** BigInt(num.length-1-i);
@@ -441,9 +441,8 @@ $(document).ready(function () {
 
   function populate_modals () {
     for (let node in config) {
-      if (!(node in init_nodes)) {
+      if (!(node in init_nodes) && config[node]["map"]) {
         let inner = "<div>";
-        let node_id = get_node_id(node);
         let end_round = config[node]["end_round"]
         if (config[node]["game_type"] === "boss") {
           inner += `${config[node]["tiers"]} Tier ${config[node]["boss"]}<br>`;
@@ -498,7 +497,7 @@ $(document).ready(function () {
       if (colour) {
         inner.addClass(colour);
       }
-      inner.append(`<img src="/static/images/tiles/empty.png">`);
+      inner.append(`<img class="tile-image" src="/static/images/tiles/empty.png">`);
       if (immutable_nodes.includes(node_name)) {
         inner.append(`<div class="ticket-count hidden">0</div>`);
       } else {
@@ -509,14 +508,14 @@ $(document).ready(function () {
     }
   }
 
-  function check_config (config_obj) {
+  function check_config (cfg) {
     for (let node of Object.values(nodes)) {
-      if (!(node in config_obj)) {
+      if (!(node in cfg)) {
         return false;
       }
     }
     for (let node in init_nodes) {
-      if (config_obj[node]["colour"] !== init_nodes[node]["colour"]) {
+      if (cfg[node]["colour"] !== init_nodes[node]["colour"]) {
         return false;
       }
     }
@@ -546,7 +545,7 @@ $(document).ready(function () {
   function load_config () {
     let tiles = $(".tile").not(".immutable").children();
     tiles.attr("class", "hexagon-inner");
-    tiles.children("img").removeAttr("class").attr("src", "/static/images/tiles/empty.png");
+    tiles.children("img").removeAttr("class").attr("src", "/static/images/tiles/empty.png").addClass("tile-image");
 
     if (!(check_config(config))) {
       init_config();
@@ -582,7 +581,7 @@ $(document).ready(function () {
     }
   }
 
-  function decode_config(encoded) {
+  function decode_config (encoded) {
     init_config();
     encoded = base_to_bigint(encoded, config_encode_alphabet);
 
@@ -617,7 +616,7 @@ $(document).ready(function () {
 
   }
 
-  function encode_config(cfg) {
+  function encode_config (cfg) {
     let relics = [];
     $("#select option").each(function () {
       relics.push($(this).val());
@@ -650,11 +649,11 @@ $(document).ready(function () {
     return bigint_to_base(encoded, config_encode_alphabet);
   }
 
-  function onstart_config() {
+  function onstart_config () {
     const url_params = new URLSearchParams(window.location.search);
     const param_config = url_params.get("config");
 
-    if(param_config) {
+    if (param_config) {
       decode_config(param_config);
     }
     
