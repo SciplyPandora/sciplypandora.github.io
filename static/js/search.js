@@ -225,9 +225,9 @@ $(document).ready(function () {
     "least_tiers"
   ];
   const bosses = [
-    "Bloonarius",
-    "Lych",
-    "Vortex"
+    "bloonarius",
+    "lych",
+    "vortex"
   ];
   const all_heroes = [
     "quincy",
@@ -284,36 +284,10 @@ $(document).ready(function () {
     sauda: "Sauda",
     psi: "Psi"
   };
-  const config_encode_alphabet = "0123456789qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM_";
-  const ct_start_season = 26;
-  const ct_26_start_date_milli = 1690927200000;
-  const one_day_milli = 86400000;
-  let config = localStorage["map"] ? JSON.parse(localStorage["map"]) : null;
+
+  let config = localStorage["map/search"] ? JSON.parse(localStorage["map/search"]) : null;
   let rots = 0;
   
-  
-
-  function bigint_to_base (num, alphabet) {
-    let encoded = "";
-    const alphalen = BigInt(alphabet.length);
-    while (num > 0n) {
-      const digit = num % alphalen;
-      encoded = alphabet.charAt(Number(digit)) + encoded;
-      num /= alphalen;
-    }
-    return encoded
-  }
-
-  function base_to_bigint (num, alphabet) {
-    let decoded = 0n;
-    const alphalen = BigInt(alphabet.length);
-    for (let i = num.length-1; i >= 0; i--) {
-      const digit = num.charAt(i);
-      const digit_value = BigInt(alphabet.indexOf(digit));
-      decoded += digit_value * alphalen ** BigInt(num.length-1-i);
-    }
-    return decoded;
-  }
 
   function pascal_to_snake_case (text) {
     const new_text = text.replace(
@@ -348,74 +322,6 @@ $(document).ready(function () {
   function get_node_name (node_id) {
     return nodes[get_rotated_node(node_id, 6 - rots)];
   }
-
-  function get_node_neighbours (node) {
-    let coords = [parseInt(node[1]), parseInt(node[3]), parseInt(node[5])];
-    let res = [];
-    
-    for (let vec of [[1, 0, 0], [0, 1, 0], [0, 0, 1], [1, 1, 0], [1, 0, 1], [0, 1, 1]]) {
-      let tmp = coords.map((val, ind) => val + vec[ind]);
-      tmp = tmp.map((val) => val - Math.min(...tmp));
-      tmp = `x${tmp[0]}y${tmp[1]}z${tmp[2]}`;
-      if (tmp in nodes) {
-        res.push(tmp);
-      }
-    }
-    return res;
-  }
-
-  function get_weight (node, gen_weights=false) {
-    if (gen_weights) {
-      return 0;
-    } else {
-      if ($(`.${node}`).hasClass("immutable")) {
-        return Infinity;
-      }
-      if ($(`.${node} img`).attr("class") && $(`.${node} img`).attr("class") !== "banner") {
-        return 1e9;
-      }
-      return 1;
-    }
-  }
-
-  function update_colour (node, colour=null) {
-    let node_name = get_node_name(node);
-    let ticket_count = $(".x7y0z7 .ticket-count");
-    config[node_name]["colour"] = colour;
-    localStorage["map"] = JSON.stringify(config);
-
-    if (colour) {
-      $(`.${node} .hexagon-inner`).attr("class", `hexagon-inner ${colour}`);
-    } else {
-      $(`.${node} .hexagon-inner`).attr("class", "hexagon-inner");
-    }
-    
-    ticket_count.text($(`.${colours[rots]}`).length - 1);
-    if (ticket_count.text() === "0") {
-      ticket_count.attr("class", "ticket-count hidden");
-    } else {
-      ticket_count.attr("class", "ticket-count");
-    }
-  }
-
-  function update_image (node, image=null) {
-    let node_name = get_node_name(node);
-    if (image === null) {
-      config[node_name]["tile_type"] = "regular";
-    } else if (image === "banner") {
-      config[node_name]["tile_type"] = "banner";
-    } else {
-      config[node_name]["tile_type"] = "relic";
-      config[node_name]["relic"] = image;
-    }
-    localStorage["map"] = JSON.stringify(config);
-
-    if (image) {
-      $(`.${node} img`).attr("src", `/static/images/tiles/${image}.webp`).addClass(image).addClass("tile-image");
-    } else {
-      $(`.${node} img`).attr("src", "/static/images/tiles/empty.png").removeAttr("class");
-    }
-  }
   
   function rotate_grid (rotations=1) {
     rots = (rots + rotations) % 6;
@@ -438,7 +344,7 @@ $(document).ready(function () {
   }
 
   function create_modal (node, title) {
-    $("#colour-modal").after(`<div id="${node}-modal" class="modal" tabindex="-1" role="dialog"></div>`);
+    $(".col-left").after(`<div id="${node}-modal" class="modal" tabindex="-1" role="dialog"></div>`);
     $(`#${node}-modal`).append(`<div class="modal-dialog" role="document"><div class="modal-content"></div></div></div>`);
     let header = $(`<div class="modal-header"><h5 class="modal-title">${title}</h5><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>`);
     let body = $(`<div class="modal-body"></div>`);
@@ -493,7 +399,7 @@ $(document).ready(function () {
     for (let node in nodes) {
       let node_name = get_node_name(node);
       let colour = node_name in init_nodes ? init_nodes[node_name]["colour"] : null;
-      $(".col-right").after(`<div class="hexagon-border tile ${node}"></div>`);
+      $(".col-left").after(`<div class="hexagon-border tile ${node}"></div>`);
       $(`.${node}`).append(`<div class="hexagon-inner"></div>`);
       let inner = $(`.${node} div`);
       
@@ -507,7 +413,7 @@ $(document).ready(function () {
       if (immutable_nodes.includes(node_name)) {
         inner.append(`<div class="ticket-count hidden">0</div>`);
       } else {
-        inner.append(`<div class="tile-code hidden">${node_name}</div>`);
+        inner.append(`<div class="tile-code">${node_name}</div>`);
       }
 
       create_modal(node_name.toLowerCase(), node_name);
@@ -545,33 +451,29 @@ $(document).ready(function () {
         }
       }
     }
-    localStorage["map"] = JSON.stringify(config);
+    localStorage["map/search"] = JSON.stringify(config);
   }
 
   function load_config () {
     let tiles = $(".tile").not(".immutable").children();
     tiles.attr("class", "hexagon-inner");
-    tiles.children("img").removeAttr("class").attr("src", "/static/images/tiles/empty.png");
+    tiles.children("img").removeAttr("class").attr("src", "/static/images/tiles/empty.png").addClass("tile-image");
 
     if (!(check_config(config))) {
       init_config();
     }
 
-    localStorage["map"] = JSON.stringify(config);
+    localStorage["map/search"] = JSON.stringify(config);
 
     for (let node of Object.values(nodes)) {
       let node_id = get_node_id(node);
-      let colour = config[node]["colour"];
       let tile_type = config[node]["tile_type"];
       let relic = config[node]["relic"];
-      if (colour) {
-        $(`.${node_id} .hexagon-inner`).attr("class", `hexagon-inner ${colour}`);
-      }
       if (tile_type !== "regular") {
         if (tile_type === "banner") {
-          $(`.${node_id} img`).attr("src", "/static/images/tiles/banner.webp").addClass("banner").addClass("tile-image");
+          $(`.${node_id} img`).attr("src", "/static/images/tiles/banner.webp").addClass("banner");
         } else {
-          $(`.${node_id} img`).attr("src", `/static/images/tiles/${relic}.webp`).addClass(relic).addClass("tile-image");
+          $(`.${node_id} img`).attr("src", `/static/images/tiles/${relic}.webp`).addClass(relic);
         }
       }
     }
@@ -587,82 +489,7 @@ $(document).ready(function () {
     }
   }
 
-  function decode_config (encoded) {
-    init_config();
-    encoded = base_to_bigint(encoded, config_encode_alphabet);
-
-    let relics = [];
-    $("#select option").each(function () {
-      relics.push($(this).val());
-    });
-
-    const tile_coords = Object.keys(nodes);
-    for (let i = tile_coords.length - 1; i >= 0; i--) {
-      const tile = nodes[tile_coords[i]];
-      let colour = encoded % 8n;
-      encoded /= 8n;
-      if (colour === 7n) {
-        config[tile].colour = null;
-        config[tile].tile_type = "regular";
-      } else {
-        const col_idx = Number(colour) - 1;
-        config[tile].colour = col_idx >= 0 ? colours[col_idx] : null;
-
-        const image = encoded % 64n;
-        encoded /= 64n;
-        const relic_idx = Number(image) - 2;
-        if (relic_idx === -2) config[tile].tile_type = "regular";
-        else if (relic_idx === -1) config[tile].tile_type = "banner";
-        else {
-          config[tile].tile_type = "relic";
-          config[tile].relic = relics[relic_idx];
-        }
-      }
-    }
-
-  }
-
-  function encode_config (cfg) {
-    let relics = [];
-    $("#select option").each(function () {
-      relics.push($(this).val());
-    });
-
-    let encoded = 0n;
-    for (const tile of Object.keys(nodes)) {
-      const tile_data = cfg[nodes[tile]];
-      if (
-        tile_data === null ||
-        (tile_data.tile_type === "regular" && tile_data.colour === null)
-      ) {
-        encoded = encoded * 8n + 7n;
-      } else {
-        encoded *= 512n;
-
-        if (tile_data.tile_type === "banner") encoded += 8n;
-        else if (tile_data.tile_type === "relic") {
-          encoded +=
-            BigInt(relics.findIndex((c) => c === tile_data.relic) + 2) * 8n;
-        }
-
-        if (tile_data.colour !== null) {
-          encoded += BigInt(
-            colours.findIndex((c) => c === tile_data.colour) + 1
-          );
-        }
-      }
-    }
-    return bigint_to_base(encoded, config_encode_alphabet);
-  }
-
   function onstart_config () {
-    const url_params = new URLSearchParams(window.location.search);
-    const param_config = url_params.get("config");
-
-    if (param_config) {
-      decode_config(param_config);
-    }
-    
     if (config) {
       load_config();
     } else {
@@ -673,49 +500,102 @@ $(document).ready(function () {
 
   init_grid();
 
-
-  $("#toggle-names").click(function () {
-    if ($("#toggle-names").text() === "Show Tile Names") {
-      $("#toggle-names").text("Hide Tile Names");
-      $(".tile-code").removeClass("hidden");
-    } else {
-      $("#toggle-names").text("Show Tile Names");
-      $(".tile-code").addClass("hidden");
-    }
+  $("#tile-type").multiselect({
+    maxHeight: 200,
+    nonSelectedText: "Select Tile Types",
+    buttonWidth: "15em",
+    numberDisplayed: 2
   });
+  $("#game-type").multiselect({
+    maxHeight: 200,
+    nonSelectedText: "Select Game Types",
+    buttonWidth: "15em",
+    numberDisplayed: 2
+  });
+  $("#game-mode").multiselect({
+    maxHeight: 200,
+    nonSelectedText: "Select Game Modes",
+    buttonWidth: "15em",
+    numberDisplayed: 2
+  });
+  $("#difficulty").multiselect({
+    maxHeight: 200,
+    nonSelectedText: "Select Difficulties",
+    buttonWidth: "15em",
+    numberDisplayed: 2
+  });
+  $("#map").multiselect({
+    includeSelectAllOption: true,
+    maxHeight: 200,
+    nonSelectedText: "Select Maps",
+    buttonWidth: "15em",
+    numberDisplayed: 2
+  });
+  $("#heroes").multiselect({
+    includeSelectAllOption: true,
+    maxHeight: 200,
+    nonSelectedText: "Select Heroes",
+    buttonWidth: "15em",
+    numberDisplayed: 2
+  });
+  $("#towers").multiselect({
+    includeSelectAllOption: true,
+    maxHeight: 200,
+    nonSelectedText: "Select Towers",
+    buttonWidth: "15em",
+    numberDisplayed: 2
+  });
+  $("#boss-type").multiselect({
+    maxHeight: 200,
+    nonSelectedText: "Select Bosses",
+    buttonWidth: "15em",
+    numberDisplayed: 2
+  });
+  $("#boss-tiers").multiselect({
+    maxHeight: 200,
+    nonSelectedText: "Select Boss Tiers",
+    buttonWidth: "15em",
+    numberDisplayed: 2
+  });
+
 
   $("#rotate").click(() => rotate_grid());
 
-  $("#toggle-markers").click(function () {
-    if ($("#toggle-markers").text() === "Banners")
-      $("#toggle-markers").text("Relics");
-    else if ($("#toggle-markers").text() === "Relics")
-      $("#toggle-markers").text("Colours");
-    else $("#toggle-markers").text("Banners");
+  $("#search").click(function () {
+    let tile_types = $("#tile-type").val();
+    let game_types = $("#game-type").val();
+    let game_modes = $("#game-mode").val();
+    let difficulties = $("#difficulty").val();
+    let maps = $("#map").val();
+    let heroes = $("#heroes").val();
+    let towers = $("#towers").val();
+    let boss_types = $("#boss-type").val();
+    let boss_tiers = $("#boss-tiers").val() ? $("#boss-tiers").val().map(val => parseInt(val)) : null;
+    
+    $(".tile").not(".immutable").children(".hexagon-inner").attr("class", "hexagon-inner");
+    if ([tile_types, game_types, game_modes, difficulties, maps, heroes, towers, boss_types, boss_tiers].some(val => val !== null)) {
+      for (let node in config) {
+        let tile = config[node];
+        let node_id = get_node_id(node);
+        if (!(node in init_nodes) && tile["map"]) {
+          if (tile_types && !(tile_types.includes(tile["tile_type"]))) continue;
+          if (game_types && !(game_types.includes(tile["game_type"]))) continue;
+          if (game_modes && !(game_modes.includes(tile["game_mode"]))) continue;
+          if (difficulties && !(difficulties.includes(tile["difficulty"]))) continue;
+          if (maps && !(maps.includes(tile["map"]))) continue;
+          if (heroes && heroes.every(val => !tile["heroes"].includes(val))) continue;
+          if (towers && towers.every(val => tile["towers"].every(obj => obj["tower"] !== val))) continue;
+          if (boss_types && !(boss_types.includes(tile["boss"]))) continue;
+          if (boss_tiers && !(boss_tiers.includes(tile["tiers"]))) continue;
+          $(`.${node_id} .hexagon-inner`).attr("class", "hexagon-inner grey");
+        }
+      }
+    }
   });
 
-  $("#clear-banners").click(function () {
-    $(".banner").each(function () {
-      let node = $(this).parent().parent().attr("class").split(" ")[2];
-      update_image(node);
-    });
-    $("#banner-modal").modal("hide");
-  });
-
-  $("#clear-relics").click(function () {
-    $("img[class]").not(".banner").each(function () {
-      let node = $(this).parent().parent().attr("class").split(" ")[2];
-      update_image(node);
-    });
-    $("#relic-modal").modal("hide");
-  });
-
-  $("#clear-colours").click(function () {
-    $(".tile").not(".immutable").children().each(function () {
-      let node = $(this).parent().attr("class").split(" ")[2];
-      update_colour(node);
-    });
-    $("#colour-modal").modal("hide");
+  $("#clear").click(function () {
+    $(".tile").not(".immutable").children(".hexagon-inner").attr("class", "hexagon-inner");
+    $("select").multiselect("deselectAll");
   });
 
   $("#import").click(function () {
@@ -782,102 +662,27 @@ $(document).ready(function () {
         }
         load_config();
       });
-    } else {
-      let reader = new FileReader();
-      reader.readAsText(file);
-      reader.onload = function () {
-        try {
-          config = JSON.parse(reader.result);
-          load_config();
-        } catch {}
-      };
     }
-  });
-
-  $("#export").click(function () {
-    let date = new Date();
-    let week = Math.floor((date.getTime() - ct_26_start_date_milli) / one_day_milli / 7);
-    let ct_season = ct_start_season + Math.ceil(week / 2);
-    let ct_day = week % 2 ? 0 : Math.floor(
-      ((date.getTime() - ct_26_start_date_milli) % (one_day_milli * 7)) / one_day_milli + 1
-    );
-    let download = $("<a></a>");
-
-    download.attr(
-      "href",
-      "data:text/plain;charset=utf-8," + encodeURIComponent(JSON.stringify(config))
-    );
-    download.attr("download", `CT${ct_season}-${ct_day}.json`);
-    download.css("display", "none");
-    $("body").append(download);
-    $("a")[0].click();
-    $("a").remove();
-  });
-
-  $("#export-url").click(function () {
-    const data_encoded = encode_config(config);
-    const { protocol, hostname, pathname } = window.location;
-    const url = `${protocol}//${hostname}${pathname}?config=${data_encoded}`;
-
-    const copy_text = $("#copy-to-clipboard");
-    copy_text.val(url).select();
-    document.execCommand("copy");
-
-    const button = $("#export-url");
-    $("#export-url").text("Copied!");
-    setTimeout(() => button.text("Copy to URL"), 2500);
   });
 
   $(".tile").not(".immutable").click(function (e) {
     let node = $(this).attr("class").split(" ")[2];
     let node_name = get_node_name(node).toLowerCase();
-    let inner = $(this).children().first();
-    let home_colour = colours[rots];
-    let colour = inner.attr("class").split(" ")[1]
-      ? inner.attr("class").split(" ")[1]
-      : null;
-    let image = inner.children("img").attr("class")
-      ? inner.children("img").attr("class").split(" ")[0]
-      : null;
-    let relic = $("#select :selected").text();
-    if (e.shiftKey && $(`#${node_name}-modal .modal-body`).html()) {
+    if ($(`#${node_name}-modal .modal-body`).html()) {
       $(`#${node_name}-modal`).modal();
-    } else {
-      if ($("#toggle-markers").text() === "Banners") {
-        if (image === "banner") {
-          update_image(node);
-        } else if (image === null) {
-          update_image(node, "banner");
-        }
-      } else if ($("#toggle-markers").text() === "Relics") {
-        if (image === null) {
-          update_image(node, relic);
-        } else if (image !== "banner") {
-          update_image(node);
-        }
-      } else {
-        if (colour === home_colour) {
-          update_colour(node);
-        } else {
-          update_colour(node, home_colour);
-        }
-      }
     }
   });
 
   $(document).keypress(function (e) {
     switch (e.key) {
-      case "e":
-        $("#toggle-names").trigger("click");
-        break;
       case "r":
         rotate_grid();
         break;
       case "R":
         rotate_grid(5);
         break;
-      case "t":
-        $("#toggle-markers").trigger("click");
+      case "Enter":
+        $("#search").trigger("click");
         break;
     }
   })
