@@ -601,11 +601,10 @@ $(document).ready(function () {
   $("#export").click(function () {
     let nodes = $(".grey .tile-code");
     let tiles = [];
-    console.log(nodes);
     for (let i of nodes) {
       tiles.push(i.innerText);
     }
-    console.log(tiles.sort());
+    tiles.sort();
     let download = $("<a></a>");
 
     download.attr(
