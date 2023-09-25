@@ -235,7 +235,7 @@ $(document).ready(function () {
     "striker_jones",
     "obyn_greenfoot",
     "geraldo",
-    "churchill",
+    "captain_churchill",
     "benjamin",
     "ezili",
     "pat_fusty",
@@ -512,15 +512,15 @@ $(document).ready(function () {
     buttonWidth: "15em",
     numberDisplayed: 2
   });
-  $("#game-mode").multiselect({
-    maxHeight: 200,
-    nonSelectedText: "Select Game Modes",
-    buttonWidth: "15em",
-    numberDisplayed: 2
-  });
   $("#difficulty").multiselect({
     maxHeight: 200,
     nonSelectedText: "Select Difficulties",
+    buttonWidth: "15em",
+    numberDisplayed: 2
+  });
+  $("#game-mode").multiselect({
+    maxHeight: 200,
+    nonSelectedText: "Select Game Modes",
     buttonWidth: "15em",
     numberDisplayed: 2
   });
@@ -596,6 +596,27 @@ $(document).ready(function () {
   $("#clear").click(function () {
     $(".tile").not(".immutable").children(".hexagon-inner").attr("class", "hexagon-inner");
     $("select").multiselect("deselectAll");
+  });
+
+  $("#export").click(function () {
+    let nodes = $(".grey .tile-code");
+    let tiles = [];
+    console.log(nodes);
+    for (let i of nodes) {
+      tiles.push(i.innerText);
+    }
+    console.log(tiles.sort());
+    let download = $("<a></a>");
+
+    download.attr(
+      "href",
+      "data:text/plain;charset=utf-8," + encodeURIComponent(JSON.stringify(tiles))
+    );
+    download.attr("download", `filtered.txt`);
+    download.css("display", "none");
+    $("body").append(download);
+    $("a")[0].click();
+    $("a").remove();
   });
 
   $("#import").click(function () {

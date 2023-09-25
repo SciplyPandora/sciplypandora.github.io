@@ -235,7 +235,7 @@ $(document).ready(function () {
     "striker_jones",
     "obyn_greenfoot",
     "geraldo",
-    "churchill",
+    "captain_churchill",
     "benjamin",
     "ezili",
     "pat_fusty",
