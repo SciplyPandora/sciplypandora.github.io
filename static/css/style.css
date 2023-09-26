@@ -22,7 +22,7 @@ button:not(.close) {
     width: var(--sidebar_width);
 }
 
-input {
+input[type=number] {
     width: var(--sidebar_width) !important;
 }
 
