@@ -16,11 +16,18 @@
 
 body {
     background-color: black;
-    overflow: hidden;
 }
 
 button:not(.close) {
     width: var(--sidebar_width);
+}
+
+input {
+    width: var(--sidebar_width) !important;
+}
+
+.no-scroll {
+    overflow: hidden;
 }
 
 .multiselect-container {
@@ -37,6 +44,13 @@ button:not(.close) {
 
 .col-left {
     float: left;
+}
+
+.col-mid {
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, 0%);
+    width: calc(11.5 * var(--tile_width));
 }
 
 .col-right {
