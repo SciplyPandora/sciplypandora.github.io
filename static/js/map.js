@@ -201,6 +201,11 @@ $(document).ready(function () {
     "end_round",
     "max_towers",
     "selling",
+    "ceramic_health",
+    "moab_health",
+    "bloon_speed",
+    "moab_speed",
+    "regrow_rate",
     "heroes",
     "towers"
   ]
@@ -459,6 +464,11 @@ $(document).ready(function () {
         inner += `${snake_to_title_case(config[node]["map"])} - ${snake_to_title_case(config[node]["difficulty"])} ${snake_to_title_case(config[node]["game_mode"])}<br>`;
         inner += `$${config[node]["cash"]} - ${config[node]["start_round"]}/${end_round}<br>`;
         if (config[node]["max_towers"] !== -1) inner += `Max Towers: ${config[node]["max_towers"]}<br>`;
+        if (config[node]["ceramic_health"] !== 100) inner += `${config[node]["ceramic_health"]}% Ceramic Health<br>`;
+        if (config[node]["moab_health"] !== 100) inner += `${config[node]["moab_health"]}% Moab Health<br>`;
+        if (config[node]["bloon_speed"] !== 100) inner += `${config[node]["bloon_speed"]}% Bloon Speed<br>`;
+        if (config[node]["moab_speed"] !== 100) inner += `${config[node]["moab_speed"]}% Moab Speed<br>`;
+        if (config[node]["regrow_rate"] !== 100) inner += `${config[node]["regrow_rate"]}% Regrow Rate<br>`;
         inner += "<br>";
   
         let heroes = config[node]["heroes"];
@@ -538,6 +548,11 @@ $(document).ready(function () {
       config[node]["tile_type"] = "regular";
       config[node]["heroes"] = [];
       config[node]["towers"] = [];
+      config[node]["ceramic_health"] = 100;
+      config[node]["moab_health"] = 100;
+      config[node]["bloon_speed"] = 100;
+      config[node]["moab_speed"] = 100;
+      config[node]["regrow_rate"] = 100;
 
       if (node in init_nodes) {
         for (let attribute in init_nodes[node]) {
@@ -745,6 +760,7 @@ $(document).ready(function () {
           let game_data = data["GameData"];
           let dc_model = game_data["dcModel"];
           let start_rules = dc_model["startRules"];
+          let bloon_modifiers = dc_model["bloonModifiers"];
     
           config[node]["tile_type"] = data["TileType"] === "TeamFirstCapture" ? "regular" : pascal_to_snake_case(data["TileType"]);
           config[node]["relic"] =  data["RelicType"] !== "None" ? pascal_to_snake_case(data["RelicType"]) : null;
@@ -759,6 +775,11 @@ $(document).ready(function () {
           config[node]["end_round"] = start_rules["endRound"];
           config[node]["max_towers"] = dc_model["maxTowers"];
           config[node]["selling"] = !dc_model["disableSelling"];
+          config[node]["ceramic_health"] = Math.round(bloon_modifiers["healthMultipliers"]["bloons"] * 100);
+          config[node]["moab_health"] = Math.round(bloon_modifiers["healthMultipliers"]["moabs"] * 100);
+          config[node]["bloon_speed"] = Math.round(bloon_modifiers["speedMultiplier"] * 100);
+          config[node]["moab_speed"] = Math.round(bloon_modifiers["moabSpeedMultiplier"] * 100);
+          config[node]["regrow_rate"] = Math.round(bloon_modifiers["regrowRateMultiplier"] * 100);
     
           for (let item of dc_model["towers"]["_items"]) {
             if (item && item["max"]) {
