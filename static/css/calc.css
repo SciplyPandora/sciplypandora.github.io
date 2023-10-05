@@ -1,0 +1,39 @@
+body {
+    background-color: black;
+}
+
+button {
+    width: 10em;
+    font-size: 1.5em !important;
+}
+
+input[type=number] {
+    width: 10em;
+    font-size: 1.5em;
+}
+
+table {
+    font-size: 1.5em;
+}
+
+.multiselect-container {
+    width: 100%;
+}
+
+.dropdown-item {
+    width: 100% !important;
+}
+
+.multiselect {
+    margin: 0 0.5em 0.5em;
+}
+
+.col-left {
+    float: left;
+}
+
+.col-mid {
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, 0%);
+}

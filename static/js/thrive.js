@@ -205,7 +205,7 @@ $(document).ready(function () {
     if ($("#max-round").val()) {
       let max_round = parseInt($("#max-round").val());
       $("table tr").remove();
-      $("table thead").append("<tr><th>Round</th><th>Cash Earned From Thrive ($)</th></tr>");
+      $("table thead").append("<tr><th>Round</th><th>Cash Earned From Thriving ($)</th></tr>");
       for (let i = max_round - 2; i >= 0; i--) {
         $("table tbody").append(`<tr><td>${i + 1}</td><td>${thrive_incomes[i]}</td></tr>`);
       }
