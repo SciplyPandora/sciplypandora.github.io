@@ -674,6 +674,7 @@ $(document).ready(function () {
           config[node]["tiers"] = "bossData" in game_data ? game_data["bossData"]["TierCount"] : null;
           config[node]["game_mode"] = pascal_to_snake_case(game_data["selectedMode"]);
           config[node]["map"] = pascal_to_snake_case(game_data["selectedMap"]);
+          if (config[node]["map"] === "tutorial") config[node]["map"] = "monkey_meadow";
           config[node]["difficulty"] = pascal_to_snake_case(game_data["selectedDifficulty"]);
           config[node]["cash"] = start_rules["cash"];
           config[node]["start_round"] = start_rules["round"];
