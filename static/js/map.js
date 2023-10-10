@@ -200,6 +200,7 @@ $(document).ready(function () {
     "start_round",
     "end_round",
     "max_towers",
+    "monkey_knowledge",
     "selling",
     "ceramic_health",
     "moab_health",
@@ -230,9 +231,11 @@ $(document).ready(function () {
     "least_tiers"
   ];
   const bosses = [
-    "Bloonarius",
-    "Lych",
-    "Vortex"
+    "bloonarius",
+    "lych",
+    "vortex",
+    "dreadbloon",
+    "phayze"
   ];
   const all_heroes = [
     "quincy",
@@ -293,6 +296,7 @@ $(document).ready(function () {
   const ct_start_season = 26;
   const ct_26_start_date_milli = 1690927200000;
   const one_day_milli = 86400000;
+  const {protocol, host, pathname} = window.location;
   let config = localStorage["map"] ? JSON.parse(localStorage["map"]) : null;
   let rots = 0;
   
@@ -456,7 +460,7 @@ $(document).ready(function () {
         let inner = "<div>";
         let end_round = config[node]["end_round"]
         if (config[node]["game_type"] === "boss") {
-          inner += `${config[node]["tiers"]} Tier ${config[node]["boss"]}<br>`;
+          inner += `${config[node]["tiers"]} Tier ${snake_to_title_case(config[node]["boss"])}<br>`;
           end_round = `${config[node]["tiers"] * 20 + 20}+`;
         } else {
           inner += snake_to_title_case(`${config[node]["game_type"]}<br>`);
@@ -464,6 +468,7 @@ $(document).ready(function () {
         inner += `${snake_to_title_case(config[node]["map"])} - ${snake_to_title_case(config[node]["difficulty"])} ${snake_to_title_case(config[node]["game_mode"])}<br>`;
         inner += `$${config[node]["cash"]} - ${config[node]["start_round"]}/${end_round}<br>`;
         if (config[node]["max_towers"] !== -1) inner += `Max Towers: ${config[node]["max_towers"]}<br>`;
+        if (!config[node]["selling"]) inner += `No Selling<br>`;
         if (config[node]["ceramic_health"] !== 100) inner += `${config[node]["ceramic_health"]}% Ceramic Health<br>`;
         if (config[node]["moab_health"] !== 100) inner += `${config[node]["moab_health"]}% Moab Health<br>`;
         if (config[node]["bloon_speed"] !== 100) inner += `${config[node]["bloon_speed"]}% Bloon Speed<br>`;
@@ -767,13 +772,14 @@ $(document).ready(function () {
           config[node]["game_type"] = game_types[game_data["subGameType"]];
           config[node]["boss"] = "bossData" in game_data ? bosses[game_data["bossData"]["bossBloon"]] : null;
           config[node]["tiers"] = "bossData" in game_data ? game_data["bossData"]["TierCount"] : null;
-          config[node]["game_mode"] = pascal_to_snake_case(dc_model["mode"]);
-          config[node]["map"] = pascal_to_snake_case(dc_model["map"]);
-          config[node]["difficulty"] = pascal_to_snake_case(dc_model["difficulty"]);
+          config[node]["game_mode"] = pascal_to_snake_case(game_data["selectedMode"]);
+          config[node]["map"] = pascal_to_snake_case(game_data["selectedMap"]);
+          config[node]["difficulty"] = pascal_to_snake_case(game_data["selectedDifficulty"]);
           config[node]["cash"] = start_rules["cash"];
           config[node]["start_round"] = start_rules["round"];
           config[node]["end_round"] = start_rules["endRound"];
           config[node]["max_towers"] = dc_model["maxTowers"];
+          config[node]["monkey_knowledge"] = !dc_model["disableMK"];
           config[node]["selling"] = !dc_model["disableSelling"];
           config[node]["ceramic_health"] = Math.round(bloon_modifiers["healthMultipliers"]["bloons"] * 100);
           config[node]["moab_health"] = Math.round(bloon_modifiers["healthMultipliers"]["moabs"] * 100);
@@ -815,6 +821,14 @@ $(document).ready(function () {
     }
   });
 
+  $("#load").click(async function () {
+    init_config();
+    const response = await fetch(`${protocol}//${host}/static/configs/${$("#historical-select :selected").val()}.json`);
+    config = await response.json();
+    load_config();
+    $("#historical-modal").modal("hide");
+  });
+
   $("#export").click(function () {
     let date = new Date();
     let week = Math.floor((date.getTime() - ct_26_start_date_milli) / one_day_milli / 7);
@@ -837,8 +851,7 @@ $(document).ready(function () {
 
   $("#export-url").click(function () {
     const data_encoded = encode_config(config);
-    const { protocol, hostname, pathname } = window.location;
-    const url = `${protocol}//${hostname}${pathname}?config=${data_encoded}`;
+    const url = `${protocol}//${host}${pathname}?config=${data_encoded}`;
 
     const copy_text = $("#copy-to-clipboard");
     copy_text.val(url).select();
@@ -860,7 +873,7 @@ $(document).ready(function () {
     let image = inner.children("img").attr("class")
       ? inner.children("img").attr("class").split(" ")[0]
       : null;
-    let relic = $("#select :selected").text();
+    let relic = $("#select :selected").val();
     if (e.shiftKey && $(`#${node_name}-modal .modal-body`).html()) {
       $(`#${node_name}-modal`).modal();
     } else {

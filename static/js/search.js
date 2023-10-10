@@ -200,6 +200,7 @@ $(document).ready(function () {
     "start_round",
     "end_round",
     "max_towers",
+    "monkey_knowledge",
     "selling",
     "ceramic_health",
     "moab_health",
@@ -232,7 +233,9 @@ $(document).ready(function () {
   const bosses = [
     "bloonarius",
     "lych",
-    "vortex"
+    "vortex",
+    "dreadbloon",
+    "phayze"
   ];
   const all_heroes = [
     "quincy",
@@ -289,7 +292,7 @@ $(document).ready(function () {
     sauda: "Sauda",
     psi: "Psi"
   };
-
+  const {protocol, host, pathname} = window.location;
   let config = localStorage["map/search"] ? JSON.parse(localStorage["map/search"]) : null;
   let rots = 0;
   
@@ -362,7 +365,7 @@ $(document).ready(function () {
         let inner = "<div>";
         let end_round = config[node]["end_round"]
         if (config[node]["game_type"] === "boss") {
-          inner += `${config[node]["tiers"]} Tier ${config[node]["boss"]}<br>`;
+          inner += `${config[node]["tiers"]} Tier ${snake_to_title_case(config[node]["boss"])}<br>`;
           end_round = `${config[node]["tiers"] * 20 + 20}+`;
         } else {
           inner += snake_to_title_case(`${config[node]["game_type"]}<br>`);
@@ -370,6 +373,7 @@ $(document).ready(function () {
         inner += `${snake_to_title_case(config[node]["map"])} - ${snake_to_title_case(config[node]["difficulty"])} ${snake_to_title_case(config[node]["game_mode"])}<br>`;
         inner += `$${config[node]["cash"]} - ${config[node]["start_round"]}/${end_round}<br>`;
         if (config[node]["max_towers"] !== -1) inner += `Max Towers: ${config[node]["max_towers"]}<br>`;
+        if (!config[node]["selling"]) inner += `No Selling<br>`;
         if (config[node]["ceramic_health"] !== 100) inner += `${config[node]["ceramic_health"]}% Ceramic Health<br>`;
         if (config[node]["moab_health"] !== 100) inner += `${config[node]["moab_health"]}% Moab Health<br>`;
         if (config[node]["bloon_speed"] !== 100) inner += `${config[node]["bloon_speed"]}% Bloon Speed<br>`;
@@ -514,6 +518,7 @@ $(document).ready(function () {
   
 
   init_grid();
+
 
   $("#tile-type").multiselect({
     maxHeight: 200,
@@ -667,13 +672,14 @@ $(document).ready(function () {
           config[node]["game_type"] = game_types[game_data["subGameType"]];
           config[node]["boss"] = "bossData" in game_data ? bosses[game_data["bossData"]["bossBloon"]] : null;
           config[node]["tiers"] = "bossData" in game_data ? game_data["bossData"]["TierCount"] : null;
-          config[node]["game_mode"] = pascal_to_snake_case(dc_model["mode"]);
-          config[node]["map"] = pascal_to_snake_case(dc_model["map"]);
-          config[node]["difficulty"] = pascal_to_snake_case(dc_model["difficulty"]);
+          config[node]["game_mode"] = pascal_to_snake_case(game_data["selectedMode"]);
+          config[node]["map"] = pascal_to_snake_case(game_data["selectedMap"]);
+          config[node]["difficulty"] = pascal_to_snake_case(game_data["selectedDifficulty"]);
           config[node]["cash"] = start_rules["cash"];
           config[node]["start_round"] = start_rules["round"];
           config[node]["end_round"] = start_rules["endRound"];
           config[node]["max_towers"] = dc_model["maxTowers"];
+          config[node]["monkey_knowledge"] = !dc_model["disableMK"];
           config[node]["selling"] = !dc_model["disableSelling"];
           config[node]["ceramic_health"] = Math.round(bloon_modifiers["healthMultipliers"]["bloons"] * 100);
           config[node]["moab_health"] = Math.round(bloon_modifiers["healthMultipliers"]["moabs"] * 100);
@@ -713,6 +719,14 @@ $(document).ready(function () {
         } catch {}
       };
     }
+  });
+
+  $("#load").click(async function () {
+    init_config();
+    const response = await fetch(`${protocol}//${host}/static/configs/${$("#historical-select :selected").val()}.json`);
+    config = await response.json();
+    load_config();
+    $("#historical-modal").modal("hide");
   });
 
   $(".tile").not(".immutable").click(function (e) {

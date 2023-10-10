@@ -15,7 +15,7 @@
 }
 
 body {
-    background-color: black;
+    background-color: #121212;
 }
 
 button:not(.close) {
@@ -96,7 +96,7 @@ input[type=number] {
     position: relative;
     top: var(--border_width);
     left: var(--border_width);
-    background: black;
+    background: #121212;
     height: calc(100% - 2 * var(--border_width));
     width: calc(100% - 2 * var(--border_width));
     -webkit-clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
