@@ -13,18 +13,11 @@
     ></script>
   </head>
   <body>
-    <input id="copy-to-clipboard" style="position:absolute;top:-2000px;left:-2000px">
     <div class="col-left">
-      <input id="thrives" type="number" min="1" max="70" class="form-control m-2" placeholder="Thrives">
-      <input id="max-round" type="number" min="1" max="140" class="form-control m-2" placeholder="Max Round">
+      <input id="thrives" type="number" min="1" max="70" data-prev="" class="form-control m-2" placeholder="Thrives">
+      <input id="max-round" type="number" min="1" max="140" data-prev="" class="form-control m-2" placeholder="Max Round">
       <button id="calc-max" class="btn btn-primary d-block m-2">Max</button>
       <button id="calc-list" class="btn btn-primary d-block m-2">List</button>
-      <input
-        id="upload"
-        type="file"
-        accept=".json,.zip"
-        style="display: none"
-      >
     </div>
 
     <div class="col-mid m-2">

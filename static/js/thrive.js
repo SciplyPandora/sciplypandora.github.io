@@ -143,20 +143,15 @@ $(document).ready(function () {
   ]
 
 
-  $("input[type='number']").keypress(function (e) {
-    if (e.charCode < 48 || e.charCode > 57) {
-      return false;
-    } else if (this.value + e.charCode == 48) {
-      return false;
-    } else if (this.value * 10 + e.charCode - 48 > this.max) {
-      return false;
-    } else {
-      return true;
-    }
-  });
-
   $("input[type='number']").change(function() {
-    if (this.value === "0") this.value = "";
+    if (!(/^[0-9]*$/.test(this.value))) {
+      this.value = this.dataset.prev;
+    } else if (this.value - this.min < 0) {
+      this.value = this.min;
+    } else if (this.value - this.max > 0) {
+      this.value = this.max;
+    }
+    this.dataset.prev = this.value;
   });
 
   $("#calc-max").click(function () {

@@ -1,5 +1,5 @@
 body {
-    background-color: black;
+    background-color: #121212;
 }
 
 button {
@@ -10,6 +10,29 @@ button {
 input[type=number] {
     width: 10em;
     font-size: 1.5em;
+}
+
+input[type=checkbox] {
+    width: 1.5em;
+    height: 1.5em;
+}
+
+label {
+    margin-left: 0.5em;
+    font-size: 1.5em;
+    color: white;
+}
+
+/* .form-check {
+    transform: scale(1.5, 1.5);
+    transform: translateX(1000);
+} */
+
+select {
+    width: 10em !important;
+    font-size: 1.5em;
+    height: 2em !important;
+    margin: 0.343em 0 0 0.343em;
 }
 
 table {
@@ -30,6 +53,7 @@ table {
 
 .col-left {
     float: left;
+    width: 33%;
 }
 
 .col-mid {
