@@ -422,7 +422,7 @@ $(document).ready(function () {
 
   function update_grid_dimension (dimension) {
     size = dimension;
-    config["size"] = dimension;
+    if (config) config["size"] = dimension;
     update_node_defaults(dimension);
     update_grid(dimension);
     $(":root").attr("style",`--size:${dimension}`);
