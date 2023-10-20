@@ -1,7 +1,8 @@
 :root {
     --hex_ratio: 0.86602540378;
     --sidebar_width: 9.5em;
-    --tile_width: min(calc((100vw - var(--sidebar_width) * 2) / 12), calc(100vh / 13));
+    --size: 7;
+    --tile_width: min(calc((100vw - var(--sidebar_width) * 2) / (var(--size) * 1.5 + 1.5)), calc(100vh / (var(--size) * 2 + 1) / var(--hex_ratio)));
     --tile_height: calc(var(--tile_width) * var(--hex_ratio));
     --tile_name_font_size: min(calc((100vw - var(--sidebar_width) * 2) / 48), calc(100vh / 52));
     --ticket_count_font_size: min(calc((100vw - var(--sidebar_width) * 2) / 36), calc(100vh / 39));
