@@ -216,7 +216,7 @@ $(document).ready(function () {
     x0y4z8: "BHZ",
     x0y5z8: "CGZ",
     x0y6z8: "CEZ",
-    x0y7z8: "CCZ",
+    x0y7z8: "CCZ"
   };
   const init_nodes = {
     AA: {colour: "purple"},

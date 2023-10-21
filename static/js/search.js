@@ -169,22 +169,70 @@ $(document).ready(function () {
     x7y5z0: "EDA",
     x7y6z0: "EBA",
     x7y7z0: "EAA",
+    x8y0z0: "FAZ",
+    x8y1z0: "FCZ",
+    x8y2z0: "FEZ",
+    x8y3z0: "FGZ",
+    x8y4z0: "EHZ",
+    x8y5z0: "EFZ",
+    x8y6z0: "EDZ",
+    x8y7z0: "EBZ",
+    x8y8z0: "EAZ",
+    x8y0z1: "FBZ",
+    x8y0z2: "FDZ",
+    x8y0z3: "FFZ",
+    x8y0z4: "FHZ",
+    x8y0z5: "AGZ",
+    x8y0z6: "AEZ",
+    x8y0z7: "ACZ",
+    x8y0z8: "AAZ",
+    x0y8z0: "DAZ",
+    x1y8z0: "DBZ",
+    x2y8z0: "DDZ",
+    x3y8z0: "DFZ",
+    x4y8z0: "DHZ",
+    x5y8z0: "EGZ",
+    x6y8z0: "EEZ",
+    x7y8z0: "ECZ",
+    x0y8z1: "DCZ",
+    x0y8z2: "DEZ",
+    x0y8z3: "DGZ",
+    x0y8z4: "CHZ",
+    x0y8z5: "CFZ",
+    x0y8z6: "CDZ",
+    x0y8z7: "CBZ",
+    x0y8z8: "CAZ",
+    x0y0z8: "BAZ",
+    x1y0z8: "BCZ",
+    x2y0z8: "BEZ",
+    x3y0z8: "BGZ",
+    x4y0z8: "AHZ",
+    x5y0z8: "AFZ",
+    x6y0z8: "ADZ",
+    x7y0z8: "ABZ",
+    x0y1z8: "BBZ",
+    x0y2z8: "BDZ",
+    x0y3z8: "BFZ",
+    x0y4z8: "BHZ",
+    x0y5z8: "CGZ",
+    x0y6z8: "CEZ",
+    x0y7z8: "CCZ"
   };
   const init_nodes = {
-    AAA: {colour: "purple"},
-    BAA: {colour: "pink"},
-    CAA: {colour: "green"},
-    DAA: {colour: "blue"},
-    EAA: {colour: "yellow"},
-    FAA: {colour: "red"}
+    AA: {colour: "purple"},
+    BA: {colour: "pink"},
+    CA: {colour: "green"},
+    DA: {colour: "blue"},
+    EA: {colour: "yellow"},
+    FA: {colour: "red"}
   };
   const immutable_nodes = [
-    "AAA",
-    "BAA",
-    "CAA",
-    "DAA",
-    "EAA",
-    "FAA"
+    "AA",
+    "BA",
+    "CA",
+    "DA",
+    "EA",
+    "FA"
   ];
   const config_attributes = [
     "colour",
@@ -295,6 +343,9 @@ $(document).ready(function () {
   const {protocol, host, pathname} = window.location;
   let config = localStorage["map/search"] ? JSON.parse(localStorage["map/search"]) : null;
   let rots = 0;
+  let size = 7;
+  let mapped_immutable_nodes;
+  let mapped_init_nodes;
   
 
   function pascal_to_snake_case (text) {
@@ -330,25 +381,36 @@ $(document).ready(function () {
   function get_node_name (node_id) {
     return nodes[get_rotated_node(node_id, 6 - rots)];
   }
+
+  function map_node_name (node_name, dimension) {
+    return node_name.length === 2 ? node_name + get_node_name(`x${dimension}y0z0`)[2] : node_name;
+  }
+
+  function update_node_defaults (dimension) {
+    mapped_immutable_nodes = immutable_nodes.map(val => map_node_name(val, dimension));
+    mapped_init_nodes = {};
+    for (let i in init_nodes) {
+      mapped_init_nodes[map_node_name(i, dimension)] = init_nodes[i];
+    }
+  }
+
+  function update_grid_dimension (dimension) {
+    size = dimension;
+    if (config) config["size"] = dimension;
+    update_node_defaults(dimension);
+    update_grid(dimension);
+    $(":root").attr("style",`--size:${dimension}`);
+    $("#toggle-names").text("Show Tile Names");
+  }
   
   function rotate_grid (rotations=1) {
     rots = (rots + rotations) % 6;
-    let ticket_count = $(".x7y0z7 .ticket-count");
-    ticket_count.attr("class", "ticket-count hidden");
 
     $(".tile").attr("class", function (ind, val) {
       let split_arr = val.split(" ");
       split_arr[2] = get_rotated_node(split_arr[2], rotations);
       return split_arr.join(" ");
     });
-
-    ticket_count = $(".x7y0z7 .ticket-count");
-    ticket_count.text($(`.${colours[rots]}`).length - 1);
-    if (ticket_count.text() === "0") {
-      ticket_count.attr("class", "ticket-count hidden");
-    } else {
-      ticket_count.attr("class", "ticket-count");
-    }
   }
 
   function create_modal (node, title) {
@@ -360,29 +422,29 @@ $(document).ready(function () {
   }
 
   function populate_modals () {
-    for (let node in config) {
-      if (!(node in init_nodes) && config[node]["map"]) {
+    for (let node in config["tiles"]) {
+      if (!(node in mapped_init_nodes) && config["tiles"][node]["map"]) {
         let inner = "<div>";
-        let end_round = config[node]["end_round"]
-        if (config[node]["game_type"] === "boss") {
-          inner += `${config[node]["tiers"]} Tier ${snake_to_title_case(config[node]["boss"])}<br>`;
-          end_round = `${config[node]["tiers"] * 20 + 20}+`;
+        let end_round = config["tiles"][node]["end_round"]
+        if (config["tiles"][node]["game_type"] === "boss") {
+          inner += `${config["tiles"][node]["tiers"]} Tier ${snake_to_title_case(config["tiles"][node]["boss"])}<br>`;
+          end_round = `${config["tiles"][node]["tiers"] * 20 + 20}+`;
         } else {
-          inner += snake_to_title_case(`${config[node]["game_type"]}<br>`);
+          inner += snake_to_title_case(`${config["tiles"][node]["game_type"]}<br>`);
         }
-        inner += `${snake_to_title_case(config[node]["map"])} - ${snake_to_title_case(config[node]["difficulty"])} ${snake_to_title_case(config[node]["game_mode"])}<br>`;
-        inner += `$${config[node]["cash"]} - ${config[node]["start_round"]}/${end_round}<br>`;
-        if (config[node]["max_towers"] !== -1) inner += `Max Towers: ${config[node]["max_towers"]}<br>`;
-        if (!config[node]["selling"]) inner += `No Selling<br>`;
-        if (config[node]["ceramic_health"] !== 100) inner += `${config[node]["ceramic_health"]}% Ceramic Health<br>`;
-        if (config[node]["moab_health"] !== 100) inner += `${config[node]["moab_health"]}% Moab Health<br>`;
-        if (config[node]["bloon_speed"] !== 100) inner += `${config[node]["bloon_speed"]}% Bloon Speed<br>`;
-        if (config[node]["moab_speed"] !== 100) inner += `${config[node]["moab_speed"]}% Moab Speed<br>`;
-        if (config[node]["regrow_rate"] !== 100) inner += `${config[node]["regrow_rate"]}% Regrow Rate<br>`;
+        inner += `${snake_to_title_case(config["tiles"][node]["map"])} - ${snake_to_title_case(config["tiles"][node]["difficulty"])} ${snake_to_title_case(config["tiles"][node]["game_mode"])}<br>`;
+        inner += `$${config["tiles"][node]["cash"]} - ${config["tiles"][node]["start_round"]}/${end_round}<br>`;
+        if (config["tiles"][node]["max_towers"] !== -1) inner += `Max Towers: ${config["tiles"][node]["max_towers"]}<br>`;
+        if (!config["tiles"][node]["selling"]) inner += `No Selling<br>`;
+        if (config["tiles"][node]["ceramic_health"] !== 100) inner += `${config["tiles"][node]["ceramic_health"]}% Ceramic Health<br>`;
+        if (config["tiles"][node]["moab_health"] !== 100) inner += `${config["tiles"][node]["moab_health"]}% Moab Health<br>`;
+        if (config["tiles"][node]["bloon_speed"] !== 100) inner += `${config["tiles"][node]["bloon_speed"]}% Bloon Speed<br>`;
+        if (config["tiles"][node]["moab_speed"] !== 100) inner += `${config["tiles"][node]["moab_speed"]}% Moab Speed<br>`;
+        if (config["tiles"][node]["regrow_rate"] !== 100) inner += `${config["tiles"][node]["regrow_rate"]}% Regrow Rate<br>`;
         inner += "<br>";
   
-        let heroes = config[node]["heroes"];
-        let towers = config[node]["towers"];
+        let heroes = config["tiles"][node]["heroes"];
+        let towers = config["tiles"][node]["towers"];
         if (heroes.length) {
           inner += "Heroes:<br>";
           for (let i = 0; i < heroes.length; i++) {
@@ -412,21 +474,19 @@ $(document).ready(function () {
   function init_grid () {
     for (let node in nodes) {
       let node_name = get_node_name(node);
-      let colour = node_name in init_nodes ? init_nodes[node_name]["colour"] : null;
+      let colour = node_name in mapped_init_nodes ? mapped_init_nodes[node_name]["colour"] : null;
       $(".col-left").after(`<div class="hexagon-border tile ${node}"></div>`);
       $(`.${node}`).append(`<div class="hexagon-inner"></div>`);
       let inner = $(`.${node} div`);
       
-      if (immutable_nodes.includes(node_name)) {
+      if (mapped_immutable_nodes.includes(node_name)) {
         $(`.${node}`).addClass("immutable");
       }
       if (colour) {
         inner.addClass(colour);
       }
       inner.append(`<img src="/static/images/tiles/empty.png">`);
-      if (immutable_nodes.includes(node_name)) {
-        inner.append(`<div class="ticket-count hidden">0</div>`);
-      } else {
+      if (!mapped_immutable_nodes.includes(node_name)) {
         inner.append(`<div class="tile-code">${node_name}</div>`);
       }
 
@@ -434,14 +494,48 @@ $(document).ready(function () {
     }
   }
 
+  function update_grid (dimension) {
+    $(".tile").removeClass("immutable");
+    $(".tile").removeClass("hidden");
+    $(".tile .hexagon-inner").attr("class", "hexagon-inner").empty();
+
+    for (let node in nodes) {
+      let node_name = get_node_name(node);
+      let x = parseInt(node[1]);
+      let y = parseInt(node[3]);
+      let z = parseInt(node[5]);
+      let colour = node_name in mapped_init_nodes ? mapped_init_nodes[node_name]["colour"] : null;
+      let inner = $(`.${node} div`);
+
+      if (mapped_immutable_nodes.includes(node_name)) {
+        $(`.${node}`).addClass("immutable");
+      }
+      if (x > dimension || y > dimension || z > dimension) {
+        $(`.${node}`).addClass("hidden");
+      }
+      if (colour) {
+        inner.addClass(colour);
+      }
+      inner.append(`<img src="/static/images/tiles/empty.png">`);
+      if (!mapped_immutable_nodes.includes(node_name)) {
+        inner.append(`<div class="tile-code hidden">${node_name}</div>`);
+      }
+    }
+  }
+
   function check_config (cfg) {
     for (let node of Object.values(nodes)) {
-      if (!(node in cfg)) {
+      let node_id = get_node_id(node);
+      let x = parseInt(node_id[1]);
+      let y = parseInt(node_id[3]);
+      let z = parseInt(node_id[5]);
+      if (!(node in cfg["tiles"] || Math.max(x, y, z) > cfg["size"])) {
         return false;
       }
     }
-    for (let node in init_nodes) {
-      if (cfg[node]["colour"] !== init_nodes[node]["colour"]) {
+    update_node_defaults(cfg["size"]);
+    for (let node in mapped_init_nodes) {
+      if (cfg["tiles"][node]["colour"] !== mapped_init_nodes[node]["colour"]) {
         return false;
       }
     }
@@ -449,24 +543,24 @@ $(document).ready(function () {
   }
 
   function init_config () {
-    config = {};
+    config = {"size": 7, "tiles": {}};
     for (let node of Object.values(nodes)) {
-      config[node] = {};
+      config["tiles"][node] = {};
       for (let attribute of config_attributes) {
-        config[node][attribute] = null;
+        config["tiles"][node][attribute] = null;
       }
-      config[node]["tile_type"] = "regular";
-      config[node]["heroes"] = [];
-      config[node]["towers"] = [];
-      config[node]["ceramic_health"] = 100;
-      config[node]["moab_health"] = 100;
-      config[node]["bloon_speed"] = 100;
-      config[node]["moab_speed"] = 100;
-      config[node]["regrow_rate"] = 100;
+      config["tiles"][node]["tile_type"] = "regular";
+      config["tiles"][node]["heroes"] = [];
+      config["tiles"][node]["towers"] = [];
+      config["tiles"][node]["ceramic_health"] = 100;
+      config["tiles"][node]["moab_health"] = 100;
+      config["tiles"][node]["bloon_speed"] = 100;
+      config["tiles"][node]["moab_speed"] = 100;
+      config["tiles"][node]["regrow_rate"] = 100;
 
-      if (node in init_nodes) {
-        for (let attribute in init_nodes[node]) {
-          config[node][attribute] = init_nodes[node][attribute];
+      if (node in mapped_init_nodes) {
+        for (let attribute in mapped_init_nodes[node]) {
+          config["tiles"][node][attribute] = mapped_init_nodes[node][attribute];
         }
       }
     }
@@ -482,41 +576,43 @@ $(document).ready(function () {
       init_config();
     }
 
+    update_grid_dimension(config["size"]);
     localStorage["map/search"] = JSON.stringify(config);
 
     for (let node of Object.values(nodes)) {
       let node_id = get_node_id(node);
-      let tile_type = config[node]["tile_type"];
-      let relic = config[node]["relic"];
-      if (tile_type !== "regular") {
-        if (tile_type === "banner") {
-          $(`.${node_id} img`).attr("src", "/static/images/tiles/banner.webp").addClass("banner");
-        } else {
-          $(`.${node_id} img`).attr("src", `/static/images/tiles/${relic}.webp`).addClass(relic);
+      if (node in config["tiles"]) {
+        let colour = config["tiles"][node]["colour"];
+        let tile_type = config["tiles"][node]["tile_type"];
+        let relic = config["tiles"][node]["relic"];
+
+        if (colour) {
+          $(`.${node_id} .hexagon-inner`).attr("class", `hexagon-inner ${colour}`);
+        }
+        if (tile_type !== "regular") {
+          if (tile_type === "banner") {
+            $(`.${node_id} img`).attr("src", "/static/images/tiles/banner.webp").addClass("banner").addClass("tile-image");
+          } else {
+            $(`.${node_id} img`).attr("src", `/static/images/tiles/${relic}.webp`).addClass(relic).addClass("tile-image");
+          }
         }
       }
     }
 
     populate_modals();
-
-    let ticket_count = $(".x7y0z7 .ticket-count");
-    ticket_count.text($(`.${colours[rots]}`).length - 1);
-    if (ticket_count.text() === "0") {
-      ticket_count.attr("class", "ticket-count hidden");
-    } else {
-      ticket_count.attr("class", "ticket-count");
-    }
   }
 
   function onstart_config () {
     if (config) {
       load_config();
     } else {
+      update_grid_dimension(size);
       init_config();
     }
   }
   
 
+  update_node_defaults(size);
   init_grid();
 
 
@@ -594,8 +690,8 @@ $(document).ready(function () {
     
     $(".tile").not(".immutable").children(".hexagon-inner").attr("class", "hexagon-inner");
     if ([tile_types, game_types, game_modes, difficulties, maps, heroes, towers, boss_types, boss_tiers].some(val => val !== null)) {
-      for (let node in config) {
-        let tile = config[node];
+      for (let node in config["tiles"]) {
+        let tile = config["tiles"][node];
         let node_id = get_node_id(node);
         if (!(node in init_nodes) && tile["map"]) {
           if (tile_types && !(tile_types.includes(tile["tile_type"]))) continue;
@@ -667,26 +763,26 @@ $(document).ready(function () {
           let start_rules = dc_model["startRules"];
           let bloon_modifiers = dc_model["bloonModifiers"];
     
-          config[node]["tile_type"] = data["TileType"] === "TeamFirstCapture" ? "regular" : pascal_to_snake_case(data["TileType"]);
-          config[node]["relic"] =  data["RelicType"] !== "None" ? pascal_to_snake_case(data["RelicType"]) : null;
-          config[node]["game_type"] = game_types[game_data["subGameType"]];
-          config[node]["boss"] = "bossData" in game_data ? bosses[game_data["bossData"]["bossBloon"]] : null;
-          config[node]["tiers"] = "bossData" in game_data ? game_data["bossData"]["TierCount"] : null;
-          config[node]["game_mode"] = pascal_to_snake_case(game_data["selectedMode"]);
-          config[node]["map"] = pascal_to_snake_case(game_data["selectedMap"]);
-          if (config[node]["map"] === "tutorial") config[node]["map"] = "monkey_meadow";
-          config[node]["difficulty"] = pascal_to_snake_case(game_data["selectedDifficulty"]);
-          config[node]["cash"] = start_rules["cash"];
-          config[node]["start_round"] = start_rules["round"];
-          config[node]["end_round"] = start_rules["endRound"];
-          config[node]["max_towers"] = dc_model["maxTowers"];
-          config[node]["monkey_knowledge"] = !dc_model["disableMK"];
-          config[node]["selling"] = !dc_model["disableSelling"];
-          config[node]["ceramic_health"] = Math.round(bloon_modifiers["healthMultipliers"]["bloons"] * 100);
-          config[node]["moab_health"] = Math.round(bloon_modifiers["healthMultipliers"]["moabs"] * 100);
-          config[node]["bloon_speed"] = Math.round(bloon_modifiers["speedMultiplier"] * 100);
-          config[node]["moab_speed"] = Math.round(bloon_modifiers["moabSpeedMultiplier"] * 100);
-          config[node]["regrow_rate"] = Math.round(bloon_modifiers["regrowRateMultiplier"] * 100);
+          config["tiles"][node]["tile_type"] = data["TileType"] === "TeamFirstCapture" ? "regular" : pascal_to_snake_case(data["TileType"]);
+          config["tiles"][node]["relic"] =  data["RelicType"] !== "None" ? pascal_to_snake_case(data["RelicType"]) : null;
+          config["tiles"][node]["game_type"] = game_types[game_data["subGameType"]];
+          config["tiles"][node]["boss"] = "bossData" in game_data ? bosses[game_data["bossData"]["bossBloon"]] : null;
+          config["tiles"][node]["tiers"] = "bossData" in game_data ? game_data["bossData"]["TierCount"] : null;
+          config["tiles"][node]["game_mode"] = pascal_to_snake_case(game_data["selectedMode"]);
+          config["tiles"][node]["map"] = pascal_to_snake_case(game_data["selectedMap"]);
+          if (config["tiles"][node]["map"] === "tutorial") config["tiles"][node]["map"] = "monkey_meadow";
+          config["tiles"][node]["difficulty"] = pascal_to_snake_case(game_data["selectedDifficulty"]);
+          config["tiles"][node]["cash"] = start_rules["cash"];
+          config["tiles"][node]["start_round"] = start_rules["round"];
+          config["tiles"][node]["end_round"] = start_rules["endRound"];
+          config["tiles"][node]["max_towers"] = dc_model["maxTowers"];
+          config["tiles"][node]["monkey_knowledge"] = !dc_model["disableMK"];
+          config["tiles"][node]["selling"] = !dc_model["disableSelling"];
+          config["tiles"][node]["ceramic_health"] = Math.round(bloon_modifiers["healthMultipliers"]["bloons"] * 100);
+          config["tiles"][node]["moab_health"] = Math.round(bloon_modifiers["healthMultipliers"]["moabs"] * 100);
+          config["tiles"][node]["bloon_speed"] = Math.round(bloon_modifiers["speedMultiplier"] * 100);
+          config["tiles"][node]["moab_speed"] = Math.round(bloon_modifiers["moabSpeedMultiplier"] * 100);
+          config["tiles"][node]["regrow_rate"] = Math.round(bloon_modifiers["regrowRateMultiplier"] * 100);
     
           for (let item of dc_model["towers"]["_items"]) {
             if (item && item["max"]) {
@@ -694,15 +790,15 @@ $(document).ready(function () {
               let max = item["max"];
               if (item["isHero"]) {
                 if (tower === "ChosenPrimaryHero") {
-                  config[node]["heroes"] = all_heroes;
-                } else if (config[node]["heroes"] !== all_heroes) {
-                  config[node]["heroes"].push(pascal_to_snake_case(tower));
+                  config["tiles"][node]["heroes"] = all_heroes;
+                } else if (config["tiles"][node]["heroes"] !== all_heroes) {
+                  config["tiles"][node]["heroes"].push(pascal_to_snake_case(tower));
                 }
               } else {
                 if (max === -1) {
-                  config[node]["towers"].push({"tower": pascal_to_snake_case(tower), "max": -1});
+                  config["tiles"][node]["towers"].push({"tower": pascal_to_snake_case(tower), "max": -1});
                 } else {
-                  config[node]["towers"].push({"tower": pascal_to_snake_case(tower), "max": max});
+                  config["tiles"][node]["towers"].push({"tower": pascal_to_snake_case(tower), "max": max});
                 }
               }
             }
