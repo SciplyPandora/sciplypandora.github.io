@@ -4,8 +4,8 @@
     --size: 7;
     --tile_width: min(calc((100vw - var(--sidebar_width) * 2) / (var(--size) * 1.5 + 1.5)), calc(100vh / (var(--size) * 2 + 1) / var(--hex_ratio)));
     --tile_height: calc(var(--tile_width) * var(--hex_ratio));
-    --tile_name_font_size: min(calc((100vw - var(--sidebar_width) * 2) / 48), calc(100vh / 52));
-    --ticket_count_font_size: min(calc((100vw - var(--sidebar_width) * 2) / 36), calc(100vh / 39));
+    --tile_name_font_size: calc(var(--tile_width) / 4);
+    --ticket_count_font_size: min(var(--tile_width) / 3);
     --border_width: 4%;
     --x_dim_x: calc(3 / 2 * var(--border_width) - var(--hex_ratio) * var(--border_width) - 75%);
     --x_dim_y: calc(50% - var(--border_width) / 2);
@@ -24,7 +24,8 @@ button:not(.close) {
 }
 
 input[type=number] {
-    width: var(--sidebar_width) !important;
+    width: 14em;
+    margin: 0 0.5em 0.5em !important;
 }
 
 .no-scroll {

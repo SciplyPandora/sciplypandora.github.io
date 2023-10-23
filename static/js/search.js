@@ -518,7 +518,7 @@ $(document).ready(function () {
       }
       inner.append(`<img src="/static/images/tiles/empty.png">`);
       if (!mapped_immutable_nodes.includes(node_name)) {
-        inner.append(`<div class="tile-code hidden">${node_name}</div>`);
+        inner.append(`<div class="tile-code">${node_name}</div>`);
       }
     }
   }
@@ -645,7 +645,8 @@ $(document).ready(function () {
     maxHeight: 200,
     nonSelectedText: "Select Maps",
     buttonWidth: "15em",
-    numberDisplayed: 2
+    numberDisplayed: 2,
+    enableClickableOptGroups: true
   });
   $("#heroes").multiselect({
     includeSelectAllOption: true,
@@ -675,6 +676,33 @@ $(document).ready(function () {
   });
 
 
+  $("input[type='number']").change(function () {
+    if (!(/^[0-9]*$/.test(this.value))) {
+      this.value = this.dataset.prev;
+    } else if (this.value - this.min < 0) {
+      this.value = this.min;
+    } else if (this.value - this.max > 0) {
+      this.value = this.max;
+    }
+    this.dataset.prev = this.value;
+  });
+
+  $("#min-end-round").change(function () {
+    if (this.value) {
+      $("#max-end-round").attr("min", this.value);
+    } else {
+      $("#max-end-round").attr("min", 0);
+    }
+  });
+
+  $("#max-end-round").change(function () {
+    if (this.value) {
+      $("#min-end-round").attr("max", this.value);
+    } else {
+      $("#min-end-round").attr("max", 100);
+    }
+  });
+
   $("#rotate").click(() => rotate_grid());
 
   $("#search").click(function () {
@@ -687,9 +715,11 @@ $(document).ready(function () {
     let towers = $("#towers").val();
     let boss_types = $("#boss-type").val();
     let boss_tiers = $("#boss-tiers").val() ? $("#boss-tiers").val().map(val => parseInt(val)) : null;
+    let min_end_round = $("#min-end-round").val() ? $("#min-end-round").val() : null;
+    let max_end_round = $("#max-end-round").val() ? $("#max-end-round").val() : null;
     
     $(".tile").not(".immutable").children(".hexagon-inner").attr("class", "hexagon-inner");
-    if ([tile_types, game_types, game_modes, difficulties, maps, heroes, towers, boss_types, boss_tiers].some(val => val !== null)) {
+    if ([tile_types, game_types, game_modes, difficulties, maps, heroes, towers, boss_types, boss_tiers, min_end_round, max_end_round].some(val => val !== null)) {
       for (let node in config["tiles"]) {
         let tile = config["tiles"][node];
         let node_id = get_node_id(node);
@@ -702,7 +732,8 @@ $(document).ready(function () {
           if (heroes && heroes.every(val => !tile["heroes"].includes(val))) continue;
           if (towers && towers.every(val => tile["towers"].every(obj => obj["tower"] !== val))) continue;
           if (boss_types && !(boss_types.includes(tile["boss"]))) continue;
-          if (boss_tiers && !(boss_tiers.includes(tile["tiers"]))) continue;
+          if ((min_end_round && tile["end_round"] < min_end_round) || tile["boss"]) continue;
+          if ((max_end_round && tile["end_round"] > max_end_round) || tile["boss"]) continue;
           $(`.${node_id} .hexagon-inner`).attr("class", "hexagon-inner grey");
         }
       }

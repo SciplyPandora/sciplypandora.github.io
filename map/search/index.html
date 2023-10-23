@@ -52,57 +52,63 @@
         <option value="double_moab_health">Double HP Moabs</option>
       </select><br>
       <select id="map" multiple>
-        <option value="adoras_temple">Adoras Temple</option>
-        <option value="alpine_run">Alpine Run</option>
-        <option value="another_brick">Another Brick</option>
-        <option value="balance">Balance</option>
-        <option value="bazaar">Bazaar</option>
-        <option value="bloonarius_prime">Bloonarius Prime</option>
-        <option value="candy_falls">Candy Falls</option>
-        <option value="cargo">Cargo</option>
-        <option value="carved">Carved</option>
-        <option value="chutes">Chutes</option>
-        <option value="cornfield">Cornfield</option>
-        <option value="covered_garden">Covered Garden</option>
-        <option value="cracked">Cracked</option>
-        <option value="cubism">Cubism</option>
-        <option value="downstream">Downstream</option>
-        <option value="encrypted">Encrypted</option>
-        <option value="end_of_the_road">End Of The Road</option>
-        <option value="firing_range">Firing Range</option>
-        <option value="four_circles">Four Circles</option>
-        <option value="frozen_over">Frozen Over</option>
-        <option value="haunted">Haunted</option>
-        <option value="hedge">Hedge</option>
-        <option value="in_the_loop">In The Loop</option>
-        <option value="karts_n_darts">Karts N Darts</option>
-        <option value="logs">Logs</option>
-        <option value="lotus_island">Lotus Island</option>
-        <option value="mesa">Mesa</option>
-        <option value="middle_of_the_road">Middle Of The Road</option>
-        <option value="midnight_mansion">Midnight Mansion</option>
-        <option value="monkey_meadow">Monkey Meadow</option>
-        <option value="moon_landing">Moon Landing</option>
-        <option value="off_the_coast">Off The Coast</option>
-        <option value="one_two_tree">One Two Tree</option>
-        <option value="park_path">Park Path</option>
-        <option value="peninsula">Peninsula</option>
-        <option value="quarry">Quarry</option>
-        <option value="quiet_street">Quiet Street</option>
-        <option value="rake">Rake</option>
-        <option value="resort">Resort</option>
-        <option value="scrapyard">Scrapyard</option>
-        <option value="skates">Skates</option>
-        <option value="spice_islands">Spice Islands</option>
-        <option value="spring_spring">Spring Spring</option>
-        <option value="streambed">Streambed</option>
-        <option value="sunken_columns">Sunken Columns</option>
-        <option value="the_cabin">The Cabin</option>
-        <option value="town_centre">Town Center</option>
-        <option value="tree_stump">Tree Stump</option>
-        <option value="underground">Underground</option>
-        <option value="water_park">Water Park</option>
-        <option value="winter_park">Winter Park</option>
+        <optgroup label="Beginner">
+          <option value="alpine_run">Alpine Run</option>
+          <option value="candy_falls">Candy Falls</option>
+          <option value="carved">Carved</option>
+          <option value="cubism">Cubism</option>
+          <option value="end_of_the_road">End Of The Road</option>
+          <option value="four_circles">Four Circles</option>
+          <option value="frozen_over">Frozen Over</option>
+          <option value="hedge">Hedge</option>
+          <option value="in_the_loop">In The Loop</option>
+          <option value="logs">Logs</option>
+          <option value="lotus_island">Lotus Island</option>
+          <option value="middle_of_the_road">Middle Of The Road</option>
+          <option value="monkey_meadow">Monkey Meadow</option>
+          <option value="one_two_tree">One Two Tree</option>
+          <option value="park_path">Park Path</option>
+          <option value="resort">Resort</option>
+          <option value="scrapyard">Scrapyard</option>
+          <option value="skates">Skates</option>
+          <option value="the_cabin">The Cabin</option>
+          <option value="town_centre">Town Center</option>
+          <option value="tree_stump">Tree Stump</option>
+          <option value="winter_park">Winter Park</option>
+        </optgroup>
+        <optgroup label="Intermediate">
+          <option value="adoras_temple">Adoras Temple</option>
+          <option value="balance">Balance</option>
+          <option value="bazaar">Bazaar</option>
+          <option value="bloonarius_prime">Bloonarius Prime</option>
+          <option value="chutes">Chutes</option>
+          <option value="covered_garden">Covered Garden</option>
+          <option value="cracked">Cracked</option>
+          <option value="downstream">Downstream</option>
+          <option value="encrypted">Encrypted</option>
+          <option value="firing_range">Firing Range</option>
+          <option value="haunted">Haunted</option>
+          <option value="karts_n_darts">Karts N Darts</option>
+          <option value="moon_landing">Moon Landing</option>
+          <option value="quarry">Quarry</option>
+          <option value="quiet_street">Quiet Street</option>
+          <option value="rake">Rake</option>
+          <option value="spice_islands">Spice Islands</option>
+          <option value="spring_spring">Spring Spring</option>
+          <option value="streambed">Streambed</option>
+          <option value="water_park">Water Park</option>
+        </optgroup>
+        <optgroup label="Advanced">
+          <option value="another_brick">Another Brick</option>
+          <option value="cargo">Cargo</option>
+          <option value="cornfield">Cornfield</option>
+          <option value="mesa">Mesa</option>
+          <option value="midnight_mansion">Midnight Mansion</option>
+          <option value="off_the_coast">Off The Coast</option>
+          <option value="peninsula">Peninsula</option>
+          <option value="sunken_columns">Sunken Columns</option>
+          <option value="underground">Underground</option>
+        </optgroup>
       </select><br>
       <select id="heroes" multiple>
         <option value="admiral_brickell">Admiral Brickell</option>
@@ -156,6 +162,8 @@
         <option value="1">1</option>
         <option value="2">2</option>
       </select>
+      <input id="min-end-round" type="number" min="0" max="100" data-prev="" class="form-control m-2" placeholder="Minimum End Round">
+      <input id="max-end-round" type="number" min="0" max="100" data-prev="" class="form-control m-2" placeholder="Maximum End Round">
       <button id="search" class="btn btn-primary d-block mb-2 mx-2">Search</button>
       <button id="clear" class="btn btn-primary d-block m-2">Clear</button>
       <button id="export" class="btn btn-primary d-block m-2">Export</button>
