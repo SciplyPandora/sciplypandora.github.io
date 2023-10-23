@@ -51,7 +51,7 @@ $(document).ready(function () {
   const energizer_buff = 1.5;
 
 
-  $("input[type='number']").change(function() {
+  $("input[type='number']").change(function () {
     if (!(/^[0-9]*$/.test(this.value))) {
       this.value = this.dataset.prev;
     } else if (this.value - this.min < 0) {
