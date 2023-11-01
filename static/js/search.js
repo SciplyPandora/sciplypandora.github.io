@@ -732,8 +732,8 @@ $(document).ready(function () {
           if (heroes && heroes.every(val => !tile["heroes"].includes(val))) continue;
           if (towers && towers.every(val => tile["towers"].every(obj => obj["tower"] !== val))) continue;
           if (boss_types && !(boss_types.includes(tile["boss"]))) continue;
-          if ((min_end_round && tile["end_round"] < min_end_round) || tile["boss"]) continue;
-          if ((max_end_round && tile["end_round"] > max_end_round) || tile["boss"]) continue;
+          if (min_end_round && tile["end_round"] < min_end_round) continue;
+          if (max_end_round && (tile["boss"] ? 101 : tile["end_round"]) > max_end_round) continue;
           $(`.${node_id} .hexagon-inner`).attr("class", "hexagon-inner grey");
         }
       }
