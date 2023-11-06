@@ -818,6 +818,8 @@ $(document).ready(function () {
   update_node_defaults(size);
   init_grid();
 
+  
+  $('[data-toggle="tooltip"]').tooltip()
 
   $("#toggle-names").click(function () {
     if ($("#toggle-names").text() === "Show Tile Names") {
