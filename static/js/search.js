@@ -257,7 +257,7 @@ $(document).ready(function () {
     "regrow_rate",
     "heroes",
     "towers"
-  ]
+  ];
   const colours = [
     "purple",
     "pink",
@@ -851,7 +851,7 @@ $(document).ready(function () {
 
   $("#load").click(async function () {
     init_config();
-    const response = await fetch(`${protocol}//${host}/static/configs/${$("#historical-select :selected").val()}.json`);
+    const response = await fetch(`${protocol}//${host}/static/json/configs/${$("#historical-select :selected").val()}.json`);
     config = await response.json();
     load_config();
     $("#historical-modal").modal("hide");

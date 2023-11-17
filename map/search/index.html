@@ -1,245 +1,231 @@
 <html>
-  <head>
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
-      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
-      crossorigin="anonymous"
-    >
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/1.1.2/css/bootstrap-multiselect.min.css"
-      integrity="sha512-fZNmykQ6RlCyzGl9he+ScLrlU0LWeaR6MO/Kq9lelfXOw54O63gizFMSD5fVgZvU1YfDIc6mxom5n60qJ1nCrQ=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    />
-    <link rel="stylesheet" href="/static/css/map.css">
-    <script
-      src="https://unpkg.com/jszip@3.7.1/dist/jszip.js"
-      type="text/javascript"
-    ></script>
-    <title>Map Search</title>
-    <link rel="icon" href="/static/images/favicons/map.ico">
-  </head>
-  <body class="no-scroll">
-    <div class="col-left">
-      <button id="rotate" class="btn btn-primary d-block m-2">Rotate</button>
-      <button id="import" class="btn btn-primary d-block m-2">Import</button>
-      <button onclick="$('#historical-modal').modal();" class="btn btn-primary d-block m-2">Historical Data</button>
-      <input
-        id="upload"
-        type="file"
-        accept=".json,.zip"
-        style="display: none"
-      >
-      <select id="tile-type" multiple>
-        <option value="regular">Regular</option>
-        <option value="relic">Relic</option>
-        <option value="banner">Banner</option>
-      </select><br>
-      <select id="game-type" multiple>
-        <option value="least_tiers">Least Tiers</option>
-        <option value="least_cash">Least Cash</option>
-        <option value="race">Race</option>
-        <option value="boss">Boss</option>
-      </select><br>
-      <select id="difficulty" multiple>
-        <option value="easy">Easy</option>
-        <option value="medium">Medium</option>
-        <option value="hard">Hard</option>
-      </select><br>
-      <select id="game-mode" multiple>
-        <option value="standard">Standard</option>
-        <option value="reverse">Reverse</option>
-        <option value="double_moab_health">Double HP Moabs</option>
-      </select><br>
-      <select id="map" multiple>
-        <optgroup label="Beginner">
-          <option value="alpine_run">Alpine Run</option>
-          <option value="candy_falls">Candy Falls</option>
-          <option value="carved">Carved</option>
-          <option value="cubism">Cubism</option>
-          <option value="end_of_the_road">End Of The Road</option>
-          <option value="four_circles">Four Circles</option>
-          <option value="frozen_over">Frozen Over</option>
-          <option value="hedge">Hedge</option>
-          <option value="in_the_loop">In The Loop</option>
-          <option value="logs">Logs</option>
-          <option value="lotus_island">Lotus Island</option>
-          <option value="middle_of_the_road">Middle Of The Road</option>
-          <option value="monkey_meadow">Monkey Meadow</option>
-          <option value="one_two_tree">One Two Tree</option>
-          <option value="park_path">Park Path</option>
-          <option value="resort">Resort</option>
-          <option value="scrapyard">Scrapyard</option>
-          <option value="skates">Skates</option>
-          <option value="the_cabin">The Cabin</option>
-          <option value="town_centre">Town Center</option>
-          <option value="tree_stump">Tree Stump</option>
-          <option value="winter_park">Winter Park</option>
-        </optgroup>
-        <optgroup label="Intermediate">
-          <option value="adoras_temple">Adoras Temple</option>
-          <option value="balance">Balance</option>
-          <option value="bazaar">Bazaar</option>
-          <option value="bloonarius_prime">Bloonarius Prime</option>
-          <option value="chutes">Chutes</option>
-          <option value="covered_garden">Covered Garden</option>
-          <option value="cracked">Cracked</option>
-          <option value="downstream">Downstream</option>
-          <option value="encrypted">Encrypted</option>
-          <option value="firing_range">Firing Range</option>
-          <option value="haunted">Haunted</option>
-          <option value="karts_n_darts">Karts N Darts</option>
-          <option value="moon_landing">Moon Landing</option>
-          <option value="quarry">Quarry</option>
-          <option value="quiet_street">Quiet Street</option>
-          <option value="rake">Rake</option>
-          <option value="spice_islands">Spice Islands</option>
-          <option value="spring_spring">Spring Spring</option>
-          <option value="streambed">Streambed</option>
-          <option value="water_park">Water Park</option>
-        </optgroup>
-        <optgroup label="Advanced">
-          <option value="another_brick">Another Brick</option>
-          <option value="cargo">Cargo</option>
-          <option value="cornfield">Cornfield</option>
-          <option value="dark_path">Dark Path</option>
-          <option value="mesa">Mesa</option>
-          <option value="midnight_mansion">Midnight Mansion</option>
-          <option value="off_the_coast">Off The Coast</option>
-          <option value="peninsula">Peninsula</option>
-          <option value="sunken_columns">Sunken Columns</option>
-          <option value="underground">Underground</option>
-        </optgroup>
-      </select><br>
-      <select id="heroes" multiple>
-        <option value="admiral_brickell">Admiral Brickell</option>
-        <option value="adora">Adora</option>
-        <option value="benjamin">Benjamin</option>
-        <option value="captain_churchill">Captain Churchill</option>
-        <option value="etienne">Etienne</option>
-        <option value="ezili">Ezili</option>
-        <option value="geraldo">Geraldo</option>
-        <option value="gwendolin">Gwendolin</option>
-        <option value="obyn_greenfoot">Obyn Greenfoot</option>
-        <option value="pat_fusty">Pat Fusty</option>
-        <option value="psi">Psi</option>
-        <option value="quincy">Quincy</option>
-        <option value="sauda">Sauda</option>
-        <option value="striker_jones">Striker Jones</option>
-      </select><br>
-      <select id="towers" multiple>
-        <option value="alchemist">Alchemist</option>
-        <option value="banana_farm">Banana Farm</option>
-        <option value="beast_handler">Beast Handler</option>
-        <option value="bomb_shooter">Bomb Shooter</option>
-        <option value="boomerang_monkey">Boomerang Monkey</option>
-        <option value="dart_monkey">Dart Monkey</option>
-        <option value="dartling_gunner">Dartling Gunner</option>
-        <option value="druid">Druid</option>
-        <option value="engineer_monkey">Engineer Monkey</option>
-        <option value="glue_gunner">Glue Gunner</option>
-        <option value="heli_pilot">Heli Pilot</option>
-        <option value="ice_monkey">Ice Monkey</option>
-        <option value="monkey_ace">Monkey Ace</option>
-        <option value="monkey_buccaneer">Monkey Buccaneer</option>
-        <option value="monkey_sub">Monkey Sub</option>
-        <option value="monkey_village">Monkey Village</option>
-        <option value="mortar_monkey">Mortar Monkey</option>
-        <option value="ninja_monkey">Ninja Monkey</option>
-        <option value="sniper_monkey">Sniper Monkey</option>
-        <option value="spike_factory">Spike Factory</option>
-        <option value="super_monkey">Super Monkey</option>
-        <option value="tack_shooter">Tack Shooter</option>
-        <option value="wizard_monkey">Wizard Monkey</option>
-      </select><br>
-      <select id="boss-type" multiple>
-        <option value="bloonarius">Bloonarius</option>
-        <option value="lych">Lych</option>
-        <option value="vortex">Vortex</option>
-        <option value="dreadbloon">Dreadbloon</option>
-        <option value="phayze">Phayze</option>
-      </select><br>
-      <select id="boss-tiers" multiple>
-        <option value="1">1</option>
-        <option value="2">2</option>
-      </select>
-      <input id="min-end-round" type="number" min="0" max="100" data-prev="" class="form-control m-2" placeholder="Minimum End Round">
-      <input id="max-end-round" type="number" min="0" max="100" data-prev="" class="form-control m-2" placeholder="Maximum End Round">
-      <button id="search" class="btn btn-primary d-block mb-2 mx-2">Search</button>
-      <button id="clear" class="btn btn-primary d-block m-2">Clear</button>
-      <button id="export" class="btn btn-primary d-block m-2">Export</button>
-    </div>
 
-    <div id="historical-modal" class="modal" tabindex="-1" role="dialog">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title">Load Historical Data</h5>
-          </div>
-          <div class="modal-body">
-            <select id="historical-select" class="custom-select">
-              <option value="CT1">CT 1</option>
-              <option value="CT2">CT 2</option>
-              <option value="CT3">CT 3</option>
-              <option value="CT4">CT 4</option>
-              <option value="CT5">CT 5</option>
-              <option value="CT6">CT 6</option>
-              <option value="CT7">CT 7</option>
-              <option value="CT8">CT 8</option>
-              <option value="CT9">CT 9</option>
-              <option value="CT10">CT 10</option>
-              <option value="CT11">CT 11</option>
-              <option value="CT12">CT 12</option>
-              <option value="CT13">CT 13</option>
-              <option value="CT14">CT 14</option>
-              <option value="CT15">CT 15</option>
-              <option value="CT16">CT 16</option>
-              <option value="CT17">CT 17</option>
-              <option value="CT18">CT 18</option>
-              <option value="CT19">CT 19</option>
-              <option value="CT20">CT 20</option>
-              <option value="CT21">CT 21</option>
-              <option value="CT22">CT 22</option>
-              <option value="CT23">CT 23</option>
-              <option value="CT24">CT 24</option>
-              <option value="CT25">CT 25</option>
-              <option value="CT26">CT 26</option>
-              <option value="CT27">CT 27</option>
-              <option value="CT28">CT 28</option>
-              <option value="CT29">CT 29</option>
-              <option value="CT30">CT 30</option>
-              <option value="CT31">CT 31</option>
-              <option value="CT32">CT 32</option>
-              <option value="CT33" selected>CT 33</option>
-            </select>
-          </div>
-          <div class="modal-footer">
-            <button type="button" id="load" class="btn btn-primary">Load</button>
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-          </div>
+<head>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/1.1.2/css/bootstrap-multiselect.min.css"
+    integrity="sha512-fZNmykQ6RlCyzGl9he+ScLrlU0LWeaR6MO/Kq9lelfXOw54O63gizFMSD5fVgZvU1YfDIc6mxom5n60qJ1nCrQ=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="/static/css/map.css">
+  <script src="https://unpkg.com/jszip@3.7.1/dist/jszip.js" type="text/javascript"></script>
+  <title>Map Search</title>
+  <link rel="icon" href="/static/images/favicons/map.ico">
+</head>
+
+<body class="no-scroll">
+  <div class="col-left">
+    <button id="rotate" class="btn btn-primary d-block m-2">Rotate</button>
+    <button id="import" class="btn btn-primary d-block m-2">Import</button>
+    <button onclick="$('#historical-modal').modal();" class="btn btn-primary d-block m-2">Historical Data</button>
+    <input id="upload" type="file" accept=".json,.zip" style="display: none">
+    <select id="tile-type" multiple>
+      <option value="regular">Regular</option>
+      <option value="relic">Relic</option>
+      <option value="banner">Banner</option>
+    </select><br>
+    <select id="game-type" multiple>
+      <option value="least_tiers">Least Tiers</option>
+      <option value="least_cash">Least Cash</option>
+      <option value="race">Race</option>
+      <option value="boss">Boss</option>
+    </select><br>
+    <select id="difficulty" multiple>
+      <option value="easy">Easy</option>
+      <option value="medium">Medium</option>
+      <option value="hard">Hard</option>
+    </select><br>
+    <select id="game-mode" multiple>
+      <option value="standard">Standard</option>
+      <option value="reverse">Reverse</option>
+      <option value="double_moab_health">Double HP Moabs</option>
+    </select><br>
+    <select id="map" multiple>
+      <optgroup label="Beginner">
+        <option value="alpine_run">Alpine Run</option>
+        <option value="candy_falls">Candy Falls</option>
+        <option value="carved">Carved</option>
+        <option value="cubism">Cubism</option>
+        <option value="end_of_the_road">End Of The Road</option>
+        <option value="four_circles">Four Circles</option>
+        <option value="frozen_over">Frozen Over</option>
+        <option value="hedge">Hedge</option>
+        <option value="in_the_loop">In The Loop</option>
+        <option value="logs">Logs</option>
+        <option value="lotus_island">Lotus Island</option>
+        <option value="middle_of_the_road">Middle Of The Road</option>
+        <option value="monkey_meadow">Monkey Meadow</option>
+        <option value="one_two_tree">One Two Tree</option>
+        <option value="park_path">Park Path</option>
+        <option value="resort">Resort</option>
+        <option value="scrapyard">Scrapyard</option>
+        <option value="skates">Skates</option>
+        <option value="the_cabin">The Cabin</option>
+        <option value="town_centre">Town Center</option>
+        <option value="tree_stump">Tree Stump</option>
+        <option value="winter_park">Winter Park</option>
+      </optgroup>
+      <optgroup label="Intermediate">
+        <option value="adoras_temple">Adoras Temple</option>
+        <option value="balance">Balance</option>
+        <option value="bazaar">Bazaar</option>
+        <option value="bloonarius_prime">Bloonarius Prime</option>
+        <option value="chutes">Chutes</option>
+        <option value="covered_garden">Covered Garden</option>
+        <option value="cracked">Cracked</option>
+        <option value="downstream">Downstream</option>
+        <option value="encrypted">Encrypted</option>
+        <option value="firing_range">Firing Range</option>
+        <option value="haunted">Haunted</option>
+        <option value="karts_n_darts">Karts N Darts</option>
+        <option value="moon_landing">Moon Landing</option>
+        <option value="quarry">Quarry</option>
+        <option value="quiet_street">Quiet Street</option>
+        <option value="rake">Rake</option>
+        <option value="spice_islands">Spice Islands</option>
+        <option value="spring_spring">Spring Spring</option>
+        <option value="streambed">Streambed</option>
+        <option value="water_park">Water Park</option>
+      </optgroup>
+      <optgroup label="Advanced">
+        <option value="another_brick">Another Brick</option>
+        <option value="cargo">Cargo</option>
+        <option value="cornfield">Cornfield</option>
+        <option value="dark_path">Dark Path</option>
+        <option value="mesa">Mesa</option>
+        <option value="midnight_mansion">Midnight Mansion</option>
+        <option value="off_the_coast">Off The Coast</option>
+        <option value="peninsula">Peninsula</option>
+        <option value="sunken_columns">Sunken Columns</option>
+        <option value="underground">Underground</option>
+      </optgroup>
+    </select><br>
+    <select id="heroes" multiple>
+      <option value="admiral_brickell">Admiral Brickell</option>
+      <option value="adora">Adora</option>
+      <option value="benjamin">Benjamin</option>
+      <option value="captain_churchill">Captain Churchill</option>
+      <option value="etienne">Etienne</option>
+      <option value="ezili">Ezili</option>
+      <option value="geraldo">Geraldo</option>
+      <option value="gwendolin">Gwendolin</option>
+      <option value="obyn_greenfoot">Obyn Greenfoot</option>
+      <option value="pat_fusty">Pat Fusty</option>
+      <option value="psi">Psi</option>
+      <option value="quincy">Quincy</option>
+      <option value="sauda">Sauda</option>
+      <option value="striker_jones">Striker Jones</option>
+    </select><br>
+    <select id="towers" multiple>
+      <option value="alchemist">Alchemist</option>
+      <option value="banana_farm">Banana Farm</option>
+      <option value="beast_handler">Beast Handler</option>
+      <option value="bomb_shooter">Bomb Shooter</option>
+      <option value="boomerang_monkey">Boomerang Monkey</option>
+      <option value="dart_monkey">Dart Monkey</option>
+      <option value="dartling_gunner">Dartling Gunner</option>
+      <option value="druid">Druid</option>
+      <option value="engineer_monkey">Engineer Monkey</option>
+      <option value="glue_gunner">Glue Gunner</option>
+      <option value="heli_pilot">Heli Pilot</option>
+      <option value="ice_monkey">Ice Monkey</option>
+      <option value="monkey_ace">Monkey Ace</option>
+      <option value="monkey_buccaneer">Monkey Buccaneer</option>
+      <option value="monkey_sub">Monkey Sub</option>
+      <option value="monkey_village">Monkey Village</option>
+      <option value="mortar_monkey">Mortar Monkey</option>
+      <option value="ninja_monkey">Ninja Monkey</option>
+      <option value="sniper_monkey">Sniper Monkey</option>
+      <option value="spike_factory">Spike Factory</option>
+      <option value="super_monkey">Super Monkey</option>
+      <option value="tack_shooter">Tack Shooter</option>
+      <option value="wizard_monkey">Wizard Monkey</option>
+    </select><br>
+    <select id="boss-type" multiple>
+      <option value="bloonarius">Bloonarius</option>
+      <option value="lych">Lych</option>
+      <option value="vortex">Vortex</option>
+      <option value="dreadbloon">Dreadbloon</option>
+      <option value="phayze">Phayze</option>
+    </select><br>
+    <select id="boss-tiers" multiple>
+      <option value="1">1</option>
+      <option value="2">2</option>
+    </select>
+    <input id="min-end-round" type="number" min="0" max="100" data-prev="" class="form-control m-2"
+      placeholder="Minimum End Round">
+    <input id="max-end-round" type="number" min="0" max="100" data-prev="" class="form-control m-2"
+      placeholder="Maximum End Round">
+    <button id="search" class="btn btn-primary d-block mb-2 mx-2">Search</button>
+    <button id="clear" class="btn btn-primary d-block m-2">Clear</button>
+    <button id="export" class="btn btn-primary d-block m-2">Export</button>
+  </div>
+
+  <div id="historical-modal" class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Load Historical Data</h5>
+        </div>
+        <div class="modal-body">
+          <select id="historical-select" class="custom-select">
+            <option value="CT1">CT 1</option>
+            <option value="CT2">CT 2</option>
+            <option value="CT3">CT 3</option>
+            <option value="CT4">CT 4</option>
+            <option value="CT5">CT 5</option>
+            <option value="CT6">CT 6</option>
+            <option value="CT7">CT 7</option>
+            <option value="CT8">CT 8</option>
+            <option value="CT9">CT 9</option>
+            <option value="CT10">CT 10</option>
+            <option value="CT11">CT 11</option>
+            <option value="CT12">CT 12</option>
+            <option value="CT13">CT 13</option>
+            <option value="CT14">CT 14</option>
+            <option value="CT15">CT 15</option>
+            <option value="CT16">CT 16</option>
+            <option value="CT17">CT 17</option>
+            <option value="CT18">CT 18</option>
+            <option value="CT19">CT 19</option>
+            <option value="CT20">CT 20</option>
+            <option value="CT21">CT 21</option>
+            <option value="CT22">CT 22</option>
+            <option value="CT23">CT 23</option>
+            <option value="CT24">CT 24</option>
+            <option value="CT25">CT 25</option>
+            <option value="CT26">CT 26</option>
+            <option value="CT27">CT 27</option>
+            <option value="CT28">CT 28</option>
+            <option value="CT29">CT 29</option>
+            <option value="CT30">CT 30</option>
+            <option value="CT31">CT 31</option>
+            <option value="CT32">CT 32</option>
+            <option value="CT33">CT 33</option>
+            <option value="CT33" selected>CT 34</option>
+          </select>
+        </div>
+        <div class="modal-footer">
+          <button type="button" id="load" class="btn btn-primary">Load</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
         </div>
       </div>
     </div>
+  </div>
 
-    <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
-    <script
-      src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
-      integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-      crossorigin="anonymous"
-    ></script>
-    <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
-      integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-      crossorigin="anonymous"
-    ></script>
-    <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/1.1.2/js/bootstrap-multiselect.min.js"
-      integrity="sha512-lxQ4VnKKW7foGFV6L9zlSe+6QppP9B2t+tMMaV4s4iqAv4iHIyXED7O+fke1VeLNaRdoVkVt8Hw/jmZ+XocsXQ=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer">
+  <script src="https://code.jquery.com/jquery-2.2.4.min.js"
+    integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
+    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
+    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+    crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/1.1.2/js/bootstrap-multiselect.min.js"
+    integrity="sha512-lxQ4VnKKW7foGFV6L9zlSe+6QppP9B2t+tMMaV4s4iqAv4iHIyXED7O+fke1VeLNaRdoVkVt8Hw/jmZ+XocsXQ=="
+    crossorigin="anonymous" referrerpolicy="no-referrer">
     </script>
-    <script src="/static/js/search.js"></script>
-  </body>
+  <script src="/static/js/search.js"></script>
+</body>
+
 </html>
