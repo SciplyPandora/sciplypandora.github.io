@@ -743,6 +743,7 @@ $(document).ready(function () {
   $("#clear").click(function () {
     $(".tile").not(".immutable").children(".hexagon-inner").attr("class", "hexagon-inner");
     $("select").multiselect("deselectAll");
+    $("input").val("");
   });
 
   $("#export").click(function () {
