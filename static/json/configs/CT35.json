@@ -1473,7 +1473,7 @@
             "tile_type": "banner",
             "relic": null,
             "game_type": "boss",
-            "boss": "dreadbloon",
+            "boss": "vortex",
             "tiers": 1,
             "game_mode": "standard",
             "map": "carved",
@@ -1492,12 +1492,16 @@
             "heroes": [],
             "towers": [
                 {
-                    "tower": "tack_shooter",
-                    "max": 3
-                },
-                {
                     "tower": "glue_gunner",
                     "max": 2
+                },
+                {
+                    "tower": "sniper_monkey",
+                    "max": 2
+                },
+                {
+                    "tower": "monkey_ace",
+                    "max": 3
                 },
                 {
                     "tower": "heli_pilot",
@@ -1508,11 +1512,7 @@
                     "max": 2
                 },
                 {
-                    "tower": "wizard_monkey",
-                    "max": 2
-                },
-                {
-                    "tower": "spike_factory",
+                    "tower": "engineer_monkey",
                     "max": 3
                 }
             ]
@@ -2098,7 +2098,7 @@
             "moab_speed": 100,
             "regrow_rate": 100,
             "heroes": [
-                "etienne"
+                "sauda"
             ],
             "towers": [
                 {
@@ -2132,7 +2132,7 @@
             "tile_type": "banner",
             "relic": null,
             "game_type": "boss",
-            "boss": "phayze",
+            "boss": "dreadbloon",
             "tiers": 2,
             "game_mode": "reverse",
             "map": "cracked",
@@ -2152,18 +2152,18 @@
             "towers": [
                 {
                     "tower": "boomerang_monkey",
-                    "max": 2
+                    "max": 3
                 },
                 {
                     "tower": "monkey_ace",
+                    "max": 4
+                },
+                {
+                    "tower": "mortar_monkey",
                     "max": 2
                 },
                 {
                     "tower": "wizard_monkey",
-                    "max": 4
-                },
-                {
-                    "tower": "ninja_monkey",
                     "max": 2
                 },
                 {
@@ -2172,7 +2172,7 @@
                 },
                 {
                     "tower": "spike_factory",
-                    "max": 3
+                    "max": 2
                 }
             ]
         },
@@ -2524,7 +2524,7 @@
             "tile_type": "banner",
             "relic": null,
             "game_type": "boss",
-            "boss": "lych",
+            "boss": "bloonarius",
             "tiers": 2,
             "game_mode": "standard",
             "map": "town_centre",
@@ -3633,7 +3633,7 @@
             "moab_speed": 100,
             "regrow_rate": 100,
             "heroes": [
-                "sauda"
+                "psi"
             ],
             "towers": [
                 {
@@ -4424,7 +4424,7 @@
             "tile_type": "banner",
             "relic": null,
             "game_type": "boss",
-            "boss": "vortex",
+            "boss": "lych",
             "tiers": 2,
             "game_mode": "standard",
             "map": "quiet_street",
@@ -4471,7 +4471,7 @@
             "tile_type": "relic",
             "relic": "regeneration",
             "game_type": "boss",
-            "boss": "phayze",
+            "boss": "dreadbloon",
             "tiers": 1,
             "game_mode": "standard",
             "map": "winter_park",
@@ -4497,11 +4497,11 @@
                 },
                 {
                     "tower": "boomerang_monkey",
-                    "max": 3
+                    "max": 4
                 },
                 {
-                    "tower": "tack_shooter",
-                    "max": 4
+                    "tower": "bomb_shooter",
+                    "max": 3
                 },
                 {
                     "tower": "ice_monkey",
@@ -4829,7 +4829,7 @@
             "moab_speed": 100,
             "regrow_rate": 100,
             "heroes": [
-                "benjamin"
+                "ezili"
             ],
             "towers": [
                 {
@@ -5235,7 +5235,7 @@
             "moab_speed": 100,
             "regrow_rate": 100,
             "heroes": [
-                "adora"
+                "etienne"
             ],
             "towers": [
                 {
@@ -5567,7 +5567,7 @@
             "tile_type": "banner",
             "relic": null,
             "game_type": "boss",
-            "boss": "dreadbloon",
+            "boss": "vortex",
             "tiers": 2,
             "game_mode": "standard",
             "map": "downstream",
@@ -5588,24 +5588,24 @@
             ],
             "towers": [
                 {
-                    "tower": "boomerang_monkey",
-                    "max": 3
+                    "tower": "dart_monkey",
+                    "max": 5
                 },
                 {
                     "tower": "tack_shooter",
                     "max": 2
                 },
                 {
-                    "tower": "sniper_monkey",
-                    "max": 5
-                },
-                {
-                    "tower": "wizard_monkey",
+                    "tower": "monkey_sub",
                     "max": 3
                 },
                 {
-                    "tower": "ninja_monkey",
+                    "tower": "wizard_monkey",
                     "max": 5
+                },
+                {
+                    "tower": "ninja_monkey",
+                    "max": 3
                 }
             ]
         },
@@ -6461,7 +6461,7 @@
             "moab_speed": 100,
             "regrow_rate": 100,
             "heroes": [
-                "psi"
+                "geraldo"
             ],
             "towers": [
                 {
@@ -6930,7 +6930,7 @@
             "moab_speed": 100,
             "regrow_rate": 100,
             "heroes": [
-                "pat_fusty"
+                "adora"
             ],
             "towers": [
                 {
@@ -7673,7 +7673,7 @@
             "tile_type": "banner",
             "relic": null,
             "game_type": "boss",
-            "boss": "dreadbloon",
+            "boss": "vortex",
             "tiers": 2,
             "game_mode": "standard",
             "map": "water_park",
@@ -7696,15 +7696,11 @@
                     "max": -1
                 },
                 {
-                    "tower": "boomerang_monkey",
+                    "tower": "bomb_shooter",
                     "max": -1
                 },
                 {
-                    "tower": "sniper_monkey",
-                    "max": -1
-                },
-                {
-                    "tower": "wizard_monkey",
+                    "tower": "monkey_sub",
                     "max": -1
                 },
                 {
@@ -7713,6 +7709,10 @@
                 },
                 {
                     "tower": "spike_factory",
+                    "max": -1
+                },
+                {
+                    "tower": "monkey_village",
                     "max": -1
                 }
             ]
