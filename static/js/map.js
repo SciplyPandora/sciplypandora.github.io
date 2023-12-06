@@ -290,7 +290,7 @@ $(document).ready(function () {
     "gwendolin",
     "striker_jones",
     "obyn_greenfoot",
-    "geraldo",
+    "corvus",
     "captain_churchill",
     "benjamin",
     "ezili",
@@ -299,7 +299,8 @@ $(document).ready(function () {
     "admiral_brickell",
     "etienne",
     "sauda",
-    "psi"
+    "psi",
+    "geraldo"
   ];
   const abbreviations = {
     dart_monkey: "Dart",
@@ -329,7 +330,7 @@ $(document).ready(function () {
     gwendolin: "Gwen",
     striker_jones: "Jones",
     obyn_greenfoot: "Obyn",
-    geraldo: "Geraldo",
+    corvus: "Corvus",
     captain_churchill: "Churchill",
     benjamin: "Ben",
     ezili: "Ezili",
@@ -338,7 +339,8 @@ $(document).ready(function () {
     admiral_brickell: "Brickell",
     etienne: "Eti",
     sauda: "Sauda",
-    psi: "Psi"
+    psi: "Psi",
+    geraldo: "Geraldo"
   };
   const config_encode_alphabet = "0123456789qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM_";
   const ct_start_season = 26;

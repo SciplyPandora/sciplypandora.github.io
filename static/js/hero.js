@@ -26,8 +26,8 @@ $(document).ready(function () {
     gwendolin: 1,
     striker_jones: 1,
     obyn_greenfoot: 1,
-    geraldo: 1,
     captain_churchill: 1.71,
+    corvus: 1.71,
     benjamin: 1.5,
     ezili: 1.425,
     pat_fusty: 1.425,
@@ -35,7 +35,8 @@ $(document).ready(function () {
     admiral_brickell: 1.425,
     etienne: 1,
     sauda: 1.425,
-    psi: 1.5
+    psi: 1.5,
+    geraldo: 1
   };
   const map_multipliers = {
     beginner: 1,
