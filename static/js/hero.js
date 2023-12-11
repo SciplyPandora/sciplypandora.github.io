@@ -97,9 +97,10 @@ $(document).ready(function () {
       xp_requirements_cumulative[i + 1] = xp_requirements_cumulative[i] + buffed_xp_requirements[i + 1];
     }
     let start_xp = xp_requirements_cumulative[Math.max(start_level - 1, 0)];
-    
+    let additional_xp = $("#xp").val() ? parseInt($("#xp").val()) : 0;
+
     for (let i = start_round; i < 141; i++) {
-      let xp = start_xp + get_xp(start_round, i - 1) * xp_gain_buff;
+      let xp = additional_xp + start_xp + get_xp(start_round, i - 1) * xp_gain_buff;
       levelling_curve[i] = [];
       levelling_curve[i][0] = xp_requirements_cumulative.findIndex(val => val > xp);
       levelling_curve[i][1] = Math.round(xp_requirements_cumulative[levelling_curve[i][0]] - xp);
