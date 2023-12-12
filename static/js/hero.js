@@ -50,18 +50,36 @@ $(document).ready(function () {
   const hero_boost_buff = 1.15;
   const extra_empowered_buff = 3;
   const energizer_buff = 1.5;
+  let config = localStorage["calc/hero"] ? JSON.parse(localStorage["calc/hero"]) : null;
 
 
-  $("input[type='number']").change(function () {
-    if (!(/^[0-9]*$/.test(this.value))) {
-      this.value = this.dataset.prev;
-    } else if (this.value - this.min < 0) {
-      this.value = this.min;
-    } else if (this.value - this.max > 0) {
-      this.value = this.max;
+  function onstart_config () {
+    if (config) {
+      $("#hero").val(config["hero"]);
+      $("#difficulty").val(config["difficulty"]);
+      $("#hero-round").val(config["hero_round"]);
+      if (config["xp"]) $("#xp").val(config["xp"]);
+      if (config["empowered"]) $("#empowered").val(config["empowered"]);
+      if (config["boost"]) $("#boost").val(config["boost"]);
+      if (config["energizer_round"]) $("#energizer-round").val(config["energizer_round"]);
+      $("#mk").val(config["mk"]);
+      $("#detailed").val(config["detailed"]);
+      $("#hero").trigger("change");
+    } else {
+      config = {
+        hero: "adora",
+        difficulty: "beginner",
+        hero_round: 1,
+        xp: 0,
+        empowered: 0,
+        boost: 0,
+        energizer_round: null,
+        mk: false,
+        detailed: false
+      };
+      localStorage["calc/hero"] = JSON.stringify(config);
     }
-    this.dataset.prev = this.value;
-  });
+  }
 
   function get_cumulative_xp (round) {
     if (round <= 20) return 10 * round ** 2 + 30 * round;
@@ -88,7 +106,7 @@ $(document).ready(function () {
       * ($("#boost").val() ? hero_boost_buff ** $("#boost").val() : 1);
     let start_level = ($("#mk").is(":checked") ? mk_starting_level : 0)
       + ($("#empowered").val() ? extra_empowered_buff * $("#empowered").val() : 0);
-    let start_round = parseInt($("#hero-round").val());
+    let start_round = $("#hero-round").val() ? parseInt($("#hero-round").val()) : 1;
     let buffed_xp_requirements = xp_requirements.map(val => Math.round(val * xp_requirement_buff));
     let xp_requirements_cumulative = [0];
     let levelling_curve = [];
@@ -108,10 +126,22 @@ $(document).ready(function () {
     return levelling_curve;
   }
 
+  $("input[type='number']").change(function () {
+    if (!(/^[0-9]*$/.test(this.value))) {
+      this.value = this.dataset.prev;
+    } else if (this.value - this.min < 0) {
+      this.value = this.min;
+    } else if (this.value - this.max > 0) {
+      this.value = this.max;
+    }
+    this.dataset.prev = this.value;
+  });
+
   $("input, select").change(function () {
     let levelling_curve = get_levelling_curve();
     $("table tr").remove();
     $("table thead").append("<tr><th>Round</th><th>Level</th><th>XP to Next Level</th></tr>");
+
     if ($("#detailed").is(":checked")) {
       for (let i = parseInt($("#hero-round").val()); i < 141; i++) {
         if (levelling_curve[i][0] === -1) {
@@ -134,5 +164,18 @@ $(document).ready(function () {
         }
       }
     }
+
+    config["hero"] = $("#hero").val();
+    config["difficulty"] = $("#difficulty").val();
+    config["hero_round"] = $("#hero-round").val() ? parseInt($("#hero-round").val()) : 1;
+    config["xp"] = $("#xp").val() ? parseInt($("#xp").val()) : 0;
+    config["empowered"] = $("#empowered").val() ? parseInt($("#empowered").val()) : 0;
+    config["boost"] = $("#boost").val() ? parseInt($("#boost").val()) : 0;
+    config["energizer_round"] = $("#energizer-round").val() ? parseInt($("#energizer-round").val()) : null;
+    config["mk"] = $("#mk").val();
+    config["detailed"] = $("#detailed").val();
+    localStorage["calc/hero"] = JSON.stringify(config);
   });
+
+  onstart_config();
 });
