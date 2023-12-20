@@ -17,7 +17,7 @@
   <div class="col-left">
     <button id="rotate" class="btn btn-primary d-block m-2">Rotate</button>
     <button id="import" class="btn btn-primary d-block m-2">Import</button>
-    <button onclick="$('#historical-modal').modal();" class="btn btn-primary d-block m-2">Historical Data</button>
+    <button onclick="$('#historical-modal').modal();" class="btn btn-primary d-block m-2">Event Data</button>
     <input id="upload" type="file" accept=".json,.zip" style="display: none">
     <select id="tile-type" multiple>
       <option value="regular">Regular</option>
@@ -166,7 +166,7 @@
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title">Load Historical Data</h5>
+          <h5 class="modal-title">Load Event Data</h5>
         </div>
         <div class="modal-body">
           <select id="historical-select" class="custom-select">
