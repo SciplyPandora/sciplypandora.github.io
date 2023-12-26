@@ -1,5 +1,6 @@
 {
     "size": 8,
+    "event": 24,
     "tiles": {
         "MRX": {
             "colour": null,

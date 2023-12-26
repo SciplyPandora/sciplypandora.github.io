@@ -1,3 +1,5 @@
+import {race_multipliers, round_buffers, difficulty_speed_multipliers, race_rounds, round_data, boss_kill_times, send_delay} from "./weight_heuristic.js";
+
 $(document).ready(function () {
   const nodes = {
     x0y0z0: "MRX",
@@ -368,16 +370,16 @@ $(document).ready(function () {
   function base_to_bigint (num, alphabet) {
     let decoded = 0n;
     const alphalen = BigInt(alphabet.length);
-    for (let i = num.length-1; i >= 0; i--) {
+    for (let i = num.length - 1; i >= 0; i--) {
       const digit = num.charAt(i);
       const digit_value = BigInt(alphabet.indexOf(digit));
-      decoded += digit_value * alphalen ** BigInt(num.length-1-i);
+      decoded += digit_value * alphalen ** BigInt(num.length - i - 1);
     }
     return decoded;
   }
 
   function pascal_to_snake_case (text) {
-    const new_text = text.replace(
+    let new_text = text.replace(
       /(?<upperchar>[A-Z])/gm,
       (match, upperchar) => "_" + upperchar.toLowerCase()
     );
@@ -385,7 +387,7 @@ $(document).ready(function () {
   }
 
   function snake_to_title_case (text) {
-    return text.replace(/_/g, ' ').replace(/(?:^|\s)\S/g, function(match) {
+    return text.replace(/_/g, " ").replace(/(?:^|\s)\S/g, function(match) {
       return match.toUpperCase();
     });
   }
@@ -403,7 +405,7 @@ $(document).ready(function () {
   }
 
   function get_node_id (node_name) {
-    return get_rotated_node(Object.keys(nodes).find(key => nodes[key] === node_name), rots);
+    return get_rotated_node(Object.keys(nodes).find((key) => nodes[key] === node_name), rots);
   }
 
   function get_node_name (node_id) {
@@ -415,7 +417,7 @@ $(document).ready(function () {
   }
 
   function update_node_defaults (dimension) {
-    mapped_immutable_nodes = immutable_nodes.map(val => map_node_name(val, dimension));
+    mapped_immutable_nodes = immutable_nodes.map((val) => map_node_name(val, dimension));
     mapped_init_nodes = {};
     for (let i in init_nodes) {
       mapped_init_nodes[map_node_name(i, dimension)] = init_nodes[i];
@@ -431,7 +433,7 @@ $(document).ready(function () {
     $("#toggle-names").text("Show Tile Names");
   }
 
-  function get_node_neighbours (node) {
+  function get_neighbours (node) {
     let coords = [parseInt(node[1]), parseInt(node[3]), parseInt(node[5])];
     let res = [];
     
@@ -439,26 +441,13 @@ $(document).ready(function () {
       let tmp = coords.map((val, ind) => val + vec[ind]);
       tmp = tmp.map((val) => val - Math.min(...tmp));
       tmp = `x${tmp[0]}y${tmp[1]}z${tmp[2]}`;
-      if (tmp in nodes) {
+      if (tmp in nodes && parseInt(tmp[1]) <= size && parseInt(tmp[3]) <= size && parseInt(tmp[5]) <= size) {
         res.push(tmp);
       }
     }
     return res;
   }
 
-  function get_weight (node, gen_weights=false) {
-    if (gen_weights) {
-      return 0;
-    } else {
-      if ($(`.${node}`).hasClass("immutable")) {
-        return Infinity;
-      }
-      if ($(`.${node} img`).attr("class") && $(`.${node} img`).attr("class") !== "banner") {
-        return 1e9;
-      }
-      return 1;
-    }
-  }
 
   function update_colour (node, colour=null) {
     let node_name = get_node_name(node);
@@ -659,7 +648,7 @@ $(document).ready(function () {
   }
 
   function init_config () {
-    config = {"size": 7, "tiles": {}};
+    config = {size: 7, event: null, tiles: {}};
     for (let node of Object.values(nodes)) {
       config["tiles"][node] = {};
       for (let attribute of config_attributes) {
@@ -692,6 +681,10 @@ $(document).ready(function () {
       init_config();
     }
 
+    if (config["event"]) {
+      $("#export-url").removeClass("hidden");
+    }
+
     update_grid_dimension(config["size"]);
     localStorage["map"] = JSON.stringify(config);
 
@@ -701,7 +694,7 @@ $(document).ready(function () {
         let colour = config["tiles"][node]["colour"];
         let tile_type = config["tiles"][node]["tile_type"];
         let relic = config["tiles"][node]["relic"];
-        
+
         if (colour) {
           $(`.${node_id} .hexagon-inner`).attr("class", `hexagon-inner ${colour}`);
         }
@@ -730,78 +723,66 @@ $(document).ready(function () {
 
   function decode_config (encoded) {
     encoded = base_to_bigint(encoded, config_encode_alphabet);
+    let tile_coords = Object.keys(nodes);
+    let consecutive = 0;
 
-    let relics = [];
-    $("#select option").each(function () {
-      relics.push($(this).val());
-    });
-
-    const tile_coords = Object.keys(nodes);
     for (let i = tile_coords.length - 1; i >= 0; i--) {
-      const tile = nodes[tile_coords[i]];
-      let colour = encoded % 8n;
-      encoded /= 8n;
-      if (colour === 7n) {
-        config["tiles"][tile].colour = null;
-        config["tiles"][tile].tile_type = "regular";
+      let tile = nodes[tile_coords[i]];
+      let colour = encoded % 10n;
+      if (consecutive) {
+        consecutive--;
+        config["tiles"][tile]["colour"] = null;
+      } else if (colour > 5n) {
+        consecutive = Number(colour) - 6;
+        config["tiles"][tile]["colour"] = null;
+        encoded /= 10n;
       } else {
-        const col_idx = Number(colour) - 1;
-        config["tiles"][tile].colour = col_idx >= 0 ? colours[col_idx] : null;
-
-        const image = encoded % 64n;
-        encoded /= 64n;
-        const relic_idx = Number(image) - 2;
-        if (relic_idx === -2) config["tiles"][tile].tile_type = "regular";
-        else if (relic_idx === -1) config["tiles"][tile].tile_type = "banner";
-        else {
-          config["tiles"][tile].tile_type = "relic";
-          config["tiles"][tile].relic = relics[relic_idx];
-        }
+        config["tiles"][tile]["colour"] = colours[colour];
+        encoded /= 10n;
       }
     }
-
   }
 
   function encode_config (cfg) {
-    let relics = [];
-    $("#select option").each(function () {
-      relics.push($(this).val());
-    });
-
     let encoded = 0n;
-    for (const tile of Object.values(nodes)) {
-      const tile_data = cfg["tiles"][tile];
-      if (
-        tile_data === null ||
-        (tile_data.tile_type === "regular" && tile_data.colour === null)
-      ) {
-        encoded = encoded * 8n + 7n;
+    let consecutive = 0;
+
+    for (let node of Object.values(nodes)) {
+      let colour = cfg["tiles"][node]["colour"];
+      if (colour === null) {
+        if (consecutive === 3) {
+          encoded *= 10n;
+          encoded += 9n;
+          consecutive = 0;
+        } else {
+          consecutive++;
+        }
       } else {
-        encoded *= 512n;
-
-        if (tile_data.tile_type === "banner") encoded += 8n;
-        else if (tile_data.tile_type === "relic") {
-          encoded +=
-            BigInt(relics.findIndex((c) => c === tile_data.relic) + 2) * 8n;
+        encoded *= 10n;
+        if (consecutive) {
+          encoded += BigInt(5 + consecutive);
+          encoded *= 10n;
+          consecutive = 0;
         }
-
-        if (tile_data.colour !== null) {
-          encoded += BigInt(
-            colours.findIndex((c) => c === tile_data.colour) + 1
-          );
-        }
+        encoded += BigInt(colours.indexOf(colour));
       }
     }
     return bigint_to_base(encoded, config_encode_alphabet);
   }
 
-  function onstart_config () {
-    const url_params = new URLSearchParams(window.location.search);
-    const param_config = url_params.get("config");
-    const param_size =  url_params.get("size");
+  async function onstart_config () {
+    let url_params = new URLSearchParams(window.location.search);
+    let param_event =  url_params.get("event");
+    let param_size =  url_params.get("size");
+    let param_config = url_params.get("config");
     
     if (param_size) {
       config["size"] = parseInt(param_size);
+    }
+
+    if (param_event) {
+      let response = await fetch(`${protocol}//${host}/static/json/configs/CT${param_event}.json`);
+      config = await response.json();
     }
 
     if (param_config) {
@@ -929,9 +910,9 @@ $(document).ready(function () {
                 }
               } else {
                 if (max === -1) {
-                  config["tiles"][node]["towers"].push({"tower": pascal_to_snake_case(tower), "max": -1});
+                  config["tiles"][node]["towers"].push({tower: pascal_to_snake_case(tower), max: -1});
                 } else {
-                  config["tiles"][node]["towers"].push({"tower": pascal_to_snake_case(tower), "max": max});
+                  config["tiles"][node]["towers"].push({tower: pascal_to_snake_case(tower), max: max});
                 }
               }
             }
@@ -953,7 +934,7 @@ $(document).ready(function () {
 
   $("#load").click(async function () {
     init_config();
-    const response = await fetch(`${protocol}//${host}/static/json/configs/${$("#historical-select :selected").val()}.json`);
+    let response = await fetch(`${protocol}//${host}/static/json/configs/${$("#historical-select :selected").val()}.json`);
     config = await response.json();
     load_config();
     $("#historical-modal").modal("hide");
@@ -980,14 +961,14 @@ $(document).ready(function () {
   });
 
   $("#export-url").click(function () {
-    const data_encoded = encode_config(config);
-    const url = `${protocol}//${host}${pathname}?config=${data_encoded}?size=${size}`;
+    let data_encoded = encode_config(config);
+    let url = `${protocol}//${host}${pathname}?event=${config["event"]}&config=${data_encoded}`;
 
-    const copy_text = $("#copy-to-clipboard");
+    let copy_text = $("#copy-to-clipboard");
     copy_text.val(url).select();
     document.execCommand("copy");
 
-    const button = $("#export-url");
+    let button = $("#export-url");
     $("#export-url").text("Copied!");
     setTimeout(() => button.text("Copy to URL"), 2500);
   });
