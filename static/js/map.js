@@ -1,5 +1,3 @@
-import {race_multipliers, round_buffers, difficulty_speed_multipliers, race_rounds, round_data, boss_kill_times, send_delay} from "./weight_heuristic.js";
-
 $(document).ready(function () {
   const nodes = {
     x0y0z0: "MRX",
@@ -447,7 +445,6 @@ $(document).ready(function () {
     }
     return res;
   }
-
 
   function update_colour (node, colour=null) {
     let node_name = get_node_name(node);
