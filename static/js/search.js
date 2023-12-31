@@ -752,16 +752,27 @@ $(document).ready(function () {
     let nodes = $(".grey .tile-code");
     let tiles = [];
     for (let i of nodes) {
-      tiles.push(i.innerText);
+      let tile_export = {tile: i.innerText};
+      let tile_data = config["tiles"][i.innerText];
+      tile_export["tile_type"] = tile_data["tile_type"];
+      if (tile_data["tile_type"] === "relic") {
+        tile_export["relic"] = tile_data["relic"];
+      }
+      tile_export["game_type"] = tile_data["game_type"];
+      if (tile_data["game_type"] === "boss") {
+        tile_export["boss"] = tile_data["boss"];
+      }
+      tile_export["map"] = tile_data["map"];
+      tiles.push(tile_export);
     }
-    tiles.sort();
+    tiles.sort((a, b) => a.tile > b.tile);
     let download = $("<a></a>");
 
     download.attr(
       "href",
       "data:text/plain;charset=utf-8," + encodeURIComponent(JSON.stringify(tiles))
     );
-    download.attr("download", `filtered.txt`);
+    download.attr("download", `filtered.json`);
     download.css("display", "none");
     $("body").append(download);
     $("a")[0].click();
