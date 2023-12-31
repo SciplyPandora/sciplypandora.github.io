@@ -765,7 +765,7 @@ $(document).ready(function () {
       tile_export["map"] = tile_data["map"];
       tiles.push(tile_export);
     }
-    tiles.sort((a, b) => a.tile > b.tile);
+    tiles.sort((a, b) => a.tile > b.tile ? 1 : -1);
     let download = $("<a></a>");
 
     download.attr(
