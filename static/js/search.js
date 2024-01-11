@@ -650,6 +650,13 @@ $(document).ready(function () {
     numberDisplayed: 2,
     enableClickableOptGroups: true
   });
+  $("#modifiers").multiselect({
+    includeSelectAllOption: true,
+    maxHeight: 200,
+    nonSelectedText: "Select Modifiers",
+    buttonWidth: "15em",
+    numberDisplayed: 2
+  });
   $("#heroes").multiselect({
     includeSelectAllOption: true,
     maxHeight: 200,
@@ -713,6 +720,7 @@ $(document).ready(function () {
     let game_modes = $("#game-mode").val();
     let difficulties = $("#difficulty").val();
     let maps = $("#map").val();
+    let modifiers = $("#modifiers").val();
     let heroes = $("#heroes").val();
     let towers = $("#towers").val();
     let boss_types = $("#boss-type").val();
@@ -721,7 +729,7 @@ $(document).ready(function () {
     let max_end_round = $("#max-end-round").val() ? $("#max-end-round").val() : null;
     
     $(".tile").not(".immutable").children(".hexagon-inner").attr("class", "hexagon-inner");
-    if ([tile_types, game_types, game_modes, difficulties, maps, heroes, towers, boss_types, boss_tiers, min_end_round, max_end_round].some(val => val !== null)) {
+    if ([tile_types, game_types, game_modes, difficulties, maps, modifiers, heroes, towers, boss_types, boss_tiers, min_end_round, max_end_round].some(val => val !== null)) {
       for (let node in config["tiles"]) {
         let tile = config["tiles"][node];
         let node_id = get_node_id(node);
@@ -731,6 +739,7 @@ $(document).ready(function () {
           if (game_modes && !(game_modes.includes(tile["game_mode"]))) continue;
           if (difficulties && !(difficulties.includes(tile["difficulty"]))) continue;
           if (maps && !(maps.includes(tile["map"]))) continue;
+          if (modifiers && modifiers.every(val => val === "no_selling" ? tile["selling"] : tile[val] === 100)) continue;
           if (heroes && heroes.every(val => !tile["heroes"].includes(val))) continue;
           if (towers && towers.every(val => tile["towers"].every(obj => obj["tower"] !== val))) continue;
           if (boss_types && !(boss_types.includes(tile["boss"]))) continue;
@@ -772,7 +781,7 @@ $(document).ready(function () {
       "href",
       "data:text/plain;charset=utf-8," + encodeURIComponent(JSON.stringify(tiles))
     );
-    download.attr("download", `filtered.json`);
+    download.attr("download", "filtered.json");
     download.css("display", "none");
     $("body").append(download);
     $("a")[0].click();
