@@ -570,7 +570,7 @@
             "moab_speed": 109,
             "regrow_rate": 100,
             "heroes": [
-                "striker_jones"
+                "obyn_greenfoot"
             ],
             "towers": [
                 {
@@ -783,7 +783,6 @@
             "regrow_rate": 100,
             "heroes": [
                 "quincy",
-                "gwendolin",
                 "striker_jones",
                 "obyn_greenfoot",
                 "benjamin",
@@ -889,7 +888,6 @@
             "regrow_rate": 100,
             "heroes": [
                 "quincy",
-                "gwendolin",
                 "striker_jones",
                 "obyn_greenfoot",
                 "benjamin",
@@ -2190,7 +2188,6 @@
             "regrow_rate": 100,
             "heroes": [
                 "quincy",
-                "gwendolin",
                 "striker_jones",
                 "obyn_greenfoot",
                 "benjamin",
@@ -2608,7 +2605,6 @@
             "regrow_rate": 100,
             "heroes": [
                 "quincy",
-                "gwendolin",
                 "striker_jones",
                 "obyn_greenfoot",
                 "benjamin",
@@ -2989,7 +2985,6 @@
             "regrow_rate": 100,
             "heroes": [
                 "quincy",
-                "gwendolin",
                 "striker_jones",
                 "obyn_greenfoot",
                 "benjamin",
@@ -3045,7 +3040,7 @@
             "moab_speed": 100,
             "regrow_rate": 100,
             "heroes": [
-                "gwendolin"
+                "striker_jones"
             ],
             "towers": [
                 {
@@ -3527,7 +3522,6 @@
             "regrow_rate": 100,
             "heroes": [
                 "quincy",
-                "gwendolin",
                 "striker_jones",
                 "obyn_greenfoot",
                 "benjamin",
@@ -4408,7 +4402,7 @@
             "moab_speed": 100,
             "regrow_rate": 100,
             "heroes": [
-                "obyn_greenfoot"
+                "benjamin"
             ],
             "towers": [
                 {
@@ -4754,7 +4748,6 @@
             "regrow_rate": 100,
             "heroes": [
                 "quincy",
-                "gwendolin",
                 "striker_jones",
                 "obyn_greenfoot",
                 "benjamin",
@@ -5172,7 +5165,6 @@
             "regrow_rate": 100,
             "heroes": [
                 "quincy",
-                "gwendolin",
                 "striker_jones",
                 "obyn_greenfoot",
                 "benjamin",
@@ -5229,7 +5221,6 @@
             "regrow_rate": 100,
             "heroes": [
                 "quincy",
-                "gwendolin",
                 "striker_jones",
                 "obyn_greenfoot",
                 "benjamin",
@@ -5380,7 +5371,6 @@
             "regrow_rate": 139,
             "heroes": [
                 "quincy",
-                "gwendolin",
                 "striker_jones",
                 "obyn_greenfoot",
                 "benjamin",
@@ -5488,7 +5478,6 @@
             "regrow_rate": 100,
             "heroes": [
                 "quincy",
-                "gwendolin",
                 "striker_jones",
                 "obyn_greenfoot",
                 "benjamin",
@@ -5829,7 +5818,6 @@
             "regrow_rate": 128,
             "heroes": [
                 "quincy",
-                "gwendolin",
                 "striker_jones",
                 "obyn_greenfoot",
                 "benjamin",
@@ -6039,7 +6027,6 @@
             "regrow_rate": 100,
             "heroes": [
                 "quincy",
-                "gwendolin",
                 "striker_jones",
                 "obyn_greenfoot",
                 "benjamin",
@@ -7199,7 +7186,7 @@
             "moab_speed": 100,
             "regrow_rate": 144,
             "heroes": [
-                "striker_jones"
+                "obyn_greenfoot"
             ],
             "towers": [
                 {
@@ -7498,7 +7485,6 @@
             "regrow_rate": 100,
             "heroes": [
                 "quincy",
-                "gwendolin",
                 "striker_jones",
                 "obyn_greenfoot",
                 "benjamin",
@@ -7704,7 +7690,6 @@
             "regrow_rate": 100,
             "heroes": [
                 "quincy",
-                "gwendolin",
                 "striker_jones",
                 "obyn_greenfoot",
                 "benjamin",
@@ -7761,7 +7746,6 @@
             "regrow_rate": 100,
             "heroes": [
                 "quincy",
-                "gwendolin",
                 "striker_jones",
                 "obyn_greenfoot",
                 "benjamin",
@@ -7818,7 +7802,6 @@
             "regrow_rate": 100,
             "heroes": [
                 "quincy",
-                "gwendolin",
                 "striker_jones",
                 "obyn_greenfoot",
                 "benjamin",
@@ -7875,7 +7858,6 @@
             "regrow_rate": 100,
             "heroes": [
                 "quincy",
-                "gwendolin",
                 "striker_jones",
                 "obyn_greenfoot",
                 "benjamin",
@@ -8290,7 +8272,6 @@
             "regrow_rate": 100,
             "heroes": [
                 "quincy",
-                "gwendolin",
                 "striker_jones",
                 "obyn_greenfoot",
                 "benjamin",
@@ -8351,7 +8332,6 @@
             "regrow_rate": 100,
             "heroes": [
                 "quincy",
-                "gwendolin",
                 "striker_jones",
                 "obyn_greenfoot",
                 "benjamin",
