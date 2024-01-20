@@ -5284,6 +5284,10 @@
                     "max": 2
                 },
                 {
+                    "tower": "monkey_sub",
+                    "max": 3
+                },
+                {
                     "tower": "monkey_buccaneer",
                     "max": 2
                 },
