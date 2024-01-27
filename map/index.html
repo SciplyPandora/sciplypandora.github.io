@@ -13,6 +13,7 @@
   <input id="copy-to-clipboard" style="position:absolute;top:-2000px;left:-2000px">
   <div class="col-left">
     <button id="toggle-names" class="btn btn-primary d-block m-2">Show Tile Names</button>
+    <button id="toggle-weights" class="btn btn-primary d-block m-2">Show Weights</button>
     <button id="rotate" class="btn btn-primary d-block m-2">Rotate</button>
     <button id="toggle-markers" class="btn btn-primary d-block m-2">Colours</button>
     <button onclick="$('#banner-modal').modal();" class="btn btn-primary d-block m-2">Clear Banners</button>
@@ -178,6 +179,8 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
     integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
     crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/js-priority-queue@0.1.5/priority-queue.min.js"></script>
+  <script type="module" src="/static/js/weight_heuristic.js"></script>
   <script type="module" src="/static/js/map.js"></script>
 </body>
 

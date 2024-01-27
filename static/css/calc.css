@@ -23,11 +23,6 @@ label {
     color: white;
 }
 
-/* .form-check {
-    transform: scale(1.5, 1.5);
-    transform: translateX(1000);
-} */
-
 select {
     width: 10em !important;
     font-size: 1.5em;

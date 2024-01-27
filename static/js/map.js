@@ -1,3 +1,5 @@
+import {race_multipliers, round_buffers, difficulty_speed_multipliers, race_rounds, round_data, boss_kill_times, send_delay} from "./weight_heuristic.js";
+
 $(document).ready(function () {
   const nodes = {
     x0y0z0: "MRX",
@@ -446,6 +448,74 @@ $(document).ready(function () {
     return res;
   }
 
+  function gen_weight (node) {
+    let weight = 0;
+    node = config["tiles"][node];
+    let [game_type, start, end, tiers, track, difficulty, boss, game_mode] = [node["game_type"], node["start_round"], node["end_round"], node["tiers"], node["map"], node["difficulty"], node["boss"], node["game_mode"]];
+    if (game_type === "race") {
+      let longest_round = race_rounds[race_rounds.length - 1];
+      for (let i = 0; i < race_rounds.length; i++) {
+        let round = race_rounds[i];
+        if (round["round"] > end) {
+          longest_round = race_rounds[i - 1];
+          break;
+        }
+      }
+
+      weight = (longest_round["time"] + send_delay * (longest_round["round"] - start)) * race_multipliers[track];
+    } else if (game_type === "boss") {
+      weight = round_data[boss][tiers * 20 + 18]["time"] - round_data[boss][start - 1]["time"] + boss_kill_times[boss][tiers - 1];
+      let first_speed = round_data[boss][tiers * 20 + 18]["first_speed"] - round_data[boss][start - 1]["first_speed"];
+      let last_speed = round_data[boss][tiers * 20 + 18]["last_speed"] - round_data[boss][start - 1]["last_speed"];
+
+      if (game_mode === "reverse") {
+        weight += round_buffers[track][1] * first_speed / difficulty_speed_multipliers[difficulty];
+      } else {
+        weight += round_buffers[track][0] * last_speed / difficulty_speed_multipliers[difficulty];
+      }
+    } else {
+      weight = round_data["regular"][end - 1]["time"] - round_data["regular"][start - 1]["time"];
+      let first_speed = round_data["regular"][end - 1]["first_speed"] - round_data["regular"][start - 1]["first_speed"];
+      let last_speed = round_data["regular"][end - 1]["last_speed"] - round_data["regular"][start - 1]["last_speed"];
+
+      if (game_mode === "reverse") {
+        weight += round_buffers[track][1] * first_speed / difficulty_speed_multipliers[difficulty];
+      } else {
+        weight += round_buffers[track][0] * last_speed / difficulty_speed_multipliers[difficulty];
+      }
+    }
+
+    return Math.round(weight / 10);
+  }
+
+  function get_weight (node) {
+    let weight = parseInt($(`.${node} .weight`).attr("data-weight"));
+    if (weight >= 0) {
+      return weight;
+    } else {
+      return Infinity;
+    }
+  }
+
+  function path_weights () {
+    for (let node in nodes) {
+      $(`.${node} .weight`).text(get_weight(node));
+    }
+    let vertices = ["x7y0z7"];
+    let pq = new PriorityQueue({ comparator: function(a, b) { return a[1] - b[1]; }});
+    pq.queue(["x7y0z7", 0]);
+    while (pq.length) {
+      let [node, dist] = pq.dequeue();
+      for (let i of get_neighbours(node)) {
+        if ($(`.${i} .hexagon-inner`).attr("class").includes(colours[rots]) && !vertices.includes(i)) {
+          pq.queue([i, dist + get_weight(i)]);
+          vertices.push(i);
+          $(`.${i} .weight`).text(dist + get_weight(i));
+        }
+      }
+    }
+  }
+
   function update_colour (node, colour=null) {
     let node_name = get_node_name(node);
     let ticket_count = $(".ticket-count").filter(function() {
@@ -586,8 +656,10 @@ $(document).ready(function () {
       inner.append(`<img src="/static/images/tiles/empty.png">`);
       if (mapped_immutable_nodes.includes(node_name)) {
         inner.append(`<div class="ticket-count hidden">0</div>`);
+        inner.append(`<div class="weight hidden" data-weight="0">0</div>`);
       } else {
         inner.append(`<div class="tile-code hidden">${node_name}</div>`);
+        inner.append(`<div class="weight hidden" data-weight="0">0</div>`);
       }
 
       create_modal(node_name.toLowerCase(), node_name);
@@ -619,8 +691,10 @@ $(document).ready(function () {
       inner.append(`<img src="/static/images/tiles/empty.png">`);
       if (mapped_immutable_nodes.includes(node_name)) {
         inner.append(`<div class="ticket-count hidden">0</div>`);
+        inner.append(`<div class="weight hidden" data-weight="0">0</div>`);
       } else {
         inner.append(`<div class="tile-code hidden">${node_name}</div>`);
+        inner.append(`<div class="weight hidden" data-weight="0">0</div>`);
       }
     }
   }
@@ -691,7 +765,9 @@ $(document).ready(function () {
         let colour = config["tiles"][node]["colour"];
         let tile_type = config["tiles"][node]["tile_type"];
         let relic = config["tiles"][node]["relic"];
-
+        if (config["tiles"][node]["map"]) {
+          $(`.${node_id} .weight`).attr("data-weight", gen_weight(node));
+        }
         if (colour) {
           $(`.${node_id} .hexagon-inner`).attr("class", `hexagon-inner ${colour}`);
         }
@@ -705,6 +781,7 @@ $(document).ready(function () {
       }
     }
 
+    path_weights();
     populate_modals();
 
     let ticket_count = $(".ticket-count").filter(function() {
@@ -804,10 +881,24 @@ $(document).ready(function () {
   $("#toggle-names").click(function () {
     if ($("#toggle-names").text() === "Show Tile Names") {
       $("#toggle-names").text("Hide Tile Names");
+      $("#toggle-weights").text("Show Weights");
+      $(".weight").addClass("hidden");
       $(".tile-code").removeClass("hidden");
     } else {
       $("#toggle-names").text("Show Tile Names");
       $(".tile-code").addClass("hidden");
+    }
+  });
+
+  $("#toggle-weights").click(function () {
+    if ($("#toggle-weights").text() === "Show Weights") {
+      $("#toggle-weights").text("Hide Weights");
+      $("#toggle-names").text("Show Tile Names");
+      $(".tile-code").addClass("hidden");
+      $(".tile").not(".immutable").children().children(".weight").removeClass("hidden");
+    } else {
+      $("#toggle-weights").text("Show Weights");
+      $(".weight").addClass("hidden");
     }
   });
 
@@ -843,6 +934,7 @@ $(document).ready(function () {
       update_colour(node);
     });
     $("#colour-modal").modal("hide");
+    path_weights();
   });
 
   $("#import").click(function () {
@@ -934,6 +1026,7 @@ $(document).ready(function () {
     let response = await fetch(`${protocol}//${host}/static/json/configs/${$("#historical-select :selected").val()}.json`);
     config = await response.json();
     load_config();
+    $("#export-url").removeClass("hidden");
     $("#historical-modal").modal("hide");
   });
 
@@ -967,7 +1060,7 @@ $(document).ready(function () {
 
     let button = $("#export-url");
     $("#export-url").text("Copied!");
-    setTimeout(() => button.text("Copy to URL"), 2500);
+    setTimeout(() => button.text("Export to URL"), 2500);
   });
 
   $(".tile").click(function (e) {
@@ -1004,6 +1097,8 @@ $(document).ready(function () {
           } else {
             update_colour(node, home_colour);
           }
+
+          path_weights();
         }
       }
     }
@@ -1011,6 +1106,9 @@ $(document).ready(function () {
 
   $(document).keypress(function (e) {
     switch (e.key) {
+      case "w":
+        $("#toggle-weights").trigger("click");
+        break;
       case "e":
         $("#toggle-names").trigger("click");
         break;
