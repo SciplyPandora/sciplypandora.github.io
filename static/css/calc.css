@@ -3,47 +3,28 @@ body {
 }
 
 button {
-    width: 10em;
-    font-size: 1.5em !important;
+    width: 12em;
 }
 
 input[type=number] {
-    width: 10em;
-    font-size: 1.5em;
+    width: 12em;
 }
 
-input[type=checkbox] {
-    width: 1.5em;
-    height: 1.5em;
-}
-
-label {
-    margin-left: 0.5em;
-    font-size: 1.5em;
+.form-check-label {
     color: white;
 }
 
 select {
-    width: 10em !important;
-    font-size: 1.5em;
-    height: 2em !important;
-    margin: 0.343em 0 0 0.343em;
-}
-
-table {
-    font-size: 1.5em;
+    width: 12em !important;
+    margin: 0.5em 0 0 0.5em;
 }
 
 .multiselect-container {
     width: 100%;
 }
 
-.dropdown-item {
-    width: 100% !important;
-}
-
 .multiselect {
-    margin: 0 0.5em 0.5em;
+    margin: 0.5em 0 0 0.5em;
 }
 
 .col-left {
