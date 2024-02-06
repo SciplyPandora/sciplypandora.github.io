@@ -57,7 +57,6 @@ input[type=number] {
 
 .col-right {
     float: right;
-    overflow-y: scroll;
     height: 100%;
     width: calc(50vw - 5.75 * var(--tile_width));
 }
