@@ -669,7 +669,8 @@ $(document).ready(function () {
     maxHeight: 200,
     nonSelectedText: "Select Towers",
     buttonWidth: "15em",
-    numberDisplayed: 2
+    numberDisplayed: 2,
+    enableClickableOptGroups: true
   });
   $("#boss-type").multiselect({
     maxHeight: 200,
