@@ -49,6 +49,7 @@ $(document).ready(function () {
   const mk_starting_level = 3;
   const hero_boost_buff = 1.15;
   const extra_empowered_buff = 3;
+  const starting_level_cap = 4;
   const energizer_buff = 1.5;
   let config = localStorage["calc/hero"] ? JSON.parse(localStorage["calc/hero"]) : null;
 
@@ -104,8 +105,10 @@ $(document).ready(function () {
     let xp_gain_buff = map_multipliers[$("#difficulty :selected").val()]
       * ($("#mk").is(":checked") ? mk_xp_buff : 1)
       * ($("#boost").val() ? hero_boost_buff ** $("#boost").val() : 1);
-    let start_level = ($("#mk").is(":checked") ? mk_starting_level : 0)
-      + ($("#empowered").val() ? extra_empowered_buff * $("#empowered").val() : 0);
+    let start_level = Math.min(
+      ($("#mk").is(":checked") ? mk_starting_level : 0)
+      + ($("#empowered").val() ? extra_empowered_buff * $("#empowered").val() : 0),
+      starting_level_cap);
     let start_round = $("#hero-round").val() ? parseInt($("#hero-round").val()) : 1;
     let buffed_xp_requirements = xp_requirements.map(val => Math.round(val * xp_requirement_buff));
     let xp_requirements_cumulative = [0];
