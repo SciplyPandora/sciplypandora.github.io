@@ -517,7 +517,7 @@
                     "max": 1
                 },
                 {
-                    "tower": "monkey_ace",
+                    "tower": "heli_pilot",
                     "max": 2
                 },
                 {
@@ -1734,7 +1734,7 @@
                     "max": -1
                 },
                 {
-                    "tower": "monkey_buccaneer",
+                    "tower": "monkey_ace",
                     "max": -1
                 },
                 {
@@ -8519,7 +8519,7 @@
                     "max": -1
                 },
                 {
-                    "tower": "sniper_monkey",
+                    "tower": "glue_gunner",
                     "max": -1
                 },
                 {
