@@ -63,8 +63,8 @@ $(document).ready(function () {
       if (config["empowered"]) $("#empowered").val(config["empowered"]);
       if (config["boost"]) $("#boost").val(config["boost"]);
       if (config["energizer_round"]) $("#energizer-round").val(config["energizer_round"]);
-      $("#mk").val(config["mk"]);
-      $("#detailed").val(config["detailed"]);
+      $("#mk").prop("checked", config["mk"]);
+      $("#detailed").prop("checked", config["detailed"]);
       $("#hero").trigger("change");
     } else {
       config = {
@@ -101,12 +101,12 @@ $(document).ready(function () {
 
   function get_levelling_curve () {
     let xp_requirement_buff = hero_multipliers[$("#hero :selected").val()]
-      * ($("#mk").is(":checked") ? mk_xp_requirement : 1);
+      * ($("#mk").prop("checked") ? mk_xp_requirement : 1);
     let xp_gain_buff = map_multipliers[$("#difficulty :selected").val()]
-      * ($("#mk").is(":checked") ? mk_xp_buff : 1)
+      * ($("#mk").prop("checked") ? mk_xp_buff : 1)
       * ($("#boost").val() ? hero_boost_buff ** $("#boost").val() : 1);
     let start_level = Math.min(
-      ($("#mk").is(":checked") ? mk_starting_level : 0)
+      ($("#mk").prop("checked") ? mk_starting_level : 0)
       + ($("#empowered").val() ? extra_empowered_buff * $("#empowered").val() : 0),
       starting_level_cap);
     let start_round = $("#hero-round").val() ? parseInt($("#hero-round").val()) : 1;
@@ -145,7 +145,7 @@ $(document).ready(function () {
     $("table tr").remove();
     $("table thead").append("<tr><th>Round</th><th>Level</th><th>XP to Next Level</th></tr>");
 
-    if ($("#detailed").is(":checked")) {
+    if ($("#detailed").prop("checked")) {
       for (let i = parseInt($("#hero-round").val()); i < 141; i++) {
         if (levelling_curve[i][0] === -1) {
           $("table tbody").append(`<tr><td>${i}</td><td>20</td><td>0</td></tr>`);
@@ -175,8 +175,8 @@ $(document).ready(function () {
     config["empowered"] = $("#empowered").val() ? parseInt($("#empowered").val()) : 0;
     config["boost"] = $("#boost").val() ? parseInt($("#boost").val()) : 0;
     config["energizer_round"] = $("#energizer-round").val() ? parseInt($("#energizer-round").val()) : null;
-    config["mk"] = $("#mk").val();
-    config["detailed"] = $("#detailed").val();
+    config["mk"] = $("#mk").prop("checked");
+    config["detailed"] = $("#detailed").prop("checked");
     localStorage["calc/hero"] = JSON.stringify(config);
   });
 
