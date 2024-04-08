@@ -47,7 +47,7 @@ $(document).ready(function () {
   const mk_xp_requirement = 0.9;
   const mk_xp_buff = 0.9 * 1.1 * 1.05 * 1.08;
   const mk_starting_level = 3;
-  const hero_boost_buff = 1.15;
+  const hero_boost_buff = 1.2;
   const extra_empowered_buff = 3;
   const starting_level_cap = 4;
   const energizer_buff = 1.5;
