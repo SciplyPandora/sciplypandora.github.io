@@ -1,4 +1,4 @@
-import {race_multipliers, round_buffers, difficulty_speed_multipliers, race_rounds, round_data, boss_kill_times, send_delay} from "./weight_heuristic.js";
+import { race_multipliers, round_buffers, difficulty_speed_multipliers, race_rounds, round_data, boss_kill_times, send_delay } from "./weight_heuristic.js";
 
 $(document).ready(function () {
   const nodes = {
@@ -221,12 +221,12 @@ $(document).ready(function () {
     x0y7z8: "CCZ"
   };
   const init_nodes = {
-    AA: {colour: "purple"},
-    BA: {colour: "pink"},
-    CA: {colour: "green"},
-    DA: {colour: "blue"},
-    EA: {colour: "yellow"},
-    FA: {colour: "red"}
+    AA: { colour: "purple" },
+    BA: { colour: "pink" },
+    CA: { colour: "green" },
+    DA: { colour: "blue" },
+    EA: { colour: "yellow" },
+    FA: { colour: "red" }
   };
   const immutable_nodes = [
     "AA",
@@ -292,6 +292,7 @@ $(document).ready(function () {
     "gwendolin",
     "striker_jones",
     "obyn_greenfoot",
+    "rosalia",
     "corvus",
     "captain_churchill",
     "benjamin",
@@ -332,6 +333,7 @@ $(document).ready(function () {
     gwendolin: "Gwen",
     striker_jones: "Jones",
     obyn_greenfoot: "Obyn",
+    rosalia: "Rosalia",
     corvus: "Corvus",
     captain_churchill: "Churchill",
     benjamin: "Ben",
@@ -348,15 +350,15 @@ $(document).ready(function () {
   const ct_start_season = 26;
   const ct_26_start_date_milli = 1690927200000;
   const one_day_milli = 86400000;
-  const {protocol, host, pathname} = window.location;
+  const { protocol, host, pathname } = window.location;
   let config = localStorage["map"] ? JSON.parse(localStorage["map"]) : null;
   let rots = 0;
   let size = 7;
   let mapped_immutable_nodes;
   let mapped_init_nodes;
-  
 
-  function bigint_to_base (num, alphabet) {
+
+  function bigint_to_base(num, alphabet) {
     let encoded = "";
     const alphalen = BigInt(alphabet.length);
     while (num > 0n) {
@@ -367,7 +369,7 @@ $(document).ready(function () {
     return encoded
   }
 
-  function base_to_bigint (num, alphabet) {
+  function base_to_bigint(num, alphabet) {
     let decoded = 0n;
     const alphalen = BigInt(alphabet.length);
     for (let i = num.length - 1; i >= 0; i--) {
@@ -378,7 +380,7 @@ $(document).ready(function () {
     return decoded;
   }
 
-  function pascal_to_snake_case (text) {
+  function pascal_to_snake_case(text) {
     let new_text = text.replace(
       /(?<upperchar>[A-Z])/gm,
       (match, upperchar) => "_" + upperchar.toLowerCase()
@@ -386,13 +388,13 @@ $(document).ready(function () {
     return new_text.substr(1);
   }
 
-  function snake_to_title_case (text) {
-    return text.replace(/_/g, " ").replace(/(?:^|\s)\S/g, function(match) {
+  function snake_to_title_case(text) {
+    return text.replace(/_/g, " ").replace(/(?:^|\s)\S/g, function (match) {
       return match.toUpperCase();
     });
   }
 
-  function get_rotated_node (node, rots=1) {
+  function get_rotated_node(node, rots = 1) {
     let x = parseInt(node[1]);
     let y = parseInt(node[3]);
     let z = parseInt(node[5]);
@@ -404,19 +406,19 @@ $(document).ready(function () {
     return `x${x}y${y}z${z}`;
   }
 
-  function get_node_id (node_name) {
+  function get_node_id(node_name) {
     return get_rotated_node(Object.keys(nodes).find((key) => nodes[key] === node_name), rots);
   }
 
-  function get_node_name (node_id) {
+  function get_node_name(node_id) {
     return nodes[get_rotated_node(node_id, 6 - rots)];
   }
 
-  function map_node_name (node_name, dimension) {
+  function map_node_name(node_name, dimension) {
     return node_name.length === 2 ? node_name + get_node_name(`x${dimension}y0z0`)[2] : node_name;
   }
 
-  function update_node_defaults (dimension) {
+  function update_node_defaults(dimension) {
     mapped_immutable_nodes = immutable_nodes.map((val) => map_node_name(val, dimension));
     mapped_init_nodes = {};
     for (let i in init_nodes) {
@@ -424,19 +426,19 @@ $(document).ready(function () {
     }
   }
 
-  function update_grid_dimension (dimension) {
+  function update_grid_dimension(dimension) {
     size = dimension;
     if (config) config["size"] = dimension;
     update_node_defaults(dimension);
     update_grid(dimension);
-    $(":root").attr("style",`--size:${dimension}`);
+    $(":root").attr("style", `--size:${dimension}`);
     $("#toggle-names").text("Show Tile Names");
   }
 
-  function get_neighbours (node) {
+  function get_neighbours(node) {
     let coords = [parseInt(node[1]), parseInt(node[3]), parseInt(node[5])];
     let res = [];
-    
+
     for (let vec of [[1, 0, 0], [0, 1, 0], [0, 0, 1], [1, 1, 0], [1, 0, 1], [0, 1, 1]]) {
       let tmp = coords.map((val, ind) => val + vec[ind]);
       tmp = tmp.map((val) => val - Math.min(...tmp));
@@ -448,7 +450,7 @@ $(document).ready(function () {
     return res;
   }
 
-  function gen_weight (node) {
+  function gen_weight(node) {
     let weight = 0;
     node = config["tiles"][node];
     let [game_type, start, end, tiers, track, difficulty, boss, game_mode] = [node["game_type"], node["start_round"], node["end_round"], node["tiers"], node["map"], node["difficulty"], node["boss"], node["game_mode"]];
@@ -488,7 +490,7 @@ $(document).ready(function () {
     return Math.round(weight / 10);
   }
 
-  function get_weight (node) {
+  function get_weight(node) {
     let weight = parseInt($(`.${node} .weight`).attr("data-weight"));
     if (weight >= 0) {
       return weight;
@@ -497,12 +499,12 @@ $(document).ready(function () {
     }
   }
 
-  function path_weights () {
+  function path_weights() {
     for (let node in nodes) {
       $(`.${node} .weight`).text(get_weight(node));
     }
     let vertices = ["x7y0z7"];
-    let pq = new PriorityQueue({ comparator: function(a, b) { return a[1] - b[1]; }});
+    let pq = new PriorityQueue({ comparator: function (a, b) { return a[1] - b[1]; } });
     pq.queue(["x7y0z7", 0]);
     while (pq.length) {
       let [node, dist] = pq.dequeue();
@@ -516,9 +518,9 @@ $(document).ready(function () {
     }
   }
 
-  function update_colour (node, colour=null) {
+  function update_colour(node, colour = null) {
     let node_name = get_node_name(node);
-    let ticket_count = $(".ticket-count").filter(function() {
+    let ticket_count = $(".ticket-count").filter(function () {
       return $(this).parent().parent().attr("class").split(" ")[2] === `x${size}y0z${size}`;
     });
     config["tiles"][node_name]["colour"] = colour;
@@ -529,7 +531,7 @@ $(document).ready(function () {
     } else {
       $(`.${node} .hexagon-inner`).attr("class", "hexagon-inner");
     }
-    
+
     ticket_count.text($(`.${colours[rots]}`).length - 1);
     if (ticket_count.text() === "0") {
       ticket_count.attr("class", "ticket-count hidden");
@@ -538,7 +540,7 @@ $(document).ready(function () {
     }
   }
 
-  function update_image (node, image=null) {
+  function update_image(node, image = null) {
     let node_name = get_node_name(node);
     if (image === null) {
       config["tiles"][node_name]["tile_type"] = "regular";
@@ -556,10 +558,10 @@ $(document).ready(function () {
       $(`.${node} img`).attr("src", "/static/images/tiles/empty.png").removeAttr("class");
     }
   }
-  
-  function rotate_grid (rotations=1) {
+
+  function rotate_grid(rotations = 1) {
     rots = (rots + rotations) % 6;
-    let ticket_count = $(".ticket-count").filter(function() {
+    let ticket_count = $(".ticket-count").filter(function () {
       return $(this).parent().parent().attr("class").split(" ")[2] === `x${size}y0z${size}`;
     });
     ticket_count.attr("class", "ticket-count hidden");
@@ -570,7 +572,7 @@ $(document).ready(function () {
       return split_arr.join(" ");
     });
 
-    ticket_count = $(".ticket-count").filter(function() {
+    ticket_count = $(".ticket-count").filter(function () {
       return $(this).parent().parent().attr("class").split(" ")[2] === `x${size}y0z${size}`;
     });
     ticket_count.text($(`.${colours[rots]}`).length - 1);
@@ -581,7 +583,7 @@ $(document).ready(function () {
     }
   }
 
-  function create_modal (node, title) {
+  function create_modal(node, title) {
     $("#colour-modal").after(`<div id="${node}-modal" class="modal" tabindex="-1" role="dialog"></div>`);
     $(`#${node}-modal`).append(`<div class="modal-dialog" role="document"><div class="modal-content"></div></div></div>`);
     let header = $(`<div class="modal-header"><h5 class="modal-title">${title}</h5><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>`);
@@ -589,7 +591,7 @@ $(document).ready(function () {
     $(`#${node}-modal .modal-content`).append(header).append(body);
   }
 
-  function populate_modals () {
+  function populate_modals() {
     for (let node in config["tiles"]) {
       if (!(node in mapped_init_nodes) && config["tiles"][node]["map"]) {
         let inner = "<div>";
@@ -610,7 +612,7 @@ $(document).ready(function () {
         if (config["tiles"][node]["moab_speed"] !== 100) inner += `${config["tiles"][node]["moab_speed"]}% Moab Speed<br>`;
         if (config["tiles"][node]["regrow_rate"] !== 100) inner += `${config["tiles"][node]["regrow_rate"]}% Regrow Rate<br>`;
         inner += "<br>";
-  
+
         let heroes = config["tiles"][node]["heroes"];
         let towers = config["tiles"][node]["towers"];
         if (heroes.length) {
@@ -639,14 +641,14 @@ $(document).ready(function () {
     }
   }
 
-  function init_grid () {
+  function init_grid() {
     for (let node in nodes) {
       let node_name = get_node_name(node);
       let colour = node_name in mapped_init_nodes ? mapped_init_nodes[node_name]["colour"] : null;
       $(".col-right").after(`<div class="hexagon-border tile ${node}"></div>`);
       $(`.${node}`).append(`<div class="hexagon-inner"></div>`);
       let inner = $(`.${node} div`);
-      
+
       if (mapped_immutable_nodes.includes(node_name)) {
         $(`.${node}`).addClass("immutable");
       }
@@ -666,7 +668,7 @@ $(document).ready(function () {
     }
   }
 
-  function update_grid (dimension) {
+  function update_grid(dimension) {
     $(".tile").removeClass("immutable");
     $(".tile").removeClass("hidden");
     $(".tile .hexagon-inner").attr("class", "hexagon-inner").empty();
@@ -678,7 +680,7 @@ $(document).ready(function () {
       let z = parseInt(node[5]);
       let colour = node_name in mapped_init_nodes ? mapped_init_nodes[node_name]["colour"] : null;
       let inner = $(`.${node} div`);
-      
+
       if (mapped_immutable_nodes.includes(node_name)) {
         $(`.${node}`).addClass("immutable");
       }
@@ -699,7 +701,7 @@ $(document).ready(function () {
     }
   }
 
-  function check_config (cfg) {
+  function check_config(cfg) {
     for (let node of Object.values(nodes)) {
       let node_id = get_node_id(node);
       let x = parseInt(node_id[1]);
@@ -718,8 +720,8 @@ $(document).ready(function () {
     return true;
   }
 
-  function init_config () {
-    config = {size: 7, event: null, tiles: {}};
+  function init_config() {
+    config = { size: 7, event: null, tiles: {} };
     for (let node of Object.values(nodes)) {
       config["tiles"][node] = {};
       for (let attribute of config_attributes) {
@@ -743,7 +745,7 @@ $(document).ready(function () {
     localStorage["map"] = JSON.stringify(config);
   }
 
-  function load_config () {
+  function load_config() {
     let tiles = $(".tile").not(".immutable").children();
     tiles.attr("class", "hexagon-inner");
     tiles.children("img").removeAttr("class").attr("src", "/static/images/tiles/empty.png");
@@ -784,7 +786,7 @@ $(document).ready(function () {
     path_weights();
     populate_modals();
 
-    let ticket_count = $(".ticket-count").filter(function() {
+    let ticket_count = $(".ticket-count").filter(function () {
       return $(this).parent().parent().attr("class").split(" ")[2] === `x${size}y0z${size}`;
     });
     ticket_count.text($(`.${colours[rots]}`).length - 1);
@@ -795,7 +797,7 @@ $(document).ready(function () {
     }
   }
 
-  function decode_config (encoded) {
+  function decode_config(encoded) {
     encoded = base_to_bigint(encoded, config_encode_alphabet);
     let tile_coords = Object.keys(nodes);
     let consecutive = 0;
@@ -817,7 +819,7 @@ $(document).ready(function () {
     }
   }
 
-  function encode_config (cfg) {
+  function encode_config(cfg) {
     let encoded = 0n;
     let consecutive = 0;
 
@@ -844,12 +846,12 @@ $(document).ready(function () {
     return bigint_to_base(encoded, config_encode_alphabet);
   }
 
-  async function onstart_config () {
+  async function onstart_config() {
     let url_params = new URLSearchParams(window.location.search);
-    let param_event =  url_params.get("event");
-    let param_size =  url_params.get("size");
+    let param_event = url_params.get("event");
+    let param_size = url_params.get("size");
     let param_config = url_params.get("config");
-    
+
     if (param_size) {
       config["size"] = parseInt(param_size);
     }
@@ -862,7 +864,7 @@ $(document).ready(function () {
     if (param_config) {
       decode_config(param_config);
     }
-    
+
     if (config) {
       load_config();
     } else {
@@ -870,12 +872,12 @@ $(document).ready(function () {
       init_config();
     }
   }
-  
+
 
   update_node_defaults(size);
   init_grid();
 
-  
+
   $('[data-toggle="tooltip"]').tooltip()
 
   $("#toggle-names").click(function () {
@@ -956,7 +958,7 @@ $(document).ready(function () {
         let tile_data = await Promise.all(tile_promises);
 
         init_config();
-  
+
         for (let tile_raw of tile_data) {
           if (tile_raw === null) continue;
           let data = JSON.parse(tile_raw);
@@ -965,9 +967,9 @@ $(document).ready(function () {
           let dc_model = game_data["dcModel"];
           let start_rules = dc_model["startRules"];
           let bloon_modifiers = dc_model["bloonModifiers"];
-    
+
           config["tiles"][node]["tile_type"] = data["TileType"] === "TeamFirstCapture" ? "regular" : pascal_to_snake_case(data["TileType"]);
-          config["tiles"][node]["relic"] =  data["RelicType"] !== "None" ? pascal_to_snake_case(data["RelicType"]) : null;
+          config["tiles"][node]["relic"] = data["RelicType"] !== "None" ? pascal_to_snake_case(data["RelicType"]) : null;
           config["tiles"][node]["game_type"] = game_types[game_data["subGameType"]];
           config["tiles"][node]["boss"] = "bossData" in game_data ? bosses[game_data["bossData"]["bossBloon"]] : null;
           config["tiles"][node]["tiers"] = "bossData" in game_data ? game_data["bossData"]["TierCount"] : null;
@@ -986,7 +988,7 @@ $(document).ready(function () {
           config["tiles"][node]["bloon_speed"] = Math.round(bloon_modifiers["speedMultiplier"] * 100);
           config["tiles"][node]["moab_speed"] = Math.round(bloon_modifiers["moabSpeedMultiplier"] * 100);
           config["tiles"][node]["regrow_rate"] = Math.round(bloon_modifiers["regrowRateMultiplier"] * 100);
-    
+
           for (let item of dc_model["towers"]["_items"]) {
             if (item && item["max"]) {
               let tower = item["tower"];
@@ -999,9 +1001,9 @@ $(document).ready(function () {
                 }
               } else {
                 if (max === -1) {
-                  config["tiles"][node]["towers"].push({tower: pascal_to_snake_case(tower), max: -1});
+                  config["tiles"][node]["towers"].push({ tower: pascal_to_snake_case(tower), max: -1 });
                 } else {
-                  config["tiles"][node]["towers"].push({tower: pascal_to_snake_case(tower), max: max});
+                  config["tiles"][node]["towers"].push({ tower: pascal_to_snake_case(tower), max: max });
                 }
               }
             }
@@ -1016,7 +1018,7 @@ $(document).ready(function () {
         try {
           config = JSON.parse(reader.result);
           load_config();
-        } catch {}
+        } catch { }
       };
     }
   });

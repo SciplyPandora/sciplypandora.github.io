@@ -26,6 +26,7 @@ $(document).ready(function () {
     gwendolin: 1,
     striker_jones: 1,
     obyn_greenfoot: 1,
+    rosalia: 1.425,
     captain_churchill: 1.71,
     corvus: 1.71,
     benjamin: 1.5,
@@ -54,7 +55,7 @@ $(document).ready(function () {
   let config = localStorage["calc/hero"] ? JSON.parse(localStorage["calc/hero"]) : null;
 
 
-  function onstart_config () {
+  function onstart_config() {
     if (config) {
       $("#hero").val(config["hero"]);
       $("#difficulty").val(config["difficulty"]);
@@ -82,13 +83,13 @@ $(document).ready(function () {
     }
   }
 
-  function get_cumulative_xp (round) {
+  function get_cumulative_xp(round) {
     if (round <= 20) return 10 * round ** 2 + 30 * round;
     if (round <= 50) return 20 * round ** 2 - 360 * round + 3800;
     return 45 * round ** 2 - 2835 * round + 65050;
   }
 
-  function get_xp (start_round, end_round) {
+  function get_xp(start_round, end_round) {
     let energizer_round = $("#energizer-round").val();
     if (energizer_round) {
       energizer_round = Math.max(energizer_round, start_round);
@@ -99,7 +100,7 @@ $(document).ready(function () {
     return get_cumulative_xp(end_round) - get_cumulative_xp(start_round - 1);
   }
 
-  function get_levelling_curve () {
+  function get_levelling_curve() {
     let xp_requirement_buff = hero_multipliers[$("#hero :selected").val()]
       * ($("#mk").prop("checked") ? mk_xp_requirement : 1);
     let xp_gain_buff = map_multipliers[$("#difficulty :selected").val()]

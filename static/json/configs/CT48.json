@@ -10,7 +10,7 @@
             "boss": "bloonarius",
             "tiers": 2,
             "game_mode": "standard",
-            "map": "one_two_tree",
+            "map": "town_centre",
             "difficulty": "easy",
             "cash": 696,
             "start_round": 3,
@@ -36,7 +36,7 @@
                     "max": -1
                 },
                 {
-                    "tower": "monkey_ace",
+                    "tower": "monkey_buccaneer",
                     "max": -1
                 },
                 {
@@ -220,7 +220,7 @@
             "moab_speed": 100,
             "regrow_rate": 100,
             "heroes": [
-                "pat_fusty"
+                "adora"
             ],
             "towers": [
                 {
@@ -257,7 +257,7 @@
             "boss": null,
             "tiers": null,
             "game_mode": "standard",
-            "map": "middle_of_the_road",
+            "map": "tinkerton",
             "difficulty": "medium",
             "cash": 650,
             "start_round": 1,
@@ -285,15 +285,15 @@
                     "max": -1
                 },
                 {
+                    "tower": "heli_pilot",
+                    "max": -1
+                },
+                {
                     "tower": "mortar_monkey",
                     "max": -1
                 },
                 {
                     "tower": "dartling_gunner",
-                    "max": -1
-                },
-                {
-                    "tower": "alchemist",
                     "max": -1
                 }
             ]
@@ -329,7 +329,8 @@
                 "adora",
                 "admiral_brickell",
                 "etienne",
-                "psi"
+                "psi",
+                "rosalia"
             ],
             "towers": [
                 {
@@ -460,7 +461,8 @@
                 "adora",
                 "admiral_brickell",
                 "etienne",
-                "psi"
+                "psi",
+                "rosalia"
             ],
             "towers": [
                 {
@@ -507,7 +509,7 @@
             "moab_speed": 100,
             "regrow_rate": 100,
             "heroes": [
-                "obyn_greenfoot"
+                "captain_churchill"
             ],
             "towers": [
                 {
@@ -567,7 +569,8 @@
                 "adora",
                 "admiral_brickell",
                 "etienne",
-                "psi"
+                "psi",
+                "rosalia"
             ],
             "towers": [
                 {
@@ -604,7 +607,7 @@
             "boss": null,
             "tiers": null,
             "game_mode": "standard",
-            "map": "tree_stump",
+            "map": "tinkerton",
             "difficulty": "hard",
             "cash": 1850,
             "start_round": 12,
@@ -621,31 +624,31 @@
             "towers": [
                 {
                     "tower": "ice_monkey",
-                    "max": 3
+                    "max": 2
                 },
                 {
                     "tower": "glue_gunner",
-                    "max": 1
+                    "max": 2
                 },
                 {
                     "tower": "sniper_monkey",
                     "max": 1
                 },
                 {
-                    "tower": "heli_pilot",
-                    "max": 4
+                    "tower": "monkey_sub",
+                    "max": 1
                 },
                 {
-                    "tower": "wizard_monkey",
+                    "tower": "dartling_gunner",
                     "max": 1
                 },
                 {
                     "tower": "monkey_village",
-                    "max": 2
+                    "max": 3
                 },
                 {
                     "tower": "engineer_monkey",
-                    "max": 3
+                    "max": 5
                 }
             ]
         },
@@ -657,8 +660,8 @@
             "boss": null,
             "tiers": null,
             "game_mode": "standard",
-            "map": "frozen_over",
-            "difficulty": "hard",
+            "map": "alpine_run",
+            "difficulty": "medium",
             "cash": 650,
             "start_round": 1,
             "end_round": 66,
@@ -670,10 +673,12 @@
             "bloon_speed": 100,
             "moab_speed": 100,
             "regrow_rate": 100,
-            "heroes": [
-                "corvus"
-            ],
+            "heroes": [],
             "towers": [
+                {
+                    "tower": "dart_monkey",
+                    "max": -1
+                },
                 {
                     "tower": "boomerang_monkey",
                     "max": -1
@@ -683,11 +688,11 @@
                     "max": -1
                 },
                 {
-                    "tower": "dartling_gunner",
+                    "tower": "monkey_ace",
                     "max": -1
                 },
                 {
-                    "tower": "super_monkey",
+                    "tower": "dartling_gunner",
                     "max": -1
                 },
                 {
@@ -731,7 +736,8 @@
                 "adora",
                 "admiral_brickell",
                 "etienne",
-                "psi"
+                "psi",
+                "rosalia"
             ],
             "towers": [
                 {
@@ -887,7 +893,8 @@
                 "adora",
                 "admiral_brickell",
                 "etienne",
-                "psi"
+                "psi",
+                "rosalia"
             ],
             "towers": [
                 {
@@ -1091,6 +1098,7 @@
                 "gwendolin",
                 "striker_jones",
                 "obyn_greenfoot",
+                "rosalia",
                 "corvus",
                 "captain_churchill",
                 "benjamin",
@@ -1254,7 +1262,7 @@
             "moab_speed": 100,
             "regrow_rate": 100,
             "heroes": [
-                "adora"
+                "admiral_brickell"
             ],
             "towers": [
                 {
@@ -1465,7 +1473,8 @@
                 "adora",
                 "admiral_brickell",
                 "etienne",
-                "psi"
+                "psi",
+                "rosalia"
             ],
             "towers": [
                 {
@@ -1512,7 +1521,7 @@
             "moab_speed": 100,
             "regrow_rate": 100,
             "heroes": [
-                "quincy"
+                "striker_jones"
             ],
             "towers": [
                 {
@@ -1665,7 +1674,7 @@
             "moab_speed": 100,
             "regrow_rate": 100,
             "heroes": [
-                "captain_churchill"
+                "benjamin"
             ],
             "towers": [
                 {
@@ -1751,7 +1760,7 @@
             "boss": null,
             "tiers": null,
             "game_mode": "reverse",
-            "map": "town_centre",
+            "map": "tree_stump",
             "difficulty": "medium",
             "cash": 650,
             "start_round": 1,
@@ -1798,8 +1807,8 @@
             "boss": null,
             "tiers": null,
             "game_mode": "standard",
-            "map": "resort",
-            "difficulty": "hard",
+            "map": "the_cabin",
+            "difficulty": "easy",
             "cash": 650,
             "start_round": 1,
             "end_round": 47,
@@ -1863,6 +1872,7 @@
                 "gwendolin",
                 "striker_jones",
                 "obyn_greenfoot",
+                "rosalia",
                 "corvus",
                 "captain_churchill",
                 "benjamin",
@@ -2067,7 +2077,7 @@
             "boss": null,
             "tiers": null,
             "game_mode": "standard",
-            "map": "one_two_tree",
+            "map": "town_centre",
             "difficulty": "medium",
             "cash": 782,
             "start_round": 7,
@@ -2114,8 +2124,8 @@
             "boss": null,
             "tiers": null,
             "game_mode": "reverse",
-            "map": "skates",
-            "difficulty": "medium",
+            "map": "resort",
+            "difficulty": "hard",
             "cash": 650,
             "start_round": 1,
             "end_round": 41,
@@ -2127,18 +2137,16 @@
             "bloon_speed": 100,
             "moab_speed": 100,
             "regrow_rate": 100,
-            "heroes": [],
+            "heroes": [
+                "etienne"
+            ],
             "towers": [
-                {
-                    "tower": "boomerang_monkey",
-                    "max": -1
-                },
                 {
                     "tower": "tack_shooter",
                     "max": -1
                 },
                 {
-                    "tower": "glue_gunner",
+                    "tower": "ice_monkey",
                     "max": -1
                 },
                 {
@@ -2146,11 +2154,11 @@
                     "max": -1
                 },
                 {
-                    "tower": "monkey_ace",
+                    "tower": "heli_pilot",
                     "max": -1
                 },
                 {
-                    "tower": "heli_pilot",
+                    "tower": "mortar_monkey",
                     "max": -1
                 },
                 {
@@ -2167,7 +2175,7 @@
             "boss": null,
             "tiers": null,
             "game_mode": "standard",
-            "map": "carved",
+            "map": "winter_park",
             "difficulty": "medium",
             "cash": 650,
             "start_round": 1,
@@ -2190,7 +2198,8 @@
                 "adora",
                 "admiral_brickell",
                 "etienne",
-                "psi"
+                "psi",
+                "rosalia"
             ],
             "towers": [
                 {
@@ -2335,7 +2344,7 @@
             "moab_speed": 100,
             "regrow_rate": 100,
             "heroes": [
-                "pat_fusty"
+                "adora"
             ],
             "towers": [
                 {
@@ -2425,11 +2434,11 @@
             "boss": null,
             "tiers": null,
             "game_mode": "standard",
-            "map": "candy_falls",
-            "difficulty": "medium",
-            "cash": 650,
-            "start_round": 1,
-            "end_round": 64,
+            "map": "lotus_island",
+            "difficulty": "easy",
+            "cash": 810,
+            "start_round": 9,
+            "end_round": 80,
             "max_towers": -1,
             "monkey_knowledge": false,
             "selling": true,
@@ -2438,33 +2447,31 @@
             "bloon_speed": 100,
             "moab_speed": 100,
             "regrow_rate": 100,
-            "heroes": [
-                "psi"
-            ],
+            "heroes": [],
             "towers": [
                 {
                     "tower": "tack_shooter",
-                    "max": 1
+                    "max": 2
                 },
                 {
                     "tower": "glue_gunner",
-                    "max": 4
+                    "max": 2
                 },
                 {
-                    "tower": "monkey_ace",
+                    "tower": "heli_pilot",
                     "max": 1
                 },
                 {
                     "tower": "wizard_monkey",
-                    "max": 4
+                    "max": 2
                 },
                 {
-                    "tower": "monkey_village",
+                    "tower": "ninja_monkey",
                     "max": 1
                 },
                 {
                     "tower": "beast_handler",
-                    "max": 2
+                    "max": 4
                 }
             ]
         },
@@ -2490,7 +2497,7 @@
             "moab_speed": 100,
             "regrow_rate": 100,
             "heroes": [
-                "etienne"
+                "psi"
             ],
             "towers": [
                 {
@@ -2595,7 +2602,8 @@
                 "adora",
                 "admiral_brickell",
                 "etienne",
-                "psi"
+                "psi",
+                "rosalia"
             ],
             "towers": [
                 {
@@ -2755,7 +2763,8 @@
                 "adora",
                 "admiral_brickell",
                 "etienne",
-                "psi"
+                "psi",
+                "rosalia"
             ],
             "towers": [
                 {
@@ -2867,7 +2876,8 @@
                 "admiral_brickell",
                 "etienne",
                 "psi",
-                "geraldo"
+                "geraldo",
+                "rosalia"
             ],
             "towers": [
                 {
@@ -2928,7 +2938,7 @@
             "boss": null,
             "tiers": null,
             "game_mode": "standard",
-            "map": "town_centre",
+            "map": "tree_stump",
             "difficulty": "medium",
             "cash": 650,
             "start_round": 1,
@@ -2958,7 +2968,7 @@
                     "max": -1
                 },
                 {
-                    "tower": "monkey_ace",
+                    "tower": "heli_pilot",
                     "max": -1
                 },
                 {
@@ -3042,7 +3052,7 @@
             "moab_speed": 100,
             "regrow_rate": 100,
             "heroes": [
-                "psi"
+                "geraldo"
             ],
             "towers": [
                 {
@@ -3155,7 +3165,8 @@
                 "adora",
                 "admiral_brickell",
                 "etienne",
-                "psi"
+                "psi",
+                "rosalia"
             ],
             "towers": [
                 {
@@ -3202,7 +3213,7 @@
             "moab_speed": 100,
             "regrow_rate": 100,
             "heroes": [
-                "striker_jones"
+                "obyn_greenfoot"
             ],
             "towers": [
                 {
@@ -3277,6 +3288,7 @@
                 "gwendolin",
                 "striker_jones",
                 "obyn_greenfoot",
+                "rosalia",
                 "corvus",
                 "captain_churchill",
                 "benjamin",
@@ -3334,7 +3346,7 @@
             "moab_speed": 100,
             "regrow_rate": 128,
             "heroes": [
-                "geraldo"
+                "rosalia"
             ],
             "towers": [
                 {
@@ -3363,7 +3375,7 @@
             "boss": null,
             "tiers": null,
             "game_mode": "standard",
-            "map": "town_centre",
+            "map": "tree_stump",
             "difficulty": "medium",
             "cash": 650,
             "start_round": 1,
@@ -3377,7 +3389,7 @@
             "moab_speed": 100,
             "regrow_rate": 100,
             "heroes": [
-                "psi"
+                "geraldo"
             ],
             "towers": [
                 {
@@ -3488,7 +3500,8 @@
                 "adora",
                 "admiral_brickell",
                 "etienne",
-                "psi"
+                "psi",
+                "rosalia"
             ],
             "towers": [
                 {
@@ -3647,7 +3660,8 @@
                 "admiral_brickell",
                 "etienne",
                 "psi",
-                "geraldo"
+                "geraldo",
+                "rosalia"
             ],
             "towers": [
                 {
@@ -3801,7 +3815,8 @@
                 "adora",
                 "admiral_brickell",
                 "etienne",
-                "psi"
+                "psi",
+                "rosalia"
             ],
             "towers": [
                 {
@@ -3881,7 +3896,7 @@
             "boss": "phayze",
             "tiers": 1,
             "game_mode": "standard",
-            "map": "scrapyard",
+            "map": "one_two_tree",
             "difficulty": "easy",
             "cash": 650,
             "start_round": 1,
@@ -3907,7 +3922,8 @@
                 "etienne",
                 "sauda",
                 "psi",
-                "geraldo"
+                "geraldo",
+                "rosalia"
             ],
             "towers": [
                 {
@@ -3919,7 +3935,7 @@
                     "max": 4
                 },
                 {
-                    "tower": "tack_shooter",
+                    "tower": "ice_monkey",
                     "max": 3
                 },
                 {
@@ -3958,6 +3974,7 @@
                 "gwendolin",
                 "striker_jones",
                 "obyn_greenfoot",
+                "rosalia",
                 "corvus",
                 "captain_churchill",
                 "benjamin",
@@ -4127,7 +4144,8 @@
                 "admiral_brickell",
                 "etienne",
                 "psi",
-                "geraldo"
+                "geraldo",
+                "rosalia"
             ],
             "towers": [
                 {
@@ -4190,7 +4208,8 @@
                 "admiral_brickell",
                 "etienne",
                 "psi",
-                "geraldo"
+                "geraldo",
+                "rosalia"
             ],
             "towers": [
                 {
@@ -4237,7 +4256,7 @@
             "moab_speed": 100,
             "regrow_rate": 100,
             "heroes": [
-                "adora"
+                "admiral_brickell"
             ],
             "towers": [
                 {
@@ -4678,25 +4697,33 @@
             "boss": null,
             "tiers": null,
             "game_mode": "standard",
-            "map": "candy_falls",
+            "map": "lotus_island",
             "difficulty": "easy",
-            "cash": 650,
-            "start_round": 1,
-            "end_round": 63,
+            "cash": 696,
+            "start_round": 3,
+            "end_round": 57,
             "max_towers": 10,
             "monkey_knowledge": false,
             "selling": true,
             "ceramic_health": 100,
             "moab_health": 100,
-            "bloon_speed": 100,
+            "bloon_speed": 105,
             "moab_speed": 100,
             "regrow_rate": 100,
-            "heroes": [],
+            "heroes": [
+                "quincy",
+                "striker_jones",
+                "obyn_greenfoot",
+                "benjamin",
+                "ezili",
+                "pat_fusty",
+                "adora",
+                "admiral_brickell",
+                "etienne",
+                "psi",
+                "rosalia"
+            ],
             "towers": [
-                {
-                    "tower": "bomb_shooter",
-                    "max": -1
-                },
                 {
                     "tower": "monkey_ace",
                     "max": -1
@@ -4774,7 +4801,7 @@
             "boss": null,
             "tiers": null,
             "game_mode": "standard",
-            "map": "scrapyard",
+            "map": "one_two_tree",
             "difficulty": "medium",
             "cash": 650,
             "start_round": 1,
@@ -4797,7 +4824,8 @@
                 "adora",
                 "admiral_brickell",
                 "etienne",
-                "psi"
+                "psi",
+                "rosalia"
             ],
             "towers": [
                 {
@@ -4897,7 +4925,7 @@
             "moab_speed": 100,
             "regrow_rate": 100,
             "heroes": [
-                "sauda"
+                "psi"
             ],
             "towers": [
                 {
@@ -5009,7 +5037,8 @@
                 "admiral_brickell",
                 "etienne",
                 "psi",
-                "geraldo"
+                "geraldo",
+                "rosalia"
             ],
             "towers": [
                 {
@@ -5389,7 +5418,7 @@
             "boss": null,
             "tiers": null,
             "game_mode": "standard",
-            "map": "scrapyard",
+            "map": "one_two_tree",
             "difficulty": "medium",
             "cash": 650,
             "start_round": 1,
@@ -5415,7 +5444,8 @@
                 "admiral_brickell",
                 "etienne",
                 "psi",
-                "geraldo"
+                "geraldo",
+                "rosalia"
             ],
             "towers": [
                 {
@@ -5431,7 +5461,7 @@
                     "max": -1
                 },
                 {
-                    "tower": "druid",
+                    "tower": "alchemist",
                     "max": -1
                 },
                 {
@@ -5448,7 +5478,7 @@
             "boss": null,
             "tiers": null,
             "game_mode": "standard",
-            "map": "alpine_run",
+            "map": "park_path",
             "difficulty": "medium",
             "cash": 650,
             "start_round": 1,
@@ -5465,19 +5495,19 @@
             "towers": [
                 {
                     "tower": "dart_monkey",
-                    "max": 4
+                    "max": 3
                 },
                 {
                     "tower": "bomb_shooter",
                     "max": 2
                 },
                 {
-                    "tower": "sniper_monkey",
-                    "max": 3
+                    "tower": "tack_shooter",
+                    "max": 2
                 },
                 {
-                    "tower": "heli_pilot",
-                    "max": 2
+                    "tower": "sniper_monkey",
+                    "max": 4
                 },
                 {
                     "tower": "dartling_gunner",
@@ -5573,7 +5603,8 @@
                 "adora",
                 "admiral_brickell",
                 "etienne",
-                "psi"
+                "psi",
+                "rosalia"
             ],
             "towers": [
                 {
@@ -6033,7 +6064,8 @@
                 "adora",
                 "admiral_brickell",
                 "etienne",
-                "psi"
+                "psi",
+                "rosalia"
             ],
             "towers": [
                 {
@@ -6170,12 +6202,12 @@
             "boss": null,
             "tiers": null,
             "game_mode": "standard",
-            "map": "lotus_island",
-            "difficulty": "easy",
+            "map": "skates",
+            "difficulty": "medium",
             "cash": 650,
             "start_round": 1,
-            "end_round": 60,
-            "max_towers": -1,
+            "end_round": 61,
+            "max_towers": 12,
             "monkey_knowledge": true,
             "selling": true,
             "ceramic_health": 100,
@@ -6184,37 +6216,23 @@
             "moab_speed": 100,
             "regrow_rate": 100,
             "heroes": [
-                "quincy",
-                "gwendolin",
-                "striker_jones",
-                "obyn_greenfoot",
-                "corvus",
-                "captain_churchill",
-                "benjamin",
-                "ezili",
-                "pat_fusty",
-                "adora",
-                "admiral_brickell",
-                "etienne",
-                "sauda",
-                "psi",
-                "geraldo"
+                "psi"
             ],
             "towers": [
-                {
-                    "tower": "dart_monkey",
-                    "max": -1
-                },
                 {
                     "tower": "boomerang_monkey",
                     "max": -1
                 },
                 {
-                    "tower": "super_monkey",
+                    "tower": "sniper_monkey",
                     "max": -1
                 },
                 {
-                    "tower": "alchemist",
+                    "tower": "dartling_gunner",
+                    "max": -1
+                },
+                {
+                    "tower": "ninja_monkey",
                     "max": -1
                 },
                 {
@@ -6300,7 +6318,7 @@
             "moab_speed": 100,
             "regrow_rate": 100,
             "heroes": [
-                "obyn_greenfoot"
+                "captain_churchill"
             ],
             "towers": [
                 {
@@ -6363,7 +6381,8 @@
                 "admiral_brickell",
                 "etienne",
                 "psi",
-                "geraldo"
+                "geraldo",
+                "rosalia"
             ],
             "towers": [
                 {
@@ -6406,7 +6425,7 @@
             "moab_speed": 100,
             "regrow_rate": 100,
             "heroes": [
-                "ezili"
+                "pat_fusty"
             ],
             "towers": [
                 {
@@ -6506,7 +6525,7 @@
             "moab_speed": 100,
             "regrow_rate": 100,
             "heroes": [
-                "captain_churchill"
+                "ezili"
             ],
             "towers": [
                 {
@@ -6722,7 +6741,8 @@
                 "admiral_brickell",
                 "etienne",
                 "psi",
-                "geraldo"
+                "geraldo",
+                "rosalia"
             ],
             "towers": [
                 {
@@ -6755,8 +6775,8 @@
             "boss": null,
             "tiers": null,
             "game_mode": "standard",
-            "map": "resort",
-            "difficulty": "hard",
+            "map": "the_cabin",
+            "difficulty": "easy",
             "cash": 770,
             "start_round": 7,
             "end_round": 57,
@@ -6773,6 +6793,7 @@
                 "gwendolin",
                 "striker_jones",
                 "obyn_greenfoot",
+                "rosalia",
                 "corvus",
                 "captain_churchill",
                 "benjamin",
@@ -6834,7 +6855,7 @@
             "moab_speed": 100,
             "regrow_rate": 100,
             "heroes": [
-                "etienne"
+                "psi"
             ],
             "towers": [
                 {
@@ -6867,7 +6888,7 @@
             "boss": null,
             "tiers": null,
             "game_mode": "standard",
-            "map": "one_two_tree",
+            "map": "town_centre",
             "difficulty": "medium",
             "cash": 650,
             "start_round": 1,
@@ -6885,28 +6906,28 @@
             ],
             "towers": [
                 {
-                    "tower": "tack_shooter",
-                    "max": 3
-                },
-                {
                     "tower": "ice_monkey",
                     "max": 2
                 },
                 {
                     "tower": "sniper_monkey",
-                    "max": 2
+                    "max": 3
                 },
                 {
                     "tower": "monkey_ace",
+                    "max": 3
+                },
+                {
+                    "tower": "heli_pilot",
                     "max": 2
                 },
                 {
                     "tower": "mortar_monkey",
-                    "max": 2
+                    "max": 3
                 },
                 {
                     "tower": "dartling_gunner",
-                    "max": 4
+                    "max": 2
                 }
             ]
         },
@@ -6967,7 +6988,7 @@
             "boss": null,
             "tiers": null,
             "game_mode": "standard",
-            "map": "park_path",
+            "map": "carved",
             "difficulty": "medium",
             "cash": 650,
             "start_round": 1,
@@ -7252,7 +7273,8 @@
                 "admiral_brickell",
                 "etienne",
                 "psi",
-                "geraldo"
+                "geraldo",
+                "rosalia"
             ],
             "towers": [
                 {
@@ -7357,7 +7379,8 @@
                 "adora",
                 "admiral_brickell",
                 "etienne",
-                "psi"
+                "psi",
+                "rosalia"
             ],
             "towers": [
                 {
@@ -7457,7 +7480,7 @@
             "moab_speed": 100,
             "regrow_rate": 100,
             "heroes": [
-                "psi"
+                "geraldo"
             ],
             "towers": [
                 {
@@ -7565,7 +7588,8 @@
                 "admiral_brickell",
                 "etienne",
                 "psi",
-                "geraldo"
+                "geraldo",
+                "rosalia"
             ],
             "towers": [
                 {
@@ -7655,7 +7679,7 @@
             "boss": null,
             "tiers": null,
             "game_mode": "standard",
-            "map": "four_circles",
+            "map": "cubism",
             "difficulty": "medium",
             "cash": 650,
             "start_round": 1,
@@ -7782,7 +7806,8 @@
                 "adora",
                 "admiral_brickell",
                 "etienne",
-                "psi"
+                "psi",
+                "rosalia"
             ],
             "towers": [
                 {
@@ -7838,7 +7863,8 @@
                 "adora",
                 "admiral_brickell",
                 "etienne",
-                "psi"
+                "psi",
+                "rosalia"
             ],
             "towers": [
                 {
@@ -7894,7 +7920,8 @@
                 "adora",
                 "admiral_brickell",
                 "etienne",
-                "psi"
+                "psi",
+                "rosalia"
             ],
             "towers": [
                 {
@@ -8018,7 +8045,7 @@
             "moab_speed": 100,
             "regrow_rate": 100,
             "heroes": [
-                "gwendolin"
+                "striker_jones"
             ],
             "towers": [
                 {
@@ -8077,7 +8104,8 @@
                 "admiral_brickell",
                 "etienne",
                 "psi",
-                "geraldo"
+                "geraldo",
+                "rosalia"
             ],
             "towers": [
                 {
@@ -8186,7 +8214,8 @@
                 "adora",
                 "admiral_brickell",
                 "etienne",
-                "psi"
+                "psi",
+                "rosalia"
             ],
             "towers": [
                 {
@@ -8286,7 +8315,7 @@
             "moab_speed": 100,
             "regrow_rate": 100,
             "heroes": [
-                "adora"
+                "admiral_brickell"
             ],
             "towers": [
                 {
@@ -8472,7 +8501,8 @@
                 "adora",
                 "admiral_brickell",
                 "etienne",
-                "psi"
+                "psi",
+                "rosalia"
             ],
             "towers": [
                 {
@@ -8584,7 +8614,8 @@
                 "admiral_brickell",
                 "etienne",
                 "psi",
-                "geraldo"
+                "geraldo",
+                "rosalia"
             ],
             "towers": [
                 {
