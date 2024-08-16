@@ -44,6 +44,7 @@ const race_multipliers = {
   water_park: 7 * 2,
   winter_park: 3 * 2,
   tinkerton: 2 * 2,
+  luminous_cove: 5 * 2,
 };
 const round_buffers = {
   adoras_temple: [20, 20],
@@ -102,6 +103,7 @@ const round_buffers = {
   water_park: [14, 10],
   winter_park: [5, 5],
   tinkerton: [5, 5],
+  luminous_cove: [13, 8],
 };
 const difficulty_speed_multipliers = {
   easy: 1,

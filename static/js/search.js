@@ -322,6 +322,7 @@ $(document).ready(function () {
     ninja_monkey: "Ninja",
     alchemist: "Alch",
     druid: "Druid",
+    mermonkey: "Merm",
     banana_farm: "Farm",
     spike_factory: "Spac",
     monkey_village: "Village",
