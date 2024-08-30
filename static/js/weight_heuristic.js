@@ -6,6 +6,7 @@ const race_multipliers = {
   bloonarius_prime: 7 * 2,
   candy_falls: 2 * 2,
   carved: 2 * 2,
+  castle_revenge: 7 * 2,
   chutes: 7 * 2,
   cracked: 3 * 2,
   cubism: 2 * 2,
@@ -21,6 +22,7 @@ const race_multipliers = {
   karts_n_darts: 3 * 2,
   logs: 2 * 2,
   lotus_island: 3 * 2,
+  luminous_cove: 5 * 2,
   middle_of_the_road: 3 * 2,
   monkey_meadow: 3 * 2,
   moon_landing: 5 * 2,
@@ -44,7 +46,6 @@ const race_multipliers = {
   water_park: 7 * 2,
   winter_park: 3 * 2,
   tinkerton: 2 * 2,
-  luminous_cove: 5 * 2,
 };
 const round_buffers = {
   adoras_temple: [20, 20],
@@ -56,6 +57,7 @@ const round_buffers = {
   candy_falls: [3, 2],
   cargo: [9, 7],
   carved: [9, 7],
+  castle_revenge: [6, 8],
   chutes: [12, 8],
   cornfield: [14, 11],
   covered_garden: [8, 10],
@@ -74,6 +76,7 @@ const round_buffers = {
   karts_n_darts: [5, 5],
   logs: [8, 5],
   lotus_island: [8, 6],
+  luminous_cove: [13, 8],
   mesa: [10, 7],
   middle_of_the_road: [4, 4],
   midnight_mansion: [9, 18],
@@ -103,7 +106,6 @@ const round_buffers = {
   water_park: [14, 10],
   winter_park: [5, 5],
   tinkerton: [5, 5],
-  luminous_cove: [13, 8],
 };
 const difficulty_speed_multipliers = {
   easy: 1,
