@@ -303,6 +303,24 @@ $(document).ready(function () {
     "psi",
     "geraldo"
   ];
+  const hero_bans = {
+    least_tiers: [
+      "sauda",
+      "geraldo",
+      "captain_churchill",
+      "corvus",
+      "gwendolin"
+    ],
+    leas_cash: [
+      "sauda",
+      "corvus"
+    ],
+    boss: [
+      "benjamin",
+      "corvus"
+    ],
+    race: []
+  }
   const abbreviations = {
     dart_monkey: "Dart",
     boomerang_monkey: "Boomer",
@@ -345,6 +363,9 @@ $(document).ready(function () {
     psi: "Psi",
     geraldo: "Geraldo"
   };
+  const ct_start_season = 55;
+  const ct_start_date_milli = 1726610400000;
+  const one_day_milli = 86400000;
   const { protocol, host, pathname } = window.location;
   let config = localStorage["map/search"] ? JSON.parse(localStorage["map/search"]) : null;
   let rots = 0;
@@ -616,9 +637,90 @@ $(document).ready(function () {
     }
   }
 
+  async function get_latest_event() {
+    let now = new Date();
+    let week = Math.floor((now.getTime() - ct_start_date_milli) / one_day_milli / 7);
+    let season = ct_start_season + Math.ceil(week / 2);
+    while (season > 0) {
+      let response = await fetch(`https://storage.googleapis.com/btd6-ct-map/events/${season}/tiles.json`, { method: "HEAD" });
+      if (response.status !== 404) {
+        return season;
+      }
+      season--;
+    }
+    return null;
+  }
+
+  async function populate_event_select() {
+    let latest_event = await get_latest_event();
+    let select = $("#historical-select");
+    for (let i = 1; i < latest_event; i++) {
+      select.append(`<option value="${i}">CT ${i}</option>`);
+    }
+    select.append(`<option value="${latest_event}" selected>CT ${latest_event}</option>`);
+  }
+
+  function load_alternate_config(json) {
+    for (let node in json) {
+      let attrs = { "colour": null };
+      let game_data = json[node]["GameData"];
+      let dc_model = game_data["dcModel"];
+      attrs["tile_type"] = json[node]["TileType"] === "TeamFirstCapture" ? "regular" : pascal_to_snake_case(json[node]["TileType"]);
+      attrs["relic"] = json[node]["RelicType"] !== "None" ? pascal_to_snake_case(json[node]["RelicType"]) : null;
+      attrs["game_type"] = game_types[game_data["subGameType"]];
+      attrs["boss"] = "bossData" in game_data ? bosses[game_data["bossData"]["bossBloon"]] : null;
+      attrs["tiers"] = "bossData" in game_data ? game_data["bossData"]["TierCount"] : null;
+      attrs["game_mode"] = pascal_to_snake_case(game_data["selectedMode"]);
+      attrs["map"] = pascal_to_snake_case(game_data["selectedMap"]);
+      if (attrs["map"] === "tutorial") attrs["map"] = "monkey_meadow";
+      attrs["difficulty"] = pascal_to_snake_case(game_data["selectedDifficulty"]);
+      attrs["cash"] = dc_model["startRules"]["cash"];
+      attrs["start_round"] = dc_model["startRules"]["round"];
+      attrs["end_round"] = dc_model["startRules"]["endRound"];
+      attrs["max_towers"] = dc_model["maxTowers"];
+      attrs["monkey_knowledge"] = !dc_model["disableMK"];
+      attrs["selling"] = !dc_model["disableSelling"];
+      attrs["ceramic_health"] = Math.round(dc_model["bloonModifiers"]["healthMultipliers"]["bloons"] * 100);
+      attrs["moab_health"] = Math.round(dc_model["bloonModifiers"]["healthMultipliers"]["moabs"] * 100);
+      attrs["bloon_speed"] = Math.round(dc_model["bloonModifiers"]["speedMultiplier"] * 100);
+      attrs["moab_speed"] = Math.round(dc_model["bloonModifiers"]["moabSpeedMultiplier"] * 100);
+      attrs["regrow_rate"] = Math.round(dc_model["bloonModifiers"]["regrowRateMultiplier"] * 100);
+      attrs["heroes"] = [];
+      attrs["towers"] = [];
+      for (let tower of dc_model["towers"]["_items"]) {
+        if (tower["max"] !== 0) {
+          if (tower["tower"] === "ChosenPrimaryHero") {
+            let hero_bans_list = hero_bans[attrs["game_type"]];
+            for (let hero of all_heroes) {
+              if (!hero_bans_list.includes(hero)) {
+                attrs["heroes"].push(hero);
+              }
+            }
+          } else if (tower["isHero"]) {
+            attrs["heroes"].push(pascal_to_snake_case(tower["tower"]));
+          } else {
+            attrs["towers"].push({ "tower": pascal_to_snake_case(tower["tower"]), "max": tower["max"] });
+          }
+        }
+      }
+      config["tiles"][node] = attrs;
+    }
+  }
+
+  async function load_event(event) {
+    let response = await fetch(`https://storage.googleapis.com/btd6-ct-map/events/${event}/tiles.json`);
+    if (response.status !== 404) {
+      init_config();
+      config["event"] = event;
+      load_alternate_config(await response.json());
+      load_config();
+    }
+  }
+
 
   update_node_defaults(size);
   init_grid();
+  populate_event_select();
 
 
   $("#tile-type").multiselect({
@@ -877,10 +979,7 @@ $(document).ready(function () {
   });
 
   $("#load").click(async function () {
-    init_config();
-    const response = await fetch(`${protocol}//${host}/static/json/configs/${$("#historical-select :selected").val()}.json`);
-    config = await response.json();
-    load_config();
+    load_event($("#historical-select :selected").val());
     $("#historical-modal").modal("hide");
   });
 
