@@ -876,7 +876,7 @@ $(document).ready(function () {
     }
 
     if (param_event) {
-      let response = await await fetch(`https://storage.googleapis.com/btd6-ct-map/events/${param_event}/tiles.json`);
+      let response = await fetch(`https://storage.googleapis.com/btd6-ct-map/events/${param_event}/tiles.json`);
       load_alternate_config(await response.json());
     }
 
