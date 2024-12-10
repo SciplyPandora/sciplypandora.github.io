@@ -283,7 +283,8 @@ $(document).ready(function () {
     "lych",
     "vortex",
     "dreadbloon",
-    "phayze"
+    "phayze",
+    "blastopopoulos"
   ];
   const all_heroes = [
     "quincy",
