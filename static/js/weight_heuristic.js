@@ -50,6 +50,7 @@ const race_multipliers = {
 const round_buffers = {
   adoras_temple: [20, 20],
   alpine_run: [9, 7],
+  ancient_portal: [7, 9],
   another_brick: [6, 6],
   balance: [9, 9],
   bazaar: [12, 12],

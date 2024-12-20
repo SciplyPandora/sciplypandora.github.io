@@ -476,8 +476,10 @@ $(document).ready(function () {
     let [game_type, start, end, tiers, track, difficulty, boss, game_mode] = [node["game_type"], node["start_round"], node["end_round"], node["tiers"], node["map"], node["difficulty"], node["boss"], node["game_mode"]];
     let race_multiplier = track in race_multipliers ? race_multipliers[track] : 6;
     let round_buffer = track in round_buffers ? round_buffers[track] : [6, 6];
+    if (!(track in round_buffers)) console.log(`Missing round buffers for ${track}`);
 
     if (game_type === "race") {
+      if (!(track in race_multipliers)) console.log(`Missing race multiplier for ${track}`);
       let longest_round = race_rounds[race_rounds.length - 1];
       for (let i = 0; i < race_rounds.length; i++) {
         let round = race_rounds[i];
@@ -486,7 +488,7 @@ $(document).ready(function () {
           break;
         }
       }
-      weight = (longest_round["time"] + send_delay * (longest_round["round"] - start)) * race_multipliers;
+      weight = (longest_round["time"] + send_delay * (longest_round["round"] - start)) * race_multiplier;
     } else if (game_type === "boss") {
       weight = round_data[boss][tiers * 20 + 18]["time"] - round_data[boss][start - 1]["time"] + boss_kill_times[boss][tiers - 1];
       let first_speed = round_data[boss][tiers * 20 + 18]["first_speed"] - round_data[boss][start - 1]["first_speed"];
