@@ -314,7 +314,7 @@ $(document).ready(function () {
       "corvus",
       "gwendolin"
     ],
-    leas_cash: [
+    least_cash: [
       "sauda",
       "corvus"
     ],
@@ -474,6 +474,9 @@ $(document).ready(function () {
     let weight = 0;
     node = config["tiles"][node];
     let [game_type, start, end, tiers, track, difficulty, boss, game_mode] = [node["game_type"], node["start_round"], node["end_round"], node["tiers"], node["map"], node["difficulty"], node["boss"], node["game_mode"]];
+    let race_multiplier = track in race_multipliers ? race_multipliers[track] : 6;
+    let round_buffer = track in round_buffers ? round_buffers[track] : [6, 6];
+
     if (game_type === "race") {
       let longest_round = race_rounds[race_rounds.length - 1];
       for (let i = 0; i < race_rounds.length; i++) {
@@ -483,17 +486,16 @@ $(document).ready(function () {
           break;
         }
       }
-
-      weight = (longest_round["time"] + send_delay * (longest_round["round"] - start)) * race_multipliers[track];
+      weight = (longest_round["time"] + send_delay * (longest_round["round"] - start)) * race_multipliers;
     } else if (game_type === "boss") {
       weight = round_data[boss][tiers * 20 + 18]["time"] - round_data[boss][start - 1]["time"] + boss_kill_times[boss][tiers - 1];
       let first_speed = round_data[boss][tiers * 20 + 18]["first_speed"] - round_data[boss][start - 1]["first_speed"];
       let last_speed = round_data[boss][tiers * 20 + 18]["last_speed"] - round_data[boss][start - 1]["last_speed"];
 
       if (game_mode === "reverse") {
-        weight += round_buffers[track][1] * first_speed / difficulty_speed_multipliers[difficulty];
+        weight += round_buffer[1] * first_speed / difficulty_speed_multipliers[difficulty];
       } else {
-        weight += round_buffers[track][0] * last_speed / difficulty_speed_multipliers[difficulty];
+        weight += round_buffer[0] * last_speed / difficulty_speed_multipliers[difficulty];
       }
     } else {
       weight = round_data["regular"][end - 1]["time"] - round_data["regular"][start - 1]["time"];
@@ -501,9 +503,9 @@ $(document).ready(function () {
       let last_speed = round_data["regular"][end - 1]["last_speed"] - round_data["regular"][start - 1]["last_speed"];
 
       if (game_mode === "reverse") {
-        weight += round_buffers[track][1] * first_speed / difficulty_speed_multipliers[difficulty];
+        weight += round_buffer[1] * first_speed / difficulty_speed_multipliers[difficulty];
       } else {
-        weight += round_buffers[track][0] * last_speed / difficulty_speed_multipliers[difficulty];
+        weight += round_buffer[0] * last_speed / difficulty_speed_multipliers[difficulty];
       }
     }
 
