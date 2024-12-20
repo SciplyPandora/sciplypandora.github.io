@@ -900,7 +900,7 @@ $(document).ready(function () {
   async function get_latest_event() {
     let now = new Date();
     let week = Math.floor((now.getTime() - ct_start_date_milli) / one_day_milli / 7);
-    let season = ct_start_season + Math.ceil(week / 2);
+    let season = ct_start_season + Math.ceil(week / 2) + 2;
     while (season > 0) {
       let response = await fetch(`https://storage.googleapis.com/btd6-ct-map/events/${season}/tiles.json`, { method: "HEAD" });
       if (response.status !== 404) {
