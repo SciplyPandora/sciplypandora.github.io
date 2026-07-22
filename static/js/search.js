@@ -284,7 +284,8 @@ $(document).ready(function () {
     "vortex",
     "dreadbloon",
     "phayze",
-    "blastopopoulos"
+    "blastopopoulos",
+    "diamondback"
   ];
   const all_heroes = [
     "quincy",
